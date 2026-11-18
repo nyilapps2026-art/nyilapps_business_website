@@ -1,0 +1,32 @@
+name: Build Neon CMS API bundle
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'functions/api/**'
+      - '.github/workflows/build-neon-api.yml'
+jobs:
+  bundle:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install dependencies
+        working-directory: functions/api
+        run: npm install --no-audit --no-fund
+      - name: Bundle
+        working-directory: functions/api
+        run: |
+          npm exec --yes --package=esbuild -- esbuild src/index.mjs --bundle --platform=node --format=esm --target=node22 --outfile=../../index.mjs
+          cd ../..
+          zip -9 neon-cms-api-bundle.zip index.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: neon-cms-api-bundle
+          path: neon-cms-api-bundle.zip
+          if-no-files-found: error
+          retention-days: 7
