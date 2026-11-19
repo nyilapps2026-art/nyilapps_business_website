@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - '.github/workflows/deploy-neon-cms.yml'
+      - 'functions/api/**'
 jobs:
   deploy:
     runs-on: ubuntu-latest
