@@ -20,7 +20,7 @@ jobs:
       - name: Deploy nyilcms to Neon
         working-directory: functions/api
         env:
-          NEON_API_KEY: ${{ secrets.NEW_API_KEY }}
+          NEON_API_KEY: ${{ secrets.NEON_API_KEY }}
         run: |
           if [ -z "$NEON_API_KEY" ]; then
             echo "::error::Missing GitHub Actions secret NEON_API_KEY"
