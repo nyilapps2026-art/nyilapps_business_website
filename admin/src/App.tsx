@@ -1,3 +1,4 @@
+// Deployment sync: ensure password-reset route is included in the production build.
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { createAuthClient } from '@neon/auth'
 
