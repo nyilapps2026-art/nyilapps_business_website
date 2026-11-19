@@ -1,0 +1,25 @@
+name: Deploy Neon CMS API
+on:
+  workflow_dispatch:
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install Neon CLI
+        run: npm install --global neon@latest
+      - name: Deploy nyilcms to Neon
+        working-directory: functions/api
+        env:
+          NEON_API_KEY: ${{ secrets.NEON_API_KEY }}
+        run: |
+          if [ -z "$NEON_API_KEY" ]; then
+            echo "::error::Missing GitHub Actions secret NEON_API_KEY"
+            exit 1
+          fi
+          neon functions deploy nyilcms --src src/index.mjs --project-id mute-math-40193852 --branch br-icy-breeze-bdbz7vs8
