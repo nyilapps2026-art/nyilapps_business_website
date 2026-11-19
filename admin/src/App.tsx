@@ -7,10 +7,10 @@ type Status = Product['status']
 const LANGUAGES = [{code:'en',label:'English'},{code:'de',label:'Deutsch'},{code:'fr',label:'Français'},{code:'es',label:'Español'},{code:'it',label:'Italiano'},{code:'pt',label:'Português'},{code:'nl',label:'Nederlands'},{code:'sv',label:'Svenska'},{code:'no',label:'Norsk'},{code:'da',label:'Dansk'}]
 type Localized = Record<string,string>
 const EMPTY = () => Object.fromEntries(LANGUAGES.map(l=>[l.code,''])) as Localized
-const AUTH_URL = import.meta.env.VITE_NEON_AUTH_URL
+const AUTH_URL = (import.meta.env.VITE_NEON_AUTH_URL || 'https://ep-red-fog-bdya5bxr.neonauth.c-8.us-east-2.aws.neon.tech/nyil_website/auth').trim()
 const API_URL = (import.meta.env.VITE_CMS_API_URL || '').replace(/\/$/,'')
 const ADMIN_EMAIL = 'nyilapps2026@gmail.com'
-const auth = AUTH_URL ? createAuthClient(AUTH_URL) : null
+const auth = createAuthClient(AUTH_URL)
 
 export default function App(){
  const [session,setSession]=useState<any>(null),[loading,setLoading]=useState(true)
