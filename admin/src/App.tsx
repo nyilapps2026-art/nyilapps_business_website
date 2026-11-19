@@ -23,7 +23,7 @@ export default function App(){
  const user=session?.user,allowed=user?.email?.toLowerCase()===ADMIN_EMAIL
 
  useEffect(()=>{let active=true;auth?.getSession().then(({data}:any)=>{if(active)setSession(data?.session??null)}).catch(()=>{}).finally(()=>{if(active)setLoading(false)});if(!auth)setLoading(false);return()=>{active=false}},[])
- const getToken=async()=>{const r=await auth?.token();if(r?.error||!r?.data?.token)throw new Error('Your session has expired. Please sign in again.');return r.data.token as string}
+ const getToken=async()=>{if(!auth)throw new Error('Authentication is not configured.');const tokenClient=auth as typeof auth & {token:()=>Promise<{data?:{token?:string}|null;error?:{message?:string}|null}>};const r=await tokenClient.token();if(r?.error||!r?.data?.token)throw new Error(r?.error?.message||'Your session has expired. Please sign in again.');return r.data.token}
  const request=useCallback(async(path:string,init:RequestInit={})=>{if(!API_URL)throw new Error('CMS API URL is not configured.');const jwt=await getToken();const response=await fetch(API_URL+path,{...init,headers:{...(init.body instanceof FormData?{}:{'Content-Type':'application/json'}),Authorization:'Bearer '+jwt,...init.headers}});const data=await response.json().catch(()=>({}));if(!response.ok)throw new Error(data.error||'Request failed ('+response.status+')');return data},[])
  const load=useCallback(async()=>{setBusy(true);try{const [p,i]=await Promise.all([request('/admin/products'),request('/admin/inquiries')]);setProducts(p.products??[]);setInquiries(i.inquiries??[]);setNotice('Workspace data is up to date.')}catch(e){setNotice((e as Error).message)}finally{setBusy(false)}},[request])
  useEffect(()=>{if(allowed)void load()},[allowed,load])
