@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { createAuthClient } from '@neon/auth'
-import { BetterAuthReactAdapter } from '@neon/auth/react/adapters'
 
 type Product = { id:string; slug:string; name:Record<string,string>; category:string; summary:Record<string,string>; description:Record<string,string>; image_url:string|null; external_url:string|null; status:'draft'|'published'|'archived'; updated_at:string }
 type Inquiry = { id:number; name:string; email:string; subject:string; message:string; status:'new'|'read'|'closed'; created_at:string }
@@ -11,7 +10,7 @@ const EMPTY = () => Object.fromEntries(LANGUAGES.map(l=>[l.code,''])) as Localiz
 const AUTH_URL = import.meta.env.VITE_NEON_AUTH_URL
 const API_URL = (import.meta.env.VITE_CMS_API_URL || '').replace(/\/$/,'')
 const ADMIN_EMAIL = 'nyilapps2026@gmail.com'
-const auth = AUTH_URL ? createAuthClient(AUTH_URL,{adapter:BetterAuthReactAdapter()}) : null
+const auth = AUTH_URL ? createAuthClient(AUTH_URL) : null
 
 export default function App(){
  const [session,setSession]=useState<any>(null),[loading,setLoading]=useState(true)
