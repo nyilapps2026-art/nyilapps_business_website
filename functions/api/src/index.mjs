@@ -40,6 +40,11 @@ export default {
     if (request.method === 'OPTIONS') return response({}, 204, origin)
     if (origin && !ALLOWED_ORIGINS.has(origin)) return response({error:'Origin not allowed'}, 403, origin)
     try {
+      const contentMatch = url.pathname.match(/^\/content\/([a-z0-9-]{1,60})$/)
+      if (request.method === 'GET' && contentMatch) {
+        const [row] = await sql`SELECT page_key, content, updated_at FROM public.site_content WHERE page_key=${contentMatch[1]} AND published=true`
+        return response({content:row || null}, 200, origin)
+      }
       if (request.method === 'GET' && url.pathname === '/products') {
         const rows = await sql`SELECT id, slug, name, category, summary, description, image_url, external_url, status, sort_order, updated_at FROM public.products WHERE status = 'published' ORDER BY sort_order ASC, updated_at DESC`
         return response({products:rows}, 200, origin)
@@ -60,6 +65,23 @@ export default {
       if (url.pathname.startsWith('/admin/')) {
         const email = await admin(request)
         if (!email) return response({error:'Unauthorized'}, 401, origin)
+        if (request.method === 'GET' && url.pathname === '/admin/content') {
+          const rows = await sql`SELECT page_key, content, published, updated_at FROM public.site_content ORDER BY page_key ASC`
+          return response({pages:rows}, 200, origin)
+        }
+        const contentAdminMatch = url.pathname.match(/^\/admin\/content\/([a-z0-9-]{1,60})$/)
+        if (contentAdminMatch && request.method === 'PUT') {
+          const pageKey = contentAdminMatch[1]
+          const allowedPages = new Set(['home','about','solutions','technology','payment','footer','privacy','terms'])
+          if (!allowedPages.has(pageKey)) return response({error:'Unsupported page key'},400,origin)
+          const body = await request.json()
+          const content = jsonObject(body.content)
+          if (JSON.stringify(content).length > 100000) return response({error:'Page content is too large.'},413,origin)
+          const published = body.published !== false
+          const [row] = await sql`INSERT INTO public.site_content (page_key, content, published, updated_at) VALUES (${pageKey}, ${JSON.stringify(content)}::jsonb, ${published}, now()) ON CONFLICT (page_key) DO UPDATE SET content=EXCLUDED.content, published=EXCLUDED.published, updated_at=now() RETURNING page_key, content, published, updated_at`
+          await sql`INSERT INTO public.admin_audit_log (admin_email, action, details) VALUES (${email}, 'site_content.update', ${JSON.stringify({page_key:pageKey,published})}::jsonb)`
+          return response({page:row},200,origin)
+        }
         if (request.method === 'POST' && url.pathname === '/admin/uploads') {
           const contentType = (request.headers.get('content-type') || '').toLowerCase().split(';')[0].trim()
           const allowedTypes = new Set(['image/jpeg','image/png','image/webp','image/avif'])
