@@ -15,21 +15,19 @@ jobs:
         working-directory: admin
     steps:
       - name: Checkout source
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: 22
-          cache: npm
-          cache-dependency-path: admin/package.json
       - name: Install dependencies
         run: npm install --no-audit --no-fund
       - name: Build Admin
         run: npm run build
       - name: Upload production files
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: nyil-admin-dist
-          path: admin/dist/
+          path: dist/
           if-no-files-found: error
           retention-days: 7
