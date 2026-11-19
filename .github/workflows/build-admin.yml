@@ -24,10 +24,12 @@ jobs:
         run: npm install --no-audit --no-fund
       - name: Build Admin
         run: npm run build
+      - name: Verify production output
+        run: test -s dist/index.html
       - name: Upload production files
         uses: actions/upload-artifact@v5
         with:
           name: nyil-admin-dist
-          path: dist/
+          path: admin/dist/
           if-no-files-found: error
           retention-days: 7
