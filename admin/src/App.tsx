@@ -55,7 +55,7 @@ export default function App(){
     diagnosticStage='checking session';
     const current=await auth.getSession();
     const activeSession=current?.data?.session??null;
-    console.info('[NYIL AUTH DIAGNOSTIC]',{stage:'session response',hasSession:Boolean(activeSession),hasUser:Boolean(activeSession?.user),hasError:Boolean((current as any)?.error),errorMessage:(current as any)?.error?.message||null,sessionDataPresent:Boolean(current?.data)});
+    console.info('[NYIL AUTH DIAGNOSTIC]',{stage:'session response',hasSession:Boolean(activeSession),hasError:Boolean((current as any)?.error),errorMessage:(current as any)?.error?.message||null,sessionDataPresent:Boolean(current?.data)});
     if(!activeSession)throw new Error('Sign-in returned without an active session. The diagnostic check found no session cookie. Try the same sign-in once in Chrome Incognito; if it works there, browser cookies or site data are blocking the session.');
     setSession(activeSession);
     setAuthError('');
