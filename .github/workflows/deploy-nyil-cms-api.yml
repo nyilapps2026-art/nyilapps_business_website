@@ -1,0 +1,42 @@
+name: Deploy NYIL CMS API
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "functions/api/**"
+      - ".neon"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: nyil-cms-api-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: functions/api/package-lock.json
+
+      - name: Install API dependencies
+        working-directory: functions/api
+        run: npm install --no-audit --no-fund
+
+      - name: Deploy bundled Neon Function
+        working-directory: functions/api
+        env:
+          NEON_API_KEY: ${{ secrets.NEON_API_KEY }}
+        run: |
+          test -n "$NEON_API_KEY" || (echo "Missing GitHub Actions secret NEON_API_KEY" && exit 1)
+          npx --yes neon@latest functions deploy nyilcms --src src/index.mjs --api-key "$NEON_API_KEY"
