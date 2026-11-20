@@ -173,13 +173,15 @@ async function loadProducts() {
   const grid = document.getElementById('productGrid');
   try {
     const data = await getJson('/products');
-    // Only show products created in Admin Dashboard and explicitly Published.
+    // The public CMS endpoint returns only products published in Admin Dashboard.
+    // Do not hide products based on their names or slugs; retain the one
+    // explicitly identified legacy demo record as hidden.
     const products = (Array.isArray(data.products) ? data.products : []).filter(product => {
       if (!product || product.status !== 'published') return false;
-      const name = localized(product.name, 'en').trim().toLowerCase();
+      const name = localized(product.name, 'en').trim();
       const slug = String(product.slug || '').trim().toLowerCase();
-      const isPlaceholder = /^(test|demo|sample|placeholder)([-_ ]|$)/.test(name) || /^(test|demo|sample|placeholder)([-_ ]|$)/.test(slug) || name === 'good night sweet' || slug === 'my-sistemas';
-      return !isPlaceholder && name.length > 0 && slug.length > 0;
+      const isKnownLegacyDemo = name.toLowerCase() === 'good night sweet' || slug === 'my-sistemas';
+      return !isKnownLegacyDemo && name.length > 0 && slug.length > 0;
     });
     window.__nyilProducts = products;
     renderProducts(products);

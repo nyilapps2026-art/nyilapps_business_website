@@ -133,3 +133,7 @@ button:disabled{opacity:.6;cursor:not-allowed}
 }
 :root[data-content-direction="rtl"] .hero h1,:root[data-content-direction="rtl"] h2,:root[data-content-direction="rtl"] h3{letter-spacing:0;line-height:1.55}
 :root[data-content-direction="rtl"] .hero-lead,:root[data-content-direction="rtl"] .intro-grid p,:root[data-content-direction="rtl"] .section-heading>p,:root[data-content-direction="rtl"] .technology-copy>p,:root[data-content-direction="rtl"] .contact-copy>p{line-height:2}
+
+/* Official NYIL logo from the supplied Business Website library artwork. */
+.brand-logo{display:block;width:52px;height:38px;object-fit:contain;flex:0 0 auto;border-radius:3px}
+@media(max-width:700px){.brand-logo{width:46px;height:34px}}
