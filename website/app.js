@@ -13,6 +13,7 @@ const TEXT = {
  da:{announcement:'Praktisk teknologi til en forbundet verden',navHome:'Hjem',navAbout:'Om os',navSolutions:'Løsninger',navProducts:'Produkter',navTechnology:'Teknologi',navContact:'Kontakt',heroEyebrow:'UAFHÆNGIG TEKNOLOGIVIRKSOMHED',heroTitle:'Idéer med effekt. Teknologi, der skaber fremskridt.',heroText:'Vi skaber gennemtænkte digitale produkter og pålidelig teknologi, der hjælper mennesker og virksomheder videre.',exploreSolutions:'Udforsk løsninger',discoverNYIL:'Opdag NYIL',heroProof:'Bygget med formål. Designet til mennesker.',heroBottom:'EN BEDRE VEJ FREM',aboutKicker:'HVEM VI ER',aboutTitle:'Vi omsætter ambitiøse idéer til nyttig teknologi.',aboutText:'NYIL er et uafhængigt innovationslaboratorium med fokus på digitale oplevelser, softwareprodukter og forbundne virksomhedssystemer. Vi forener klar tænkning og praktisk teknik for at løse meningsfulde problemer.',workTogether:'Samarbejd med os',valueOneTitle:'Formålet først',valueOneText:'Vi begynder med reelle behov og målbar værdi.',valueTwoTitle:'Bygget til at holde',valueTwoText:'Vi værdsætter sikkerhed, pålidelighed og gennemtænkt design.',valueThreeTitle:'Altid i udvikling',valueThreeText:'Vi bliver ved med at lære, forbedre og se fremad.',solutionsKicker:'DET VI GØR',solutionsTitle:'Teknologi, der virker i den virkelige verden.',solutionsText:'Fra den første idé til systemerne bag bygger vi med klarhed og omhu.',solutionOneTitle:'Digitale produkter',solutionOneText:'Web- og mobilapps skabt omkring mennesker og deres arbejdsgange.',solutionTwoTitle:'Forretningsplatforme',solutionTwoText:'Forbundne værktøjer til drift, handel, administration og bedre beslutninger.',solutionThreeTitle:'Ny teknologi',solutionThreeText:'Praktisk udforskning af automatisering, intelligente tjenester og nye muligheder.',productsKicker:'VORES ARBEJDE',productsTitle:'Produkter med en grund til at eksistere.',productsText:'Udforsk de produkter og initiativer, vi udvikler.',loadingProducts:'Indlæser offentliggjorte produkter…',emptyProducts:'Vores produktkatalog er under forberedelse. Kig snart igen.',productsError:'Produkterne er midlertidigt utilgængelige.',technologyKicker:'SÅDAN BYGGER VI',technologyTitle:'God teknologi skal føles enkel.',technologyText:'Bag enhver enkel oplevelse ligger et system, der er designet med omhu. Vi fokuserer på sikre fundamenter, klar arkitektur, ydeevne og vækst.',techOne:'Sikkerhed i fundamentet',techTwo:'Pålidelige og skalerbare systemer',techThree:'Menneskecentrerede oplevelser',contactKicker:'START EN SAMTALE',contactTitle:'Har du en idé, der betyder noget?',contactText:'Fortæl os, hvad du arbejder på. Vi vil gerne høre fra dig.',formName:'Dit navn',formEmail:'E-mailadresse',formSubject:'Emne',formMessage:'Din besked',sendMessage:'Send besked',sending:'Sender…',sent:'Tak. Vi har modtaget din besked.',sendError:'Din besked kunne ikke sendes. Prøv igen.',footerLine:'Uafhængig tænkning. Nyttig teknologi. Bedre muligheder.',footerContact:'Kontakt',footerAbout:'Om NYIL',footerMade:'Skabt med formål.'}
 };
 let currentLanguage = 'en';
+let cmsOverrides = {};
 const t = key => TEXT[currentLanguage]?.[key] || TEXT.en[key] || key;
 const localized = (value, lang=currentLanguage) => {
   if (typeof value === 'string') return value;
@@ -29,12 +30,33 @@ function applyLanguage(lang) {
   const select = document.getElementById('languageSelect');
   if (select) select.value = currentLanguage;
   try { localStorage.setItem('nyil-language', currentLanguage); } catch {}
+  applyCmsOverrides();
   renderProducts(window.__nyilProducts || []);
 }
 async function getJson(path) {
   const response = await fetch(API_BASE + path, {headers:{Accept:'application/json'}});
   if (!response.ok) throw new Error('Request failed: ' + response.status);
   return response.json();
+}
+function applyCmsOverrides() {
+  const sections = {home:['heroTitle','heroText'],about:['aboutTitle','aboutText'],solutions:['solutionsTitle','solutionsText'],technology:['technologyTitle','technologyText'],footer:['footerLine']};
+  Object.entries(sections).forEach(([key, fields]) => {
+    const copy = cmsOverrides[key]?.[currentLanguage] || cmsOverrides[key]?.en;
+    if (!copy || typeof copy !== 'object') return;
+    const [titleKey, textKey] = fields;
+    if (titleKey && typeof copy.title === 'string' && copy.title.trim()) {
+      const node = document.querySelector('[data-i18n="' + titleKey + '"]');
+      if (node) node.textContent = copy.title;
+    }
+    if (textKey && typeof copy.body === 'string' && copy.body.trim()) {
+      const node = document.querySelector('[data-i18n="' + textKey + '"]');
+      if (node) node.textContent = copy.body;
+    }
+  });
+}
+function safeHttpUrl(value) {
+  try { const url = new URL(String(value || ''), window.location.origin); return ['http:', 'https:'].includes(url.protocol) ? url.href : ''; }
+  catch { return ''; }
 }
 function renderProducts(products) {
   const grid = document.getElementById('productGrid');
@@ -46,8 +68,10 @@ function renderProducts(products) {
   grid.innerHTML = products.map(product => {
     const name = localized(product.name) || product.slug;
     const summary = localized(product.summary);
-    const image = product.image_url ? '<img loading="lazy" src="' + escapeHtml(product.image_url) + '" alt="' + escapeHtml(name) + '">' : '<span class="product-placeholder">N</span>';
-    const link = product.external_url ? '<a class="product-link" href="' + escapeHtml(product.external_url) + '" target="_blank" rel="noopener noreferrer">' + (currentLanguage==='de'?'Mehr erfahren':currentLanguage==='fr'?'En savoir plus':currentLanguage==='es'?'Más información':'Learn more') + ' ↗</a>' : '';
+    const imageUrl = safeHttpUrl(product.image_url);
+    const externalUrl = safeHttpUrl(product.external_url);
+    const image = imageUrl ? '<img loading="lazy" src="' + escapeHtml(imageUrl) + '" alt="' + escapeHtml(name) + '">' : '<span class="product-placeholder">N</span>';
+    const link = externalUrl ? '<a class="product-link" href="' + escapeHtml(externalUrl) + '" target="_blank" rel="noopener noreferrer">' + (currentLanguage==='de'?'Mehr erfahren':currentLanguage==='fr'?'En savoir plus':currentLanguage==='es'?'Más información':'Learn more') + ' ↗</a>' : '';
     return '<article class="product-card"><div class="product-image">' + image + '</div><div class="product-info"><span class="product-category">' + escapeHtml(product.category || 'NYIL') + '</span><h3>' + escapeHtml(name) + '</h3><p>' + escapeHtml(summary) + '</p>' + link + '</div></article>';
   }).join('');
 }
@@ -68,25 +92,14 @@ async function loadProducts() {
 }
 async function loadCmsContent() {
   const keys = ['home','about','solutions','technology','footer'];
-  const sections = {home:['heroTitle','heroText'],about:['aboutTitle','aboutText'],solutions:['solutionsTitle','solutionsText'],technology:['technologyTitle','technologyText'],footer:['footerLine']};
   await Promise.all(keys.map(async key => {
     try {
       const data = await getJson('/content/' + key);
       const content = data.content?.content;
-      if (!content || typeof content !== 'object') return;
-      const copy = content[currentLanguage] || content.en;
-      if (!copy || typeof copy !== 'object') return;
-      const [titleKey,textKey] = sections[key] || [];
-      if (titleKey && typeof copy.title === 'string' && copy.title.trim()) {
-        const node = document.querySelector('[data-i18n="' + titleKey + '"]');
-        if (node) node.textContent = copy.title;
-      }
-      if (textKey && typeof copy.body === 'string' && copy.body.trim()) {
-        const node = document.querySelector('[data-i18n="' + textKey + '"]');
-        if (node) node.textContent = copy.body;
-      }
+      if (content && typeof content === 'object') cmsOverrides[key] = content;
     } catch (error) { console.warn('NYIL CMS page not available:', key, error); }
   }));
+  applyCmsOverrides();
 }
 async function sendInquiry(event) {
   event.preventDefault();
