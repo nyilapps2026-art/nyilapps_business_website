@@ -151,3 +151,13 @@ button:disabled{opacity:.6;cursor:not-allowed}
 #lightboxImage{cursor:zoom-out;outline:none}.detail-main-image img{cursor:zoom-in}
 :root[data-theme="light"] .detail-videos h3{color:#17251d}:root[data-theme="light"] .detail-video-grid video{border-color:#d9e1d8}
 @media(max-width:760px){.detail-videos{padding:0 15px 18px}.detail-video-grid{grid-template-columns:1fr}}
+
+/* NYIL About and direct contact channels */
+.text-link{display:inline-block;margin-top:14px;color:var(--gold);font-size:12px;text-decoration:none;border-bottom:1px solid currentColor;padding-bottom:5px}
+.values-grid article{border-top:1px solid var(--line);padding-top:20px}.values-grid .value-number{color:var(--gold);font:600 10px var(--sans);letter-spacing:.15em}.values-grid h3{color:var(--cream)}
+.contact-channel{display:flex;align-items:center;gap:14px;width:max-content;max-width:100%;margin-top:20px;color:var(--cream);text-decoration:none}
+.contact-channel>svg,.channel-symbol{width:42px;height:42px;display:grid;place-items:center;flex:0 0 auto;padding:10px;border-radius:50%;background:#20b968;color:#fff}
+.contact-channel>svg{display:block;padding:9px}.email-channel .channel-symbol{background:var(--surface2);border:1px solid var(--line);color:var(--gold);font-size:19px}
+.contact-channel span:last-child{display:grid;gap:4px}.contact-channel strong{font-size:12px;font-weight:700}.contact-channel small{font-size:11px;color:var(--muted);direction:ltr;text-align:left}
+.contact-channel:hover strong{color:var(--gold)}.contact-form .honeypot{position:absolute!important;left:-10000px!important;width:1px;height:1px;overflow:hidden}
+@media(max-width:700px){.contact-channel{margin-top:16px}.contact-section{gap:28px}}
