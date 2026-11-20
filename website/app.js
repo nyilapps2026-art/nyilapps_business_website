@@ -89,32 +89,35 @@ const localized = (value, lang=currentLanguage) => {
   return value[lang] || value.en || Object.values(value).find(v => typeof v === 'string' && v.trim()) || '';
 };
 function applyLanguage(lang) {
-  currentLanguage = LANGS.includes(lang) ? lang : 'en';
-  document.documentElement.lang = currentLanguage;
-  document.documentElement.dir = ['ps','fa'].includes(currentLanguage) ? 'rtl' : 'ltr';
+  const nextLanguage = LANGS.includes(lang) ? lang : 'en';
+  currentLanguage = nextLanguage;
+  document.documentElement.setAttribute('lang', nextLanguage);
+  document.documentElement.setAttribute('dir', nextLanguage === 'ps' || nextLanguage === 'fa' ? 'rtl' : 'ltr');
 
-  // Translate each node independently so one malformed value cannot interrupt
-  // the rest of the page or leave the language dialog's backdrop in place.
   document.querySelectorAll('[data-i18n]').forEach(node => {
+    const key = node.getAttribute('data-i18n');
     try {
-      const value = t(node.dataset.i18n);
-      if (value) node.innerHTML = value;
+      const translation = t(key);
+      if (typeof translation === 'string' && translation.length) node.innerHTML = translation;
     } catch (error) {
-      console.error('NYIL translation node:', node.dataset.i18n, error);
+      console.error('NYIL translation failed for:', key, error);
     }
   });
 
-  const select = document.getElementById('languageSelect');
-  if (select) select.value = currentLanguage;
+  const labels = {en:'English',ps:'پښتو',fa:'دری',de:'Deutsch',fr:'Français',es:'Español',it:'Italiano',pt:'Português',nl:'Nederlands',sv:'Svenska',no:'Norsk',da:'Dansk'};
   const langLabel = document.getElementById('languageButtonLabel');
-  if (langLabel) langLabel.textContent = ({en:'English',ps:'پښتو',fa:'دری',de:'Deutsch',fr:'Français',es:'Español',it:'Italiano',pt:'Português',nl:'Nederlands',sv:'Svenska',no:'Norsk',da:'Dansk'})[currentLanguage] || 'English';
-  document.querySelectorAll('[data-language]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.language === currentLanguage)));
-  try { localStorage.setItem('nyil-language', currentLanguage); } catch {}
+  if (langLabel) langLabel.textContent = labels[nextLanguage] || 'English';
+  const select = document.getElementById('languageSelect');
+  if (select) select.value = nextLanguage;
+  document.querySelectorAll('[data-language]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.language === nextLanguage)));
 
-  // CMS and product content are enhancements; failures must never blank the site.
-  try { applyCmsOverrides(); } catch (error) { console.error('NYIL language CMS override:', error); }
+  try { localStorage.setItem('nyil-language', nextLanguage); }
+  catch (error) { console.warn('NYIL could not save language preference:', error); }
+
+  try { applyCmsOverrides(); }
+  catch (error) { console.warn('NYIL CMS language override skipped:', error); }
   try { renderProducts(Array.isArray(window.__nyilProducts) ? window.__nyilProducts : []); }
-  catch (error) { console.error('NYIL language product rendering:', error); }
+  catch (error) { console.error('NYIL product language render failed:', error); }
 }
 async function getJson(path) {
   const response = await fetch(API_BASE + path, {headers:{Accept:'application/json'}});
@@ -165,11 +168,13 @@ async function loadProducts() {
   const grid = document.getElementById('productGrid');
   try {
     const data = await getJson('/products');
+    // Only show products created in Admin Dashboard and explicitly Published.
     const products = (Array.isArray(data.products) ? data.products : []).filter(product => {
+      if (!product || product.status !== 'published') return false;
       const name = localized(product.name, 'en').trim().toLowerCase();
       const slug = String(product.slug || '').trim().toLowerCase();
       const isPlaceholder = /^(test|demo|sample|placeholder)([-_ ]|$)/.test(name) || /^(test|demo|sample|placeholder)([-_ ]|$)/.test(slug) || name === 'good night sweet' || slug === 'my-sistemas';
-      return !isPlaceholder && name.length > 0;
+      return !isPlaceholder && name.length > 0 && slug.length > 0;
     });
     window.__nyilProducts = products;
     renderProducts(products);
@@ -238,25 +243,37 @@ function setupLanguageDialog() {
   const dialog = document.getElementById('languageDialog');
   const open = document.getElementById('languageButton');
   const close = document.getElementById('closeLanguageDialog');
-  if (open && dialog) open.addEventListener('click', () => dialog.showModal());
-  if (close && dialog) close.addEventListener('click', () => dialog.close());
-  if (dialog) {
-    dialog.addEventListener('click', event => { if (event.target === dialog) dialog.close(); });
-    dialog.querySelectorAll('[data-language]').forEach(button => button.addEventListener('click', () => {
+  if (!dialog || !open) return;
+
+  const hideDialog = () => {
+    dialog.hidden = true;
+    open.setAttribute('aria-expanded', 'false');
+    open.focus();
+  };
+  open.setAttribute('aria-expanded', 'false');
+  open.addEventListener('click', () => {
+    dialog.hidden = false;
+    open.setAttribute('aria-expanded', 'true');
+    if (close) close.focus();
+  });
+  if (close) close.addEventListener('click', hideDialog);
+  dialog.addEventListener('click', event => {
+    if (event.target === dialog) hideDialog();
+  });
+  dialog.addEventListener('keydown', event => {
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      hideDialog();
+    }
+  });
+  dialog.querySelectorAll('[data-language]').forEach(button => {
+    button.addEventListener('click', () => {
       const selectedLanguage = button.dataset.language;
-      // Close the native modal first: even if translation code fails, its
-      // backdrop cannot cover the entire website.
-      if (dialog.open) dialog.close();
+      hideDialog();
       try { applyLanguage(selectedLanguage); }
-      catch (error) {
-        console.error('NYIL language switch:', error);
-        document.documentElement.lang = 'en';
-        document.documentElement.dir = 'ltr';
-      } finally {
-        if (dialog.open) dialog.close();
-      }
-    }));
-  }
+      catch (error) { console.error('NYIL language switch failed:', selectedLanguage, error); }
+    });
+  });
 }
 function setupAppearance() {
   let theme = 'dark';
