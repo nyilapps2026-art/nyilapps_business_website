@@ -6,6 +6,11 @@ on:
     paths:
       - "admin/**"
       - ".github/workflows/build-admin.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "admin/**"
+      - ".github/workflows/build-admin.yml"
 
 jobs:
   build-and-deploy:
@@ -29,6 +34,7 @@ jobs:
       - name: Verify production output
         run: test -s dist/index.html
       - name: Deploy Admin to Cloudflare Pages
+        if: github.event_name != 'pull_request'
         run: npx wrangler@latest pages deploy dist --project-name=nyil-admin --branch=main
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.ADMIN_TOKEN }}
