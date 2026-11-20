@@ -34,7 +34,8 @@
     </div>
   </header>
 
-  <dialog class="language-dialog" id="languageDialog" aria-labelledby="languageTitle">
+  <div class="language-dialog" id="languageDialog" role="dialog" aria-modal="true" aria-labelledby="languageTitle" hidden>
+    <div class="language-dialog-panel">
     <div class="dialog-head"><div><span class="dialog-kicker" data-i18n="languageKicker">YOUR EXPERIENCE</span><h2 id="languageTitle" data-i18n="languageTitle">Choose your language</h2></div><button class="dialog-close" id="closeLanguageDialog" type="button" aria-label="Close">×</button></div>
     <p class="dialog-description" data-i18n="languageDescription">Select the language you want to browse NYIL in.</p>
     <div class="language-options" id="languageOptions">
@@ -52,7 +53,8 @@
       <button type="button" data-language="da"><span class="language-native">Dansk</span><span class="language-english">Danish</span><span class="language-check">✓</span></button>
     </div>
     <div class="dialog-foot"><span data-i18n="languageNote">Your choice is saved on this device.</span></div>
-  </dialog>
+      </div>
+  </div>
 
   <main id="main-content">
     <section class="hero section-wrap" id="home">
