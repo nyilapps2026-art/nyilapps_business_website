@@ -24,6 +24,8 @@ jobs:
         run: npm install --no-audit --no-fund
       - name: Build Admin
         run: npm run build
+        env:
+          VITE_CMS_API_URL: https://br-icy-breeze-bdbz7vs8-nyilcms.compute.c-8.us-east-2.aws.neon.tech
       - name: Verify production output
         run: test -s dist/index.html
       - name: Deploy Admin to Cloudflare Pages
