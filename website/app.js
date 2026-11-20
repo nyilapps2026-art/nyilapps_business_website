@@ -223,6 +223,8 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('year').textContent = new Date().getFullYear();
   setupAppearance();
   setupLanguageDialog();
+  const contactForm = document.getElementById('contactForm');
+  if (contactForm) contactForm.addEventListener('submit', sendInquiry);
   let saved = 'en';
   try { const stored = localStorage.getItem('nyil-language'); if (LANGS.includes(stored)) saved = stored; } catch {}
   applyLanguage(saved);
