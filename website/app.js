@@ -22,13 +22,17 @@ const localized = (value, lang=currentLanguage) => {
 };
 function applyLanguage(lang) {
   currentLanguage = LANGS.includes(lang) ? lang : 'en';
-  document.documentElement.lang = currentLanguage;\n  document.documentElement.dir = ['ps','fa'].includes(currentLanguage) ? 'rtl' : 'ltr';
+  document.documentElement.lang = currentLanguage;
+  document.documentElement.dir = ['ps','fa'].includes(currentLanguage) ? 'rtl' : 'ltr';
   document.querySelectorAll('[data-i18n]').forEach(node => {
     const value = t(node.dataset.i18n);
     if (value) node.textContent = value;
   });
   const select = document.getElementById('languageSelect');
-  if (select) select.value = currentLanguage;\n  const langLabel = document.getElementById('languageButtonLabel');\n  if (langLabel) langLabel.textContent = ({en:'English',ps:'پښتو',fa:'دری',de:'Deutsch',fr:'Français',es:'Español',it:'Italiano',pt:'Português',nl:'Nederlands',sv:'Svenska',no:'Norsk',da:'Dansk'})[currentLanguage] || 'English';\n  document.querySelectorAll('[data-language]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.language === currentLanguage)));
+  if (select) select.value = currentLanguage;
+  const langLabel = document.getElementById('languageButtonLabel');
+  if (langLabel) langLabel.textContent = ({en:'English',ps:'پښتو',fa:'دری',de:'Deutsch',fr:'Français',es:'Español',it:'Italiano',pt:'Português',nl:'Nederlands',sv:'Svenska',no:'Norsk',da:'Dansk'})[currentLanguage] || 'English';
+  document.querySelectorAll('[data-language]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.language === currentLanguage)));
   try { localStorage.setItem('nyil-language', currentLanguage); } catch {}
   applyCmsOverrides();
   renderProducts(window.__nyilProducts || []);
@@ -82,7 +86,12 @@ async function loadProducts() {
   const grid = document.getElementById('productGrid');
   try {
     const data = await getJson('/products');
-    const products = (Array.isArray(data.products) ? data.products : []).filter(product => {\n      const name = localized(product.name, 'en').trim().toLowerCase();\n      const slug = String(product.slug || '').trim().toLowerCase();\n      const isPlaceholder = /^(test|demo|sample|placeholder)([-_ ]|$)/.test(name) || /^(test|demo|sample|placeholder)([-_ ]|$)/.test(slug) || name === 'good night sweet' || slug === 'my-sistemas';\n      return !isPlaceholder && name.length > 0;\n    });
+    const products = (Array.isArray(data.products) ? data.products : []).filter(product => {
+      const name = localized(product.name, 'en').trim().toLowerCase();
+      const slug = String(product.slug || '').trim().toLowerCase();
+      const isPlaceholder = /^(test|demo|sample|placeholder)([-_ ]|$)/.test(name) || /^(test|demo|sample|placeholder)([-_ ]|$)/.test(slug) || name === 'good night sweet' || slug === 'my-sistemas';
+      return !isPlaceholder && name.length > 0;
+    });
     window.__nyilProducts = products;
     renderProducts(products);
   } catch (error) {
@@ -126,7 +135,9 @@ async function sendInquiry(event) {
   }
 }
 document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('year').textContent = new Date().getFullYear();\n  setupAppearance();\n  setupLanguageDialog();
+  document.getElementById('year').textContent = new Date().getFullYear();
+  setupAppearance();
+  setupLanguageDialog();
   let saved = 'en';
   try { const stored = localStorage.getItem('nyil-language'); if (LANGS.includes(stored)) saved = stored; } catch {}
   applyLanguage(saved);
