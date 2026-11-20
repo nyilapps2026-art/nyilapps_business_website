@@ -10,6 +10,7 @@ const jwks = createRemoteJWKSet(new URL(process.env.NEON_AUTH_JWKS_URL))
 const storage = new S3Client({ forcePathStyle: true })
 const MEDIA_BUCKET = 'nyil-public-product-media'
 const MAX_IMAGE_BYTES = 8 * 1024 * 1024
+const MAX_VIDEO_BYTES = 100 * 1024 * 1024
 
 function response(data, status = 200, origin = '') {
   return new Response(status === 204 ? null : JSON.stringify(data), { status, headers: {
@@ -46,7 +47,7 @@ export default {
         return response({content:row || null}, 200, origin)
       }
       if (request.method === 'GET' && url.pathname === '/products') {
-        const rows = await sql`SELECT id, slug, name, category, summary, description, image_url, image_urls, external_url, status, sort_order, updated_at FROM public.products WHERE status = 'published' ORDER BY sort_order ASC, updated_at DESC`
+        const rows = await sql`SELECT id, slug, name, category, summary, description, image_url, image_urls, video_urls, external_url, status, sort_order, updated_at FROM public.products WHERE status = 'published' ORDER BY sort_order ASC, updated_at DESC`
         return response({products:rows}, 200, origin)
       }
       if (request.method === 'POST' && url.pathname === '/inquiries') {
@@ -84,20 +85,31 @@ export default {
         }
         if (request.method === 'POST' && url.pathname === '/admin/uploads') {
           const contentType = (request.headers.get('content-type') || '').toLowerCase().split(';')[0].trim()
-          const allowedTypes = new Set(['image/jpeg','image/png','image/webp','image/avif'])
-          if (!allowedTypes.has(contentType)) return response({error:'Only JPEG, PNG, WebP, and AVIF images are allowed.'},415,origin)
+          const imageTypes = new Set(['image/jpeg','image/png','image/webp','image/avif'])
+          const videoTypes = new Set(['video/mp4','video/webm','video/quicktime'])
+          const isVideo = videoTypes.has(contentType)
+          if (!imageTypes.has(contentType) && !isVideo) return response({error:'Upload a supported image or video file.'},415,origin)
+          const maxBytes = isVideo ? MAX_VIDEO_BYTES : MAX_IMAGE_BYTES
+          const label = isVideo ? 'Video' : 'Image'
           const declaredLength = Number(request.headers.get('content-length') || 0)
-          if (declaredLength > MAX_IMAGE_BYTES) return response({error:'Image must be 8 MB or smaller.'},413,origin)
+          if (declaredLength > maxBytes) return response({error:`${label} must be ${isVideo?'100 MB':'8 MB'} or smaller.`},413,origin)
           const bytes = new Uint8Array(await request.arrayBuffer())
-          if (!bytes.length || bytes.length > MAX_IMAGE_BYTES) return response({error:'Image must be between 1 byte and 8 MB.'},413,origin)
-          const isJpeg = bytes[0] === 0xff && bytes[1] === 0xd8 && bytes[2] === 0xff
-          const isPng = bytes[0] === 0x89 && bytes[1] === 0x50 && bytes[2] === 0x4e && bytes[3] === 0x47
-          const isWebp = String.fromCharCode(...bytes.slice(0,4)) === 'RIFF' && String.fromCharCode(...bytes.slice(8,12)) === 'WEBP'
-          const isAvif = String.fromCharCode(...bytes.slice(4,12)).includes('ftypavif') || String.fromCharCode(...bytes.slice(4,16)).includes('ftypavis')
-          if (!(contentType === 'image/jpeg' && isJpeg) && !(contentType === 'image/png' && isPng) && !(contentType === 'image/webp' && isWebp) && !(contentType === 'image/avif' && isAvif)) {
-            return response({error:'The uploaded file content does not match its image type.'},415,origin)
+          if (!bytes.length || bytes.length > maxBytes) return response({error:`${label} file size is invalid or exceeds the limit.`},413,origin)
+          let extension
+          if (isVideo) {
+            const isMp4 = contentType === 'video/mp4' && bytes.length > 12 && String.fromCharCode(...bytes.slice(4,8)) === 'ftyp'
+            const isWebm = contentType === 'video/webm' && bytes[0] === 0x1a && bytes[1] === 0x45 && bytes[2] === 0xdf && bytes[3] === 0xa3
+            const isMov = contentType === 'video/quicktime' && bytes.length > 12 && String.fromCharCode(...bytes.slice(4,8)) === 'ftyp'
+            if (!isMp4 && !isWebm && !isMov) return response({error:'The uploaded file content does not match its video type.'},415,origin)
+            extension = ({'video/mp4':'mp4','video/webm':'webm','video/quicktime':'mov'})[contentType]
+          } else {
+            const isJpeg = bytes[0] === 0xff && bytes[1] === 0xd8 && bytes[2] === 0xff
+            const isPng = bytes[0] === 0x89 && bytes[1] === 0x50 && bytes[2] === 0x4e && bytes[3] === 0x47
+            const isWebp = String.fromCharCode(...bytes.slice(0,4)) === 'RIFF' && String.fromCharCode(...bytes.slice(8,12)) === 'WEBP'
+            const isAvif = String.fromCharCode(...bytes.slice(4,12)).includes('ftypavif') || String.fromCharCode(...bytes.slice(4,16)).includes('ftypavis')
+            if (!(contentType === 'image/jpeg' && isJpeg) && !(contentType === 'image/png' && isPng) && !(contentType === 'image/webp' && isWebp) && !(contentType === 'image/avif' && isAvif)) return response({error:'The uploaded file content does not match its image type.'},415,origin)
+            extension = ({'image/jpeg':'jpg','image/png':'png','image/webp':'webp','image/avif':'avif'})[contentType]
           }
-          const extension = ({'image/jpeg':'jpg','image/png':'png','image/webp':'webp','image/avif':'avif'})[contentType]
           const key = `products/${new Date().toISOString().slice(0,10)}/${crypto.randomUUID()}.${extension}`
           await storage.send(new PutObjectCommand({Bucket:MEDIA_BUCKET,Key:key,Body:bytes,ContentType:contentType,CacheControl:'public, max-age=31536000, immutable'}))
           const endpoint = (process.env.AWS_ENDPOINT_URL_S3 || '').replace(/\/$/,'')
@@ -126,8 +138,9 @@ export default {
           const slug = safeText(body.slug, 90)
           if (!validSlug(slug)) return response({error:'Invalid product slug'}, 400, origin)
           const status = ['draft','published'].includes(body.status) ? body.status : 'draft'
+          const videoUrls = Array.isArray(body.video_urls) ? body.video_urls.filter(value => typeof value === 'string' && (value.startsWith('https://') || value.startsWith('http://'))).slice(0,8) : []
           const imageUrls = Array.isArray(body.image_urls) ? body.image_urls.filter(value => typeof value === 'string' && (value.startsWith('https://') || value.startsWith('http://'))).slice(0,12) : []
-          const [row] = await sql`INSERT INTO public.products (id, slug, name, category, summary, description, image_url, image_urls, external_url, status, published_at) VALUES (${crypto.randomUUID()}, ${slug}, ${JSON.stringify(jsonObject(body.name))}::jsonb, ${safeText(body.category,100) || 'General'}, ${JSON.stringify(jsonObject(body.summary))}::jsonb, ${JSON.stringify(jsonObject(body.description))}::jsonb, ${safeText(body.image_url,2000) || null}, ${JSON.stringify(imageUrls)}::jsonb, ${safeText(body.external_url,2000) || null}, ${status}, CASE WHEN ${status}='published' THEN now() ELSE NULL END) RETURNING *`
+          const [row] = await sql`INSERT INTO public.products (id, slug, name, category, summary, description, image_url, image_urls, video_urls, external_url, status, published_at) VALUES (${crypto.randomUUID()}, ${slug}, ${JSON.stringify(jsonObject(body.name))}::jsonb, ${safeText(body.category,100) || 'General'}, ${JSON.stringify(jsonObject(body.summary))}::jsonb, ${JSON.stringify(jsonObject(body.description))}::jsonb, ${safeText(body.image_url,2000) || null}, ${JSON.stringify(imageUrls)}::jsonb, ${JSON.stringify(videoUrls)}::jsonb, ${safeText(body.external_url,2000) || null}, ${status}, CASE WHEN ${status}='published' THEN now() ELSE NULL END) RETURNING *`
           await sql`INSERT INTO public.admin_audit_log (admin_email, action, product_id) VALUES (${email}, 'product.create', ${row.id})`
           return response({product:row}, 201, origin)
         }
@@ -139,8 +152,9 @@ export default {
             const slug = safeText(body.slug, 90)
             if (!validSlug(slug)) return response({error:'Invalid product slug'}, 400, origin)
             const status = ['draft','published'].includes(body.status) ? body.status : 'draft'
-            const imageUrls = Array.isArray(body.image_urls) ? body.image_urls.filter(value => typeof value === 'string' && (value.startsWith('https://') || value.startsWith('http://'))).slice(0,12) : []
-            const [row] = await sql`UPDATE public.products SET slug=${slug}, name=${JSON.stringify(jsonObject(body.name))}::jsonb, category=${safeText(body.category,100)||'General'}, summary=${JSON.stringify(jsonObject(body.summary))}::jsonb, description=${JSON.stringify(jsonObject(body.description))}::jsonb, image_url=${safeText(body.image_url,2000)||null}, image_urls=${JSON.stringify(imageUrls)}::jsonb, external_url=${safeText(body.external_url,2000)||null}, status=${status}, published_at=CASE WHEN ${status}='published' THEN COALESCE(published_at,now()) ELSE NULL END, updated_at=now() WHERE id=${id} RETURNING *`
+            const videoUrls = Array.isArray(body.video_urls) ? body.video_urls.filter(value => typeof value === 'string' && (value.startsWith('https://') || value.startsWith('http://'))).slice(0,8) : []
+          const imageUrls = Array.isArray(body.image_urls) ? body.image_urls.filter(value => typeof value === 'string' && (value.startsWith('https://') || value.startsWith('http://'))).slice(0,12) : []
+            const [row] = await sql`UPDATE public.products SET slug=${slug}, name=${JSON.stringify(jsonObject(body.name))}::jsonb, category=${safeText(body.category,100)||'General'}, summary=${JSON.stringify(jsonObject(body.summary))}::jsonb, description=${JSON.stringify(jsonObject(body.description))}::jsonb, image_url=${safeText(body.image_url,2000)||null}, image_urls=${JSON.stringify(imageUrls)}::jsonb, video_urls=${JSON.stringify(videoUrls)}::jsonb, external_url=${safeText(body.external_url,2000)||null}, status=${status}, published_at=CASE WHEN ${status}='published' THEN COALESCE(published_at,now()) ELSE NULL END, updated_at=now() WHERE id=${id} RETURNING *`
             if (!row) return response({error:'Product not found'},404,origin)
             await sql`INSERT INTO public.admin_audit_log (admin_email, action, product_id) VALUES (${email}, 'product.update', ${id})`
             return response({product:row},200,origin)
