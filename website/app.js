@@ -92,18 +92,29 @@ function applyLanguage(lang) {
   currentLanguage = LANGS.includes(lang) ? lang : 'en';
   document.documentElement.lang = currentLanguage;
   document.documentElement.dir = ['ps','fa'].includes(currentLanguage) ? 'rtl' : 'ltr';
+
+  // Translate each node independently so one malformed value cannot interrupt
+  // the rest of the page or leave the language dialog's backdrop in place.
   document.querySelectorAll('[data-i18n]').forEach(node => {
-    const value = t(node.dataset.i18n);
-    if (value) node.innerHTML = value;
+    try {
+      const value = t(node.dataset.i18n);
+      if (value) node.innerHTML = value;
+    } catch (error) {
+      console.error('NYIL translation node:', node.dataset.i18n, error);
+    }
   });
+
   const select = document.getElementById('languageSelect');
   if (select) select.value = currentLanguage;
   const langLabel = document.getElementById('languageButtonLabel');
   if (langLabel) langLabel.textContent = ({en:'English',ps:'پښتو',fa:'دری',de:'Deutsch',fr:'Français',es:'Español',it:'Italiano',pt:'Português',nl:'Nederlands',sv:'Svenska',no:'Norsk',da:'Dansk'})[currentLanguage] || 'English';
   document.querySelectorAll('[data-language]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.language === currentLanguage)));
   try { localStorage.setItem('nyil-language', currentLanguage); } catch {}
-  applyCmsOverrides();
-  renderProducts(window.__nyilProducts || []);
+
+  // CMS and product content are enhancements; failures must never blank the site.
+  try { applyCmsOverrides(); } catch (error) { console.error('NYIL language CMS override:', error); }
+  try { renderProducts(Array.isArray(window.__nyilProducts) ? window.__nyilProducts : []); }
+  catch (error) { console.error('NYIL language product rendering:', error); }
 }
 async function getJson(path) {
   const response = await fetch(API_BASE + path, {headers:{Accept:'application/json'}});
@@ -232,8 +243,18 @@ function setupLanguageDialog() {
   if (dialog) {
     dialog.addEventListener('click', event => { if (event.target === dialog) dialog.close(); });
     dialog.querySelectorAll('[data-language]').forEach(button => button.addEventListener('click', () => {
-      applyLanguage(button.dataset.language);
-      dialog.close();
+      const selectedLanguage = button.dataset.language;
+      // Close the native modal first: even if translation code fails, its
+      // backdrop cannot cover the entire website.
+      if (dialog.open) dialog.close();
+      try { applyLanguage(selectedLanguage); }
+      catch (error) {
+        console.error('NYIL language switch:', error);
+        document.documentElement.lang = 'en';
+        document.documentElement.dir = 'ltr';
+      } finally {
+        if (dialog.open) dialog.close();
+      }
     }));
   }
 }
