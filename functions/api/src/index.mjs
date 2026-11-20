@@ -12,7 +12,7 @@ const MEDIA_BUCKET = 'nyil-public-product-media'
 const MAX_IMAGE_BYTES = 8 * 1024 * 1024
 
 function response(data, status = 200, origin = '') {
-  return new Response(JSON.stringify(data), { status, headers: {
+  return new Response(status === 204 ? null : JSON.stringify(data), { status, headers: {
     'Content-Type':'application/json; charset=utf-8',
     'Access-Control-Allow-Origin': ALLOWED_ORIGINS.has(origin) ? origin : 'https://nyil-business-website.pages.dev',
     'Access-Control-Allow-Headers':'Authorization, Content-Type',
