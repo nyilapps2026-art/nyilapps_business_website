@@ -1,5 +1,5 @@
 const API_BASE = 'https://br-icy-breeze-bdbz7vs8-nyilcms.compute.c-8.us-east-2.aws.neon.tech';
-const LANGS = ['en','de','fr','es','it','pt','nl','sv','no','da'];
+const LANGS = ['en','ps','fa','de','fr','es','it','pt','nl','sv','no','da'];
 const TEXT = {
  en:{announcement:'Building practical technology for a connected world',navHome:'Home',navAbout:'About',navSolutions:'Solutions',navProducts:'Products',navTechnology:'Technology',navContact:"Let's talk",heroEyebrow:'INDEPENDENT TECHNOLOGY COMPANY',heroTitle:'Ideas into impact. Technology into progress.',heroText:'We create thoughtful digital products and dependable technology that help people and businesses move forward.',exploreSolutions:'Explore our solutions',discoverNYIL:'Discover NYIL',heroProof:'Built with purpose. Designed for people.',heroBottom:'A BETTER WAY FORWARD',aboutKicker:'WHO WE ARE',aboutTitle:'We turn ambitious ideas into useful technology.',aboutText:'NYIL is an independent invention lab focused on building digital experiences, software products and connected business systems. We bring clear thinking and practical engineering together to solve meaningful problems.',workTogether:'Work with us',valueOneTitle:'Purpose first',valueOneText:'We start with real needs and measurable value.',valueTwoTitle:'Built to last',valueTwoText:'We value security, reliability and thoughtful design.',valueThreeTitle:'Always evolving',valueThreeText:'We keep learning, improving and looking ahead.',solutionsKicker:'WHAT WE DO',solutionsTitle:'Technology that works in the real world.',solutionsText:'From the first idea to the systems that support it, we build with clarity and care.',solutionOneTitle:'Digital products',solutionOneText:'Purpose-built web and mobile applications shaped around people and their workflows.',solutionTwoTitle:'Business platforms',solutionTwoText:'Connected tools for operations, commerce, administration and better decisions.',solutionThreeTitle:'Emerging technology',solutionThreeText:'Practical exploration of automation, intelligent services and new possibilities.',productsKicker:'OUR WORK',productsTitle:'Products with a reason to exist.',productsText:'Explore the products and initiatives we are bringing to life.',loadingProducts:'Loading published products…',emptyProducts:'Our product catalogue is being prepared. Please check back soon.',productsError:'Products are temporarily unavailable. Please try again later.',technologyKicker:'HOW WE BUILD',technologyTitle:'Good technology should feel effortless.',technologyText:'Behind every simple experience is a system designed with care. We focus on secure foundations, clear architecture, performance and room to grow.',techOne:'Security-minded foundations',techTwo:'Reliable, scalable systems',techThree:'Human-centred experiences',contactKicker:'START A CONVERSATION',contactTitle:'Have a meaningful idea in mind?',contactText:'Tell us what you are working on. We would be glad to hear from you.',formName:'Your name',formEmail:'Email address',formSubject:'Subject',formMessage:'Your message',sendMessage:'Send message',sending:'Sending…',sent:'Thank you. Your message has been received.',sendError:'We could not send your message. Please try again or email us directly.',footerLine:'Independent thinking. Useful technology. Better possibilities.',footerContact:'Contact',footerAbout:'About NYIL',footerMade:'Made with purpose.'},
  de:{announcement:'Wir entwickeln praktische Technologie für eine vernetzte Welt',navHome:'Start',navAbout:'Über uns',navSolutions:'Lösungen',navProducts:'Produkte',navTechnology:'Technologie',navContact:'Kontakt',heroEyebrow:'UNABHÄNGIGES TECHNOLOGIEUNTERNEHMEN',heroTitle:'Ideen schaffen Wirkung. Technologie bringt Fortschritt.',heroText:'Wir entwickeln durchdachte digitale Produkte und zuverlässige Technologie, die Menschen und Unternehmen voranbringen.',exploreSolutions:'Unsere Lösungen',discoverNYIL:'NYIL entdecken',heroProof:'Mit Sinn entwickelt. Für Menschen gestaltet.',heroBottom:'EIN BESSERER WEG NACH VORN',aboutKicker:'WER WIR SIND',aboutTitle:'Wir verwandeln ambitionierte Ideen in nützliche Technologie.',aboutText:'NYIL ist ein unabhängiges Innovationslabor für digitale Erlebnisse, Softwareprodukte und vernetzte Geschäftssysteme. Wir verbinden klares Denken mit praktischer Entwicklung, um relevante Probleme zu lösen.',workTogether:'Mit uns arbeiten',valueOneTitle:'Der Zweck zuerst',valueOneText:'Wir beginnen mit echten Bedürfnissen und messbarem Nutzen.',valueTwoTitle:'Für die Zukunft gebaut',valueTwoText:'Sicherheit, Zuverlässigkeit und durchdachtes Design sind uns wichtig.',valueThreeTitle:'Ständige Entwicklung',valueThreeText:'Wir lernen weiter, verbessern uns und blicken nach vorn.',solutionsKicker:'WAS WIR TUN',solutionsTitle:'Technologie, die im echten Leben funktioniert.',solutionsText:'Von der ersten Idee bis zu den unterstützenden Systemen entwickeln wir klar und sorgfältig.',solutionOneTitle:'Digitale Produkte',solutionOneText:'Web- und Mobilanwendungen, die auf Menschen und ihre Arbeitsabläufe zugeschnitten sind.',solutionTwoTitle:'Geschäftsplattformen',solutionTwoText:'Vernetzte Werkzeuge für Betrieb, Handel, Verwaltung und bessere Entscheidungen.',solutionThreeTitle:'Neue Technologien',solutionThreeText:'Praktische Erforschung von Automatisierung, intelligenten Diensten und neuen Möglichkeiten.',productsKicker:'UNSERE ARBEIT',productsTitle:'Produkte mit einem echten Zweck.',productsText:'Entdecken Sie unsere Produkte und Initiativen.',loadingProducts:'Veröffentlichte Produkte werden geladen…',emptyProducts:'Unser Produktkatalog wird vorbereitet. Bitte schauen Sie bald wieder vorbei.',productsError:'Produkte sind vorübergehend nicht verfügbar.',technologyKicker:'WIE WIR ENTWICKELN',technologyTitle:'Gute Technologie sollte mühelos wirken.',technologyText:'Hinter jedem einfachen Erlebnis steht ein sorgfältig gestaltetes System. Wir konzentrieren uns auf Sicherheit, klare Architektur, Leistung und Wachstum.',techOne:'Sicherheitsorientierte Grundlagen',techTwo:'Zuverlässige, skalierbare Systeme',techThree:'Menschenorientierte Erlebnisse',contactKicker:'INS GESPRÄCH KOMMEN',contactTitle:'Haben Sie eine Idee mit Bedeutung?',contactText:'Erzählen Sie uns, woran Sie arbeiten. Wir freuen uns auf Ihre Nachricht.',formName:'Ihr Name',formEmail:'E-Mail-Adresse',formSubject:'Betreff',formMessage:'Ihre Nachricht',sendMessage:'Nachricht senden',sending:'Wird gesendet…',sent:'Vielen Dank. Ihre Nachricht ist eingegangen.',sendError:'Ihre Nachricht konnte nicht gesendet werden. Bitte versuchen Sie es erneut.',footerLine:'Unabhängiges Denken. Nützliche Technologie. Bessere Möglichkeiten.',footerContact:'Kontakt',footerAbout:'Über NYIL',footerMade:'Mit Sinn entwickelt.'},
@@ -22,13 +22,13 @@ const localized = (value, lang=currentLanguage) => {
 };
 function applyLanguage(lang) {
   currentLanguage = LANGS.includes(lang) ? lang : 'en';
-  document.documentElement.lang = currentLanguage;
+  document.documentElement.lang = currentLanguage;\n  document.documentElement.dir = ['ps','fa'].includes(currentLanguage) ? 'rtl' : 'ltr';
   document.querySelectorAll('[data-i18n]').forEach(node => {
     const value = t(node.dataset.i18n);
     if (value) node.textContent = value;
   });
   const select = document.getElementById('languageSelect');
-  if (select) select.value = currentLanguage;
+  if (select) select.value = currentLanguage;\n  const langLabel = document.getElementById('languageButtonLabel');\n  if (langLabel) langLabel.textContent = ({en:'English',ps:'پښتو',fa:'دری',de:'Deutsch',fr:'Français',es:'Español',it:'Italiano',pt:'Português',nl:'Nederlands',sv:'Svenska',no:'Norsk',da:'Dansk'})[currentLanguage] || 'English';\n  document.querySelectorAll('[data-language]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.language === currentLanguage)));
   try { localStorage.setItem('nyil-language', currentLanguage); } catch {}
   applyCmsOverrides();
   renderProducts(window.__nyilProducts || []);
@@ -82,7 +82,7 @@ async function loadProducts() {
   const grid = document.getElementById('productGrid');
   try {
     const data = await getJson('/products');
-    const products = Array.isArray(data.products) ? data.products : [];
+    const products = (Array.isArray(data.products) ? data.products : []).filter(product => {\n      const name = localized(product.name, 'en').trim().toLowerCase();\n      const slug = String(product.slug || '').trim().toLowerCase();\n      const isPlaceholder = /^(test|demo|sample|placeholder)([-_ ]|$)/.test(name) || /^(test|demo|sample|placeholder)([-_ ]|$)/.test(slug) || name === 'good night sweet' || slug === 'my-sistemas';\n      return !isPlaceholder && name.length > 0;\n    });
     window.__nyilProducts = products;
     renderProducts(products);
   } catch (error) {
@@ -126,7 +126,7 @@ async function sendInquiry(event) {
   }
 }
 document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('year').textContent = new Date().getFullYear();
+  document.getElementById('year').textContent = new Date().getFullYear();\n  setupAppearance();\n  setupLanguageDialog();
   let saved = 'en';
   try { const stored = localStorage.getItem('nyil-language'); if (LANGS.includes(stored)) saved = stored; } catch {}
   applyLanguage(saved);
@@ -143,3 +143,39 @@ document.addEventListener('DOMContentLoaded', () => {
   void loadProducts();
   void loadCmsContent();
 });
+function setupLanguageDialog() {
+  const dialog = document.getElementById('languageDialog');
+  const open = document.getElementById('languageButton');
+  const close = document.getElementById('closeLanguageDialog');
+  if (open && dialog) open.addEventListener('click', () => dialog.showModal());
+  if (close && dialog) close.addEventListener('click', () => dialog.close());
+  if (dialog) {
+    dialog.addEventListener('click', event => { if (event.target === dialog) dialog.close(); });
+    dialog.querySelectorAll('[data-language]').forEach(button => button.addEventListener('click', () => {
+      applyLanguage(button.dataset.language);
+      dialog.close();
+    }));
+  }
+}
+function setupAppearance() {
+  let theme = 'dark';
+  try {
+    const saved = localStorage.getItem('nyil-theme');
+    if (saved === 'light' || saved === 'dark') theme = saved;
+    else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) theme = 'light';
+  } catch {}
+  applyTheme(theme);
+  const button = document.getElementById('themeToggle');
+  if (button) button.addEventListener('click', () => applyTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'));
+}
+function applyTheme(theme) {
+  const next = theme === 'light' ? 'light' : 'dark';
+  document.documentElement.dataset.theme = next;
+  const button = document.getElementById('themeToggle');
+  const icon = document.getElementById('themeIcon');
+  if (icon) icon.textContent = next === 'dark' ? '☼' : '☾';
+  if (button) button.setAttribute('aria-label', next === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.content = next === 'dark' ? '#071c16' : '#f5f7f3';
+  try { localStorage.setItem('nyil-theme', next); } catch {}
+}
