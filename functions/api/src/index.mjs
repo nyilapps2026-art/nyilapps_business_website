@@ -26,7 +26,7 @@ async function admin(request) {
   const header = request.headers.get('authorization') || ''
   if (!header.startsWith('Bearer ')) return null
   try {
-    const { payload } = await jwtVerify(header.slice(7), jwks, { issuer: process.env.NEON_AUTH_BASE_URL })
+    const { payload } = await jwtVerify(header.slice(7), jwks, { issuer: new URL(process.env.NEON_AUTH_BASE_URL).origin })
     const subject = typeof payload.sub === 'string' ? payload.sub : ''
     return subject === ADMIN_USER_ID ? ADMIN_EMAIL : null
   } catch { return null }
