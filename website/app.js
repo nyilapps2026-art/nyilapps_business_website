@@ -12,6 +12,74 @@ const TEXT = {
  no:{announcement:'Praktisk teknologi for en tilkoblet verden',navHome:'Hjem',navAbout:'Om oss',navSolutions:'Løsninger',navProducts:'Produkter',navTechnology:'Teknologi',navContact:'Kontakt',heroEyebrow:'UAVHENGIG TEKNOLOGISELSKAP',heroTitle:'Ideer med effekt. Teknologi som driver fremgang.',heroText:'Vi skaper gjennomtenkte digitale produkter og pålitelig teknologi som hjelper mennesker og bedrifter videre.',exploreSolutions:'Utforsk løsningene',discoverNYIL:'Oppdag NYIL',heroProof:'Bygget med mening. Utformet for mennesker.',heroBottom:'EN BEDRE VEI VIDERE',aboutKicker:'HVEM VI ER',aboutTitle:'Vi gjør ambisiøse ideer om til nyttig teknologi.',aboutText:'NYIL er et uavhengig innovasjonslaboratorium med fokus på digitale opplevelser, programvareprodukter og sammenkoblede forretningssystemer. Vi kombinerer klar tenkning og praktisk utvikling for å løse viktige problemer.',workTogether:'Samarbeid med oss',valueOneTitle:'Formålet først',valueOneText:'Vi starter med reelle behov og målbar verdi.',valueTwoTitle:'Bygget for å vare',valueTwoText:'Vi verdsetter sikkerhet, pålitelighet og gjennomtenkt design.',valueThreeTitle:'Alltid i utvikling',valueThreeText:'Vi fortsetter å lære, forbedre oss og se fremover.',solutionsKicker:'HVA VI GJØR',solutionsTitle:'Teknologi som fungerer i den virkelige verden.',solutionsText:'Fra den første ideen til systemene som støtter den, bygger vi med tydelighet og omtanke.',solutionOneTitle:'Digitale produkter',solutionOneText:'Web- og mobilapper formet rundt mennesker og arbeidsflyten deres.',solutionTwoTitle:'Forretningsplattformer',solutionTwoText:'Sammenkoblede verktøy for drift, handel, administrasjon og bedre beslutninger.',solutionThreeTitle:'Fremvoksende teknologi',solutionThreeText:'Praktisk utforsking av automatisering, intelligente tjenester og nye muligheter.',productsKicker:'ARBEIDET VÅRT',productsTitle:'Produkter med en grunn til å finnes.',productsText:'Utforsk produktene og initiativene vi utvikler.',loadingProducts:'Laster publiserte produkter…',emptyProducts:'Produktkatalogen klargjøres. Kom snart tilbake.',productsError:'Produktene er midlertidig utilgjengelige.',technologyKicker:'SLIK BYGGER VI',technologyTitle:'God teknologi skal føles enkel.',technologyText:'Bak hver enkel opplevelse ligger et system utformet med omtanke. Vi fokuserer på sikre fundamenter, tydelig arkitektur, ytelse og vekst.',techOne:'Sikkerhet i grunnlaget',techTwo:'Pålitelige og skalerbare systemer',techThree:'Menneskesentrerte opplevelser',contactKicker:'START EN SAMTALE',contactTitle:'Har du en idé som betyr noe?',contactText:'Fortell oss hva du jobber med. Vi vil gjerne høre fra deg.',formName:'Ditt navn',formEmail:'E-postadresse',formSubject:'Emne',formMessage:'Din melding',sendMessage:'Send melding',sending:'Sender…',sent:'Takk. Vi har mottatt meldingen din.',sendError:'Meldingen kunne ikke sendes. Prøv igjen.',footerLine:'Uavhengig tenkning. Nyttig teknologi. Bedre muligheter.',footerContact:'Kontakt',footerAbout:'Om NYIL',footerMade:'Laget med mening.'},
  da:{announcement:'Praktisk teknologi til en forbundet verden',navHome:'Hjem',navAbout:'Om os',navSolutions:'Løsninger',navProducts:'Produkter',navTechnology:'Teknologi',navContact:'Kontakt',heroEyebrow:'UAFHÆNGIG TEKNOLOGIVIRKSOMHED',heroTitle:'Idéer med effekt. Teknologi, der skaber fremskridt.',heroText:'Vi skaber gennemtænkte digitale produkter og pålidelig teknologi, der hjælper mennesker og virksomheder videre.',exploreSolutions:'Udforsk løsninger',discoverNYIL:'Opdag NYIL',heroProof:'Bygget med formål. Designet til mennesker.',heroBottom:'EN BEDRE VEJ FREM',aboutKicker:'HVEM VI ER',aboutTitle:'Vi omsætter ambitiøse idéer til nyttig teknologi.',aboutText:'NYIL er et uafhængigt innovationslaboratorium med fokus på digitale oplevelser, softwareprodukter og forbundne virksomhedssystemer. Vi forener klar tænkning og praktisk teknik for at løse meningsfulde problemer.',workTogether:'Samarbejd med os',valueOneTitle:'Formålet først',valueOneText:'Vi begynder med reelle behov og målbar værdi.',valueTwoTitle:'Bygget til at holde',valueTwoText:'Vi værdsætter sikkerhed, pålidelighed og gennemtænkt design.',valueThreeTitle:'Altid i udvikling',valueThreeText:'Vi bliver ved med at lære, forbedre og se fremad.',solutionsKicker:'DET VI GØR',solutionsTitle:'Teknologi, der virker i den virkelige verden.',solutionsText:'Fra den første idé til systemerne bag bygger vi med klarhed og omhu.',solutionOneTitle:'Digitale produkter',solutionOneText:'Web- og mobilapps skabt omkring mennesker og deres arbejdsgange.',solutionTwoTitle:'Forretningsplatforme',solutionTwoText:'Forbundne værktøjer til drift, handel, administration og bedre beslutninger.',solutionThreeTitle:'Ny teknologi',solutionThreeText:'Praktisk udforskning af automatisering, intelligente tjenester og nye muligheder.',productsKicker:'VORES ARBEJDE',productsTitle:'Produkter med en grund til at eksistere.',productsText:'Udforsk de produkter og initiativer, vi udvikler.',loadingProducts:'Indlæser offentliggjorte produkter…',emptyProducts:'Vores produktkatalog er under forberedelse. Kig snart igen.',productsError:'Produkterne er midlertidigt utilgængelige.',technologyKicker:'SÅDAN BYGGER VI',technologyTitle:'God teknologi skal føles enkel.',technologyText:'Bag enhver enkel oplevelse ligger et system, der er designet med omhu. Vi fokuserer på sikre fundamenter, klar arkitektur, ydeevne og vækst.',techOne:'Sikkerhed i fundamentet',techTwo:'Pålidelige og skalerbare systemer',techThree:'Menneskecentrerede oplevelser',contactKicker:'START EN SAMTALE',contactTitle:'Har du en idé, der betyder noget?',contactText:'Fortæl os, hvad du arbejder på. Vi vil gerne høre fra dig.',formName:'Dit navn',formEmail:'E-mailadresse',formSubject:'Emne',formMessage:'Din besked',sendMessage:'Send besked',sending:'Sender…',sent:'Tak. Vi har modtaget din besked.',sendError:'Din besked kunne ikke sendes. Prøv igen.',footerLine:'Uafhængig tænkning. Nyttig teknologi. Bedre muligheder.',footerContact:'Kontakt',footerAbout:'Om NYIL',footerMade:'Skabt med formål.'}
 };
+
+TEXT.ps = {
+  skipContent:'منځپانګې ته لاړ شئ', announcement:'د تړلې نړۍ لپاره عملي ټکنالوژي جوړوو',
+  navHome:'کور', navAbout:'زموږ په اړه', navSolutions:'زموږ وړتیاوې', navProducts:'محصولات', navTechnology:'ټکنالوژي', navContact:'اړیکه',
+  navContactCta:'راسره خبرې وکړئ', languageKicker:'ستاسو خوښه', languageTitle:'خپله ژبه وټاکئ', languageDescription:'هغه ژبه وټاکئ چې غواړئ د NYIL وېبپاڼه پرې وګورئ.', languageNote:'ستاسې ټاکنه په همدې وسیله کې ساتل کېږي.',
+  heroEyebrow:'خپلواک ټکنالوژیک نوښتګر مرکز', heroTitle:'نظرونه په اغېز بدلوو. ټکنالوژي پرمختګ رامنځته کوي.',
+  heroText:'موږ داسې ګټور ډیجیټلي محصولات او باوري ټکنالوژي جوړوو چې د خلکو او کاروبارونو د پرمختګ مرسته کوي.',
+  exploreSolutions:'زموږ وړتیاوې وګورئ', discoverNYIL:'NYIL وپېژنئ', heroProof:'د موخې له مخې جوړ شوی؛ د خلکو لپاره ډیزاین شوی.',
+  artTag:'په غور او فکر ډیزاین شوی', heroBottom:'د پرمختګ لپاره روښانه لاره',
+  aboutKicker:'موږ څوک یو', aboutTitle:'لوی فکرونه په ګټوره ټکنالوژۍ بدلوو.',
+  aboutText:'NYIL د Naseebullah Yaqini Invention Lab لنډ نوم دی. دا یو خپلواک نوښتګر مرکز دی چې پر ډیجیټلي تجربو، سافټویر محصولاتو او تړلو سوداګریزو سیسټمونو کار کوي. موږ روښانه فکر او عملي انجینري سره یوځای کوو، څو مهمې ستونزې حل کړو.',
+  workTogether:'له موږ سره کار وکړئ', valueOneTitle:'موخه تر هر څه مخکې', valueOneText:'له واقعي اړتیاوو او څرګند ارزښت څخه کار پیلوو.',
+  valueTwoTitle:'د دوام لپاره جوړښت', valueTwoText:'امنیت، باورمنتیا او سنجول شوی ډیزاین راته مهم دي.',
+  valueThreeTitle:'تلپاتې پرمختګ', valueThreeText:'زده کړه کوو، ښه والی راوړو او راتلونکي ته ګورو.',
+  solutionsKicker:'موږ څه کوو', solutionsTitle:'هغه ټکنالوژي چې په واقعي ژوند کې کار کوي.',
+  solutionsText:'له لومړني نظر څخه تر ملاتړو سیسټمونو پورې، هر څه په روښانه پلان او پاملرنې جوړوو.',
+  solutionOneTitle:'ډیجیټلي محصولات', solutionOneText:'د خلکو او د هغوی د کاري اړتیاوو لپاره ویب او موبایل اپلېکېشنونه.',
+  solutionTwoTitle:'سوداګریز پلېټفارمونه', solutionTwoText:'د چارو، سوداګرۍ، ادارې او غوره پرېکړو لپاره تړلي وسایل.',
+  solutionThreeTitle:'نوې ټکنالوژي', solutionThreeText:'د اتومات، هوښیارو خدمتونو او نویو امکاناتو عملي څېړنه.',
+  productsKicker:'زموږ کارونه', productsTitle:'هغه محصولات چې د جوړېدو موخه لري.',
+  productsText:'زموږ خپاره شوي محصولات او روان نوښتونه وګورئ.', loadingProducts:'خپر شوي محصولات پورته کېږي…',
+  emptyProducts:'زموږ د محصولاتو لړلیک د چمتو کېدو په حال کې دی. وروسته بیا مراجعه وکړئ.',
+  productsError:'محصولات دا مهال نه ښکاري. مهرباني وکړئ وروسته بیا هڅه وکړئ.',
+  approachKicker:'زموږ د کار طریقه', technologyKicker:'موږ څنګه جوړوو',
+  technologyTitle:'ښه ټکنالوژي باید اسانه او طبیعي احساس شي.',
+  technologyText:'د هرې ساده تجربې تر شا یو په غور جوړ شوی سیسټم وي. موږ پر امنیتي بنسټونو، روښانه جوړښت، چټکتیا او پراختیا تمرکز کوو.',
+  techOne:'امنیت ته پام لرونکي بنسټونه', techTwo:'باوري او پراخېدونکي سیسټمونه', techThree:'د انسان پر اړتیاوو ولاړې تجربې',
+  contactKicker:'خبرې پیل کړئ', contactTitle:'کومه مهمه مفکوره لرئ؟',
+  contactText:'موږ ته ووایاست چې پر څه کار کوئ. ستاسو د پیغام اورېدو ته لېواله یو.',
+  formName:'ستاسو نوم', formEmail:'برېښنالیک', formSubject:'موضوع', formMessage:'ستاسو پیغام',
+  sendMessage:'پیغام واستوئ', sending:'لېږل کېږي…', sent:'مننه. ستاسو پیغام ترلاسه شو.',
+  sendError:'ستاسو پیغام ونه لېږل شو. بیا هڅه وکړئ یا مستقیم برېښنالیک راولېږئ.',
+  footerLine:'خپلواک فکر. ګټوره ټکنالوژي. غوره امکانات.', footerContact:'اړیکه', footerAbout:'د NYIL په اړه', footerMade:'په موخه او پاملرنه جوړ شوی.'
+};
+TEXT.fa = {
+  skipContent:'رفتن به محتوای اصلی', announcement:'ساخت فناوری کاربردی برای جهانی متصل',
+  navHome:'صفحه اصلی', navAbout:'درباره ما', navSolutions:'توانایی‌ها', navProducts:'محصولات', navTechnology:'فناوری', navContact:'تماس',
+  navContactCta:'با ما گفتگو کنید', languageKicker:'انتخاب شما', languageTitle:'زبان خود را انتخاب کنید', languageDescription:'زبانی را برای مشاهده وب‌سایت NYIL انتخاب کنید.', languageNote:'انتخاب شما در همین دستگاه ذخیره می‌شود.',
+  heroEyebrow:'مرکز مستقل نوآوری فناوری', heroTitle:'ایده‌ها را به اثر تبدیل می‌کنیم؛ فناوری را به پیشرفت.',
+  heroText:'ما محصولات دیجیتالی سنجیده و فناوری قابل اعتماد می‌سازیم تا به پیشرفت مردم و کسب‌وکارها کمک کنیم.',
+  exploreSolutions:'دیدن توانایی‌های ما', discoverNYIL:'آشنایی با NYIL', heroProof:'با هدف ساخته شده؛ برای انسان‌ها طراحی شده است.',
+  artTag:'طراحی‌شده با دقت', heroBottom:'راهی روشن‌تر به سوی پیشرفت',
+  aboutKicker:'ما چه کسانی هستیم', aboutTitle:'ایده‌های بزرگ را به فناوری مفید تبدیل می‌کنیم.',
+  aboutText:'NYIL کوتاه‌شدهٔ Naseebullah Yaqini Invention Lab است. این یک ابتکار مستقل فناوری است که بر تجربه‌های دیجیتالی، محصولات نرم‌افزاری و سیستم‌های یکپارچهٔ تجاری تمرکز دارد. ما تفکر روشن را با مهندسی عملی یک‌جا می‌سازیم تا مشکلات معنادار را حل کنیم.',
+  workTogether:'با ما همکاری کنید', valueOneTitle:'هدف در اولویت', valueOneText:'کار را با نیازهای واقعی و ارزش قابل سنجش آغاز می‌کنیم.',
+  valueTwoTitle:'ساخته‌شده برای ماندگاری', valueTwoText:'امنیت، اعتمادپذیری و طراحی سنجیده برای ما اهمیت دارد.',
+  valueThreeTitle:'پیشرفت همیشگی', valueThreeText:'همواره می‌آموزیم، بهتر می‌سازیم و به آینده می‌نگریم.',
+  solutionsKicker:'کار ما چیست', solutionsTitle:'فناوری‌ای که در دنیای واقعی کار می‌کند.',
+  solutionsText:'از نخستین ایده تا سیستم‌هایی که از آن پشتیبانی می‌کنند، با وضاحت و دقت می‌سازیم.',
+  solutionOneTitle:'محصولات دیجیتالی', solutionOneText:'برنامه‌های وب و موبایل متناسب با نیاز مردم و جریان کاری آنان.',
+  solutionTwoTitle:'پلتفرم‌های تجاری', solutionTwoText:'ابزارهای یکپارچه برای عملیات، تجارت، مدیریت و تصمیم‌گیری بهتر.',
+  solutionThreeTitle:'فناوری‌های نوظهور', solutionThreeText:'بررسی عملی خودکارسازی، خدمات هوشمند و فرصت‌های تازه.',
+  productsKicker:'کارهای ما', productsTitle:'محصولاتی با دلیل و هدف برای ساخته‌شدن.',
+  productsText:'محصولات و ابتکارهایی را که عرضه می‌کنیم ببینید.', loadingProducts:'محصولات منتشرشده بارگذاری می‌شوند…',
+  emptyProducts:'فهرست محصولات ما در حال آماده‌سازی است. لطفاً بعداً مراجعه کنید.',
+  productsError:'محصولات موقتاً در دسترس نیستند. لطفاً بعداً دوباره تلاش کنید.',
+  approachKicker:'روش کار ما', technologyKicker:'چگونه می‌سازیم',
+  technologyTitle:'فناوری خوب باید ساده و طبیعی احساس شود.',
+  technologyText:'پشت هر تجربهٔ ساده، سیستمی با دقت طراحی‌شده قرار دارد. ما بر بنیادهای امن، معماری روشن، کارایی و قابلیت توسعه تمرکز می‌کنیم.',
+  techOne:'بنیادهای مبتنی بر امنیت', techTwo:'سیستم‌های قابل اعتماد و توسعه‌پذیر', techThree:'تجربه‌های انسان‌محور',
+  contactKicker:'گفتگو را آغاز کنید', contactTitle:'ایدهٔ مهمی در ذهن دارید؟',
+  contactText:'برای ما بنویسید که روی چه چیزی کار می‌کنید. از شنیدن پیام شما خوشحال می‌شویم.',
+  formName:'نام شما', formEmail:'نشانی ایمیل', formSubject:'موضوع', formMessage:'پیام شما',
+  sendMessage:'ارسال پیام', sending:'در حال ارسال…', sent:'سپاس. پیام شما دریافت شد.',
+  sendError:'پیام شما ارسال نشد. دوباره تلاش کنید یا مستقیم به ما ایمیل بفرستید.',
+  footerLine:'اندیشهٔ مستقل. فناوری مفید. فرصت‌های بهتر.', footerContact:'تماس', footerAbout:'دربارهٔ NYIL', footerMade:'با هدف ساخته شده است.'
+};
+
 let currentLanguage = 'en';
 let cmsOverrides = {};
 const t = key => TEXT[currentLanguage]?.[key] || TEXT.en[key] || key;
@@ -141,7 +209,8 @@ document.addEventListener('DOMContentLoaded', () => {
   let saved = 'en';
   try { const stored = localStorage.getItem('nyil-language'); if (LANGS.includes(stored)) saved = stored; } catch {}
   applyLanguage(saved);
-  document.getElementById('languageSelect').addEventListener('change', event => applyLanguage(event.target.value));
+  const languageSelect = document.getElementById('languageSelect');
+  if (languageSelect) languageSelect.addEventListener('change', event => applyLanguage(event.target.value));
   document.getElementById('contactForm').addEventListener('submit', sendInquiry);
   const toggle = document.getElementById('menuToggle');
   const nav = document.getElementById('mainNav');
