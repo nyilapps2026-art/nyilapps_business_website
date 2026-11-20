@@ -1,11 +1,7 @@
 name: Deploy Neon CMS API
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/deploy-neon-cms.yml'
-      - 'functions/api/**'
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
