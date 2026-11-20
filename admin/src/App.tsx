@@ -13,7 +13,7 @@ const EMPTY = () => Object.fromEntries(LANGUAGES.map(l=>[l.code,''])) as Localiz
 const AUTH_URL = (import.meta.env.VITE_NEON_AUTH_URL || 'https://ep-red-fog-bdya5bxr.neonauth.c-8.us-east-2.aws.neon.tech/nyil_website/auth').trim()
 const API_URL = (import.meta.env.VITE_CMS_API_URL || '').replace(/\/$/,'')
 const ADMIN_EMAIL = 'nyilapps2026@gmail.com'
-const auth = createAuthClient(AUTH_URL)
+const auth = createAuthClient(AUTH_URL, { adapter: BetterAuthReactAdapter() })
 
 export default function App(){
  const [session,setSession]=useState<any>(null),[loading,setLoading]=useState(true)
@@ -26,7 +26,7 @@ export default function App(){
  const user=session?.user,allowed=user?.email?.toLowerCase()===ADMIN_EMAIL
 
  useEffect(()=>{let active=true;auth?.getSession().then(({data}:any)=>{if(active)setSession(data??null)}).catch(()=>{}).finally(()=>{if(active)setLoading(false)});if(!auth)setLoading(false);return()=>{active=false}},[])
- const getToken=async()=>{if(!auth)throw new Error('Authentication is not configured.');const tokenClient=auth as typeof auth & {token:()=>Promise<{data?:{token?:string}|null;error?:{message?:string}|null}>};const r=await tokenClient.token();if(r?.error||!r?.data?.token)throw new Error(r?.error?.message||'Your session has expired. Please sign in again.');return r.data.token}
+ const getToken=async()=>{if(!auth)throw new Error('Authentication is not configured.');const current=await auth.getSession();if(!current?.data?.session||!current?.data?.user)throw new Error('Your sign-in session is no longer active. Please sign in again.');const tokenClient=auth as typeof auth & {token:()=>Promise<{data?:{token?:string}|null;error?:{message?:string}|null}>};const r=await tokenClient.token();if(r?.error)throw new Error('Neon Auth could not issue an API token: '+(r.error.message||'unknown authentication error'));if(!r?.data?.token)throw new Error('Neon Auth returned no API token although your sign-in session is active. Please refresh the page and sign in again.');return r.data.token}
  const request=useCallback(async(path:string,init:RequestInit={})=>{if(!API_URL)throw new Error('CMS API URL is not configured.');const jwt=await getToken();const response=await fetch(API_URL+path,{...init,headers:{...(init.body instanceof FormData?{}:{'Content-Type':'application/json'}),Authorization:'Bearer '+jwt,...init.headers}});const data=await response.json().catch(()=>({}));if(!response.ok)throw new Error(data.error||'Request failed ('+response.status+')');return data},[])
  const load=useCallback(async()=>{setBusy(true);try{const [p,i,s]=await Promise.all([request('/admin/products'),request('/admin/inquiries'),request('/admin/content').catch(()=>({pages:[]}))]);setProducts(p.products??[]);setInquiries(i.inquiries??[]);setSitePages(s.pages??[]);setNotice('Workspace data is up to date.')}catch(e){setNotice((e as Error).message)}finally{setBusy(false)}},[request])
  useEffect(()=>{if(allowed)void load()},[allowed,load])
