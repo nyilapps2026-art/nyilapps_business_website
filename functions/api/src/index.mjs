@@ -126,7 +126,7 @@ export default {
           const slug = safeText(body.slug, 90)
           if (!validSlug(slug)) return response({error:'Invalid product slug'}, 400, origin)
           const status = ['draft','published'].includes(body.status) ? body.status : 'draft'
-          const imageUrls = Array.isArray(body.image_urls) ? body.image_urls.filter(value => typeof value === 'string' && /^https?:\\/\\//i.test(value)).slice(0,12) : []
+          const imageUrls = Array.isArray(body.image_urls) ? body.image_urls.filter(value => typeof value === 'string' && (value.startsWith('https://') || value.startsWith('http://'))).slice(0,12) : []
           const [row] = await sql`INSERT INTO public.products (id, slug, name, category, summary, description, image_url, image_urls, external_url, status, published_at) VALUES (${crypto.randomUUID()}, ${slug}, ${JSON.stringify(jsonObject(body.name))}::jsonb, ${safeText(body.category,100) || 'General'}, ${JSON.stringify(jsonObject(body.summary))}::jsonb, ${JSON.stringify(jsonObject(body.description))}::jsonb, ${safeText(body.image_url,2000) || null}, ${JSON.stringify(imageUrls)}::jsonb, ${safeText(body.external_url,2000) || null}, ${status}, CASE WHEN ${status}='published' THEN now() ELSE NULL END) RETURNING *`
           await sql`INSERT INTO public.admin_audit_log (admin_email, action, product_id) VALUES (${email}, 'product.create', ${row.id})`
           return response({product:row}, 201, origin)
@@ -139,7 +139,7 @@ export default {
             const slug = safeText(body.slug, 90)
             if (!validSlug(slug)) return response({error:'Invalid product slug'}, 400, origin)
             const status = ['draft','published'].includes(body.status) ? body.status : 'draft'
-            const imageUrls = Array.isArray(body.image_urls) ? body.image_urls.filter(value => typeof value === 'string' && /^https?:\\/\\//i.test(value)).slice(0,12) : []
+            const imageUrls = Array.isArray(body.image_urls) ? body.image_urls.filter(value => typeof value === 'string' && (value.startsWith('https://') || value.startsWith('http://'))).slice(0,12) : []
             const [row] = await sql`UPDATE public.products SET slug=${slug}, name=${JSON.stringify(jsonObject(body.name))}::jsonb, category=${safeText(body.category,100)||'General'}, summary=${JSON.stringify(jsonObject(body.summary))}::jsonb, description=${JSON.stringify(jsonObject(body.description))}::jsonb, image_url=${safeText(body.image_url,2000)||null}, image_urls=${JSON.stringify(imageUrls)}::jsonb, external_url=${safeText(body.external_url,2000)||null}, status=${status}, published_at=CASE WHEN ${status}='published' THEN COALESCE(published_at,now()) ELSE NULL END, updated_at=now() WHERE id=${id} RETURNING *`
             if (!row) return response({error:'Product not found'},404,origin)
             await sql`INSERT INTO public.admin_audit_log (admin_email, action, product_id) VALUES (${email}, 'product.update', ${id})`
