@@ -120,3 +120,8 @@ button:disabled{opacity:.6;cursor:not-allowed}
  .hero h1{font-size:40px}
 }
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+/* Reliable Arabic-script rendering for Pashto and Dari */
+:root[dir="rtl"] body{font-family:"Noto Sans Arabic","Tahoma",Arial,sans-serif}
+:root[dir="rtl"] .hero h1,:root[dir="rtl"] h2,:root[dir="rtl"] h3{letter-spacing:0;line-height:1.55}
+:root[dir="rtl"] .hero-lead,:root[dir="rtl"] .intro-grid p,:root[dir="rtl"] .section-heading>p,:root[dir="rtl"] .technology-copy>p,:root[dir="rtl"] .contact-copy>p{line-height:2}
