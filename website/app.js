@@ -26,7 +26,7 @@ function applyLanguage(lang) {
   document.documentElement.dir = ['ps','fa'].includes(currentLanguage) ? 'rtl' : 'ltr';
   document.querySelectorAll('[data-i18n]').forEach(node => {
     const value = t(node.dataset.i18n);
-    if (value) node.textContent = value;
+    if (value) node.innerHTML = value;
   });
   const select = document.getElementById('languageSelect');
   if (select) select.value = currentLanguage;
@@ -148,9 +148,9 @@ document.addEventListener('DOMContentLoaded', () => {
   toggle.addEventListener('click', () => {
     const open = nav.classList.toggle('open');
     toggle.setAttribute('aria-expanded', String(open));
-    toggle.textContent = open ? '×' : '☰';
+    
   });
-  nav.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {nav.classList.remove('open');toggle.setAttribute('aria-expanded','false');toggle.textContent='☰';}));
+  nav.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {nav.classList.remove('open');toggle.setAttribute('aria-expanded','false');}));
   void loadProducts();
   void loadCmsContent();
 });
