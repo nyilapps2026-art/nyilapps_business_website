@@ -1,74 +1,110 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#071c16">
-  <meta name="description" content="NYIL — technology, digital products and intelligent business solutions.">
-  <title>NYIL — Technology for What Comes Next</title>
+  <meta name="description" content="NYIL — Naseebullah Yaqini Invention Lab. Independent technology and digital product development.">
+  <meta name="color-scheme" content="dark light">
+  <title>NYIL — Naseebullah Yaqini Invention Lab</title>
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/styles.css">
   <script defer src="/app.js"></script>
 </head>
 <body>
-  <div class="announcement"><span class="pulse"></span><span data-i18n="announcement">Building practical technology for a connected world</span></div>
-  <header class="site-header">
-    <a class="brand" href="#home" aria-label="NYIL home"><span class="brand-mark">N</span><span>NYIL<small>INVENTION LAB</small></span></a>
-    <button class="menu-toggle" id="menuToggle" aria-label="Open navigation" aria-expanded="false">☰</button>
+  <a class="skip-link" href="#main-content" data-i18n="skipContent">Skip to content</a>
+  <div class="announcement"><span class="pulse"></span><span data-i18n="announcement">Independent ideas. Practical technology.</span></div>
+  <header class="site-header" id="siteHeader">
+    <a class="brand" href="#home" aria-label="NYIL home"><span class="brand-mark">N</span><span class="brand-name">NYIL<small>INVENTION LAB</small></span></a>
+    <button class="menu-toggle" id="menuToggle" aria-label="Open navigation" aria-expanded="false" aria-controls="mainNav"><span></span><span></span><span></span></button>
     <nav id="mainNav" aria-label="Main navigation">
-      <a href="#home" data-i18n="navHome">Home</a><a href="#about" data-i18n="navAbout">About</a><a href="#solutions" data-i18n="navSolutions">Solutions</a><a href="#products" data-i18n="navProducts">Products</a><a href="#technology" data-i18n="navTechnology">Technology</a>
+      <a href="#home" data-i18n="navHome">Home</a>
+      <a href="#about" data-i18n="navAbout">About</a>
+      <a href="#solutions" data-i18n="navSolutions">Capabilities</a>
+      <a href="#products" data-i18n="navProducts">Products</a>
+      <a href="#contact" data-i18n="navContact">Contact</a>
     </nav>
     <div class="header-actions">
-      <label class="language-picker"><span class="sr-only">Language</span><select id="languageSelect" aria-label="Select language"><option value="en">EN</option><option value="de">DE</option><option value="fr">FR</option><option value="es">ES</option><option value="it">IT</option><option value="pt">PT</option><option value="nl">NL</option><option value="sv">SV</option><option value="no">NO</option><option value="da">DA</option></select></label>
-      <a class="button button-small" href="#contact" data-i18n="navContact">Let's talk <span>↗</span></a>
+      <button class="utility-button" id="languageButton" type="button" aria-haspopup="dialog" aria-controls="languageDialog"><span class="utility-icon">文</span><span id="languageButtonLabel">English</span><span class="chevron">⌄</span></button>
+      <button class="utility-button theme-button" id="themeToggle" type="button" aria-label="Switch to light mode"><span id="themeIcon">☼</span></button>
+      <a class="button button-small" href="#contact" data-i18n="navContactCta">Let's talk <span>↗</span></a>
     </div>
   </header>
-  <main>
+
+  <dialog class="language-dialog" id="languageDialog" aria-labelledby="languageTitle">
+    <div class="dialog-head"><div><span class="dialog-kicker" data-i18n="languageKicker">YOUR EXPERIENCE</span><h2 id="languageTitle" data-i18n="languageTitle">Choose your language</h2></div><button class="dialog-close" id="closeLanguageDialog" type="button" aria-label="Close">×</button></div>
+    <p class="dialog-description" data-i18n="languageDescription">Select the language you want to browse NYIL in.</p>
+    <div class="language-options" id="languageOptions">
+      <button type="button" data-language="en"><span class="language-native">English</span><span class="language-english">English</span><span class="language-check">✓</span></button>
+      <button type="button" data-language="ps"><span class="language-native" lang="ps">پښتو</span><span class="language-english">Pashto</span><span class="language-check">✓</span></button>
+      <button type="button" data-language="fa"><span class="language-native" lang="fa">دری</span><span class="language-english">Dari</span><span class="language-check">✓</span></button>
+      <button type="button" data-language="de"><span class="language-native">Deutsch</span><span class="language-english">German</span><span class="language-check">✓</span></button>
+      <button type="button" data-language="fr"><span class="language-native">Français</span><span class="language-english">French</span><span class="language-check">✓</span></button>
+      <button type="button" data-language="es"><span class="language-native">Español</span><span class="language-english">Spanish</span><span class="language-check">✓</span></button>
+      <button type="button" data-language="it"><span class="language-native">Italiano</span><span class="language-english">Italian</span><span class="language-check">✓</span></button>
+      <button type="button" data-language="pt"><span class="language-native">Português</span><span class="language-english">Portuguese</span><span class="language-check">✓</span></button>
+      <button type="button" data-language="nl"><span class="language-native">Nederlands</span><span class="language-english">Dutch</span><span class="language-check">✓</span></button>
+      <button type="button" data-language="sv"><span class="language-native">Svenska</span><span class="language-english">Swedish</span><span class="language-check">✓</span></button>
+      <button type="button" data-language="no"><span class="language-native">Norsk</span><span class="language-english">Norwegian</span><span class="language-check">✓</span></button>
+      <button type="button" data-language="da"><span class="language-native">Dansk</span><span class="language-english">Danish</span><span class="language-check">✓</span></button>
+    </div>
+    <div class="dialog-foot"><span data-i18n="languageNote">Your choice is saved on this device.</span></div>
+  </dialog>
+
+  <main id="main-content">
     <section class="hero section-wrap" id="home">
       <div class="hero-copy">
-        <div class="eyebrow"><span></span><span data-i18n="heroEyebrow">INDEPENDENT TECHNOLOGY COMPANY</span></div>
-        <h1 data-i18n="heroTitle">Ideas into <em>impact.</em><br>Technology into progress.</h1>
-        <p class="hero-lead" data-i18n="heroText">We create thoughtful digital products and dependable technology that help people and businesses move forward.</p>
-        <div class="hero-actions"><a class="button" href="#solutions" data-i18n="exploreSolutions">Explore our solutions <span>↗</span></a><a class="text-link" href="#about" data-i18n="discoverNYIL">Discover NYIL <span>↓</span></a></div>
-        <div class="hero-proof"><div class="proof-avatars"><b>N</b><b>Y</b><b>I</b></div><span data-i18n="heroProof">Built with purpose. Designed for people.</span></div>
+        <div class="eyebrow"><span></span><span data-i18n="heroEyebrow">INDEPENDENT INVENTION LAB</span></div>
+        <h1 data-i18n="heroTitle">Ideas into <em>impact.</em><br>Technology with purpose.</h1>
+        <p class="hero-lead" data-i18n="heroText">NYIL explores and builds practical digital products, software and technology-led solutions.</p>
+        <div class="hero-actions"><a class="button" href="#solutions" data-i18n="exploreSolutions">Explore capabilities <span>↗</span></a><a class="text-link" href="#about" data-i18n="discoverNYIL">Discover NYIL <span>↓</span></a></div>
+        <div class="hero-proof"><span class="proof-line"></span><span data-i18n="heroProof">Independent thinking. Clear execution.</span></div>
       </div>
-      <div class="hero-art" aria-label="Abstract NYIL technology illustration">
+      <div class="hero-art" aria-label="Abstract NYIL brand artwork">
         <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="orbit orbit-three"></div>
-        <div class="art-core"><span class="core-n">N</span><span class="core-caption">IDEAS / SYSTEMS / IMPACT</span></div>
-        <div class="art-tag tag-top"><i></i> DIGITAL PRODUCTS</div><div class="art-tag tag-bottom">INVENTION LAB <b>↗</b></div>
+        <div class="art-core"><span class="core-n">N</span><span class="core-caption">IDEAS · SYSTEMS · IMPACT</span></div>
+        <div class="art-tag tag-top"><i></i> NYIL / INVENTION LAB</div><div class="art-tag tag-bottom" data-i18n="artTag">THOUGHTFUL BY DESIGN <b>↗</b></div>
         <div class="art-star">✳</div>
       </div>
-      <div class="hero-bottom"><span>01 / <span data-i18n="heroBottom">A BETTER WAY FORWARD</span></span><span>NYIL · NASEEBULLAH YAQINI INVENTION LAB</span></div>
+      <div class="hero-bottom"><span>01 / <span data-i18n="heroBottom">A CLEARER WAY FORWARD</span></span><span>NASEEBULLAH YAQINI INVENTION LAB</span></div>
     </section>
+
     <section class="intro section-wrap" id="about">
-      <div class="section-kicker">01 — <span data-i18n="aboutKicker">WHO WE ARE</span></div>
-      <div class="intro-grid"><h2 data-i18n="aboutTitle">We turn ambitious ideas into useful technology.</h2><div><p data-i18n="aboutText">NYIL is an independent invention lab focused on building digital experiences, software products and connected business systems. We bring clear thinking and practical engineering together to solve meaningful problems.</p><a class="underlined-link" href="#contact" data-i18n="workTogether">Work with us <span>↗</span></a></div></div>
-      <div class="values-grid"><article><span>01</span><h3 data-i18n="valueOneTitle">Purpose first</h3><p data-i18n="valueOneText">We start with real needs and measurable value.</p></article><article><span>02</span><h3 data-i18n="valueTwoTitle">Built to last</h3><p data-i18n="valueTwoText">We value security, reliability and thoughtful design.</p></article><article><span>03</span><h3 data-i18n="valueThreeTitle">Always evolving</h3><p data-i18n="valueThreeText">We keep learning, improving and looking ahead.</p></article></div>
+      <div class="section-kicker">01 — <span data-i18n="aboutKicker">ABOUT NYIL</span></div>
+      <div class="intro-grid"><h2 data-i18n="aboutTitle">An independent lab for ideas worth building.</h2><div><p data-i18n="aboutText">NYIL stands for Naseebullah Yaqini Invention Lab. It is an independent technology initiative focused on exploring ideas and developing useful digital products and systems. We value practical problem-solving, thoughtful design and steady improvement.</p><a class="underlined-link" href="#contact" data-i18n="workTogether">Start a conversation <span>↗</span></a></div></div>
+      <div class="values-grid"><article><span>01</span><h3 data-i18n="valueOneTitle">Useful by nature</h3><p data-i18n="valueOneText">Start with a real problem and build toward practical value.</p></article><article><span>02</span><h3 data-i18n="valueTwoTitle">Thoughtful engineering</h3><p data-i18n="valueTwoText">Make considered choices around quality, privacy and reliability.</p></article><article><span>03</span><h3 data-i18n="valueThreeTitle">Continuous learning</h3><p data-i18n="valueThreeText">Test ideas, learn from results and improve what we build.</p></article></div>
     </section>
+
     <section class="solutions-section" id="solutions"><div class="section-wrap">
-      <div class="section-kicker">02 — <span data-i18n="solutionsKicker">WHAT WE DO</span></div>
-      <div class="section-heading"><h2 data-i18n="solutionsTitle">Technology that works<br><em>in the real world.</em></h2><p data-i18n="solutionsText">From the first idea to the systems that support it, we build with clarity and care.</p></div>
+      <div class="section-kicker">02 — <span data-i18n="solutionsKicker">CAPABILITIES</span></div>
+      <div class="section-heading"><h2 data-i18n="solutionsTitle">Turning clear thinking<br>into <em>useful work.</em></h2><p data-i18n="solutionsText">Areas of focus, not a list of claims: capabilities are developed project by project.</p></div>
       <div class="solution-grid">
-        <article class="solution-card"><div class="card-icon">⌘</div><span>01 / SOFTWARE</span><h3 data-i18n="solutionOneTitle">Digital products</h3><p data-i18n="solutionOneText">Purpose-built web and mobile applications shaped around people and their workflows.</p><b>↗</b></article>
-        <article class="solution-card"><div class="card-icon">◈</div><span>02 / SYSTEMS</span><h3 data-i18n="solutionTwoTitle">Business platforms</h3><p data-i18n="solutionTwoText">Connected tools for operations, commerce, administration and better decisions.</p><b>↗</b></article>
-        <article class="solution-card"><div class="card-icon">⌁</div><span>03 / INNOVATION</span><h3 data-i18n="solutionThreeTitle">Emerging technology</h3><p data-i18n="solutionThreeText">Practical exploration of automation, intelligent services and new possibilities.</p><b>↗</b></article>
+        <article class="solution-card"><div class="card-icon">⌘</div><span>01 / SOFTWARE</span><h3 data-i18n="solutionOneTitle">Software & applications</h3><p data-i18n="solutionOneText">Planning and development of web and mobile software around defined user needs.</p><b>↗</b></article>
+        <article class="solution-card"><div class="card-icon">◈</div><span>02 / DIGITAL SYSTEMS</span><h3 data-i18n="solutionTwoTitle">Digital platforms</h3><p data-i18n="solutionTwoText">Connected digital workflows, dashboards and data-driven business tools.</p><b>↗</b></article>
+        <article class="solution-card"><div class="card-icon">⌁</div><span>03 / RESEARCH</span><h3 data-i18n="solutionThreeTitle">Research & prototyping</h3><p data-i18n="solutionThreeText">Exploring concepts, testing prototypes and evaluating emerging technologies.</p><b>↗</b></article>
       </div>
     </div></section>
+
     <section class="products-section section-wrap" id="products">
-      <div class="section-kicker">03 — <span data-i18n="productsKicker">OUR WORK</span></div>
-      <div class="section-heading"><h2 data-i18n="productsTitle">Products with a<br><em>reason to exist.</em></h2><p data-i18n="productsText">Explore the products and initiatives we are bringing to life.</p></div>
+      <div class="section-kicker">03 — <span data-i18n="productsKicker">PUBLISHED WORK</span></div>
+      <div class="section-heading"><h2 data-i18n="productsTitle">Real products.<br><em>Clear information.</em></h2><p data-i18n="productsText">Only products published through the official NYIL catalogue appear here.</p></div>
       <div class="product-grid" id="productGrid"><div class="loading-card"><span class="loader"></span><span data-i18n="loadingProducts">Loading published products…</span></div></div>
       <p class="catalogue-note" id="catalogueNote" aria-live="polite"></p>
     </section>
-    <section class="technology-section" id="technology"><div class="section-wrap technology-grid">
-      <div><div class="section-kicker">04 — <span data-i18n="technologyKicker">HOW WE BUILD</span></div><h2 data-i18n="technologyTitle">Good technology<br>should feel <em>effortless.</em></h2></div>
-      <div class="technology-copy"><p data-i18n="technologyText">Behind every simple experience is a system designed with care. We focus on secure foundations, clear architecture, performance and room to grow.</p><div class="tech-points"><span><i>✓</i><b data-i18n="techOne">Security-minded foundations</b></span><span><i>✓</i><b data-i18n="techTwo">Reliable, scalable systems</b></span><span><i>✓</i><b data-i18n="techThree">Human-centred experiences</b></span></div></div>
+
+    <section class="technology-section"><div class="section-wrap technology-grid">
+      <div><div class="section-kicker">04 — <span data-i18n="approachKicker">OUR APPROACH</span></div><h2 data-i18n="technologyTitle">Build carefully.<br>Improve <em>continuously.</em></h2></div>
+      <div class="technology-copy"><p data-i18n="technologyText">Every project begins with understanding the problem. We aim for clear scope, maintainable systems, responsible data handling and a useful experience for the people who rely on it.</p><div class="tech-points"><span><i>✓</i><b data-i18n="techOne">Clear requirements and scope</b></span><span><i>✓</i><b data-i18n="techTwo">Maintainable, reliable foundations</b></span><span><i>✓</i><b data-i18n="techThree">User-centred decisions</b></span></div></div>
     </div></section>
+
     <section class="contact-section section-wrap" id="contact">
-      <div class="contact-copy"><div class="section-kicker">05 — <span data-i18n="contactKicker">START A CONVERSATION</span></div><h2 data-i18n="contactTitle">Have a meaningful<br><em>idea in mind?</em></h2><p data-i18n="contactText">Tell us what you are working on. We would be glad to hear from you.</p><a class="contact-email" href="mailto:nyilapps2026@gmail.com">nyilapps2026@gmail.com <span>↗</span></a></div>
-      <form class="contact-form" id="contactForm"><label><span data-i18n="formName">Your name</span><input name="name" autocomplete="name" required maxlength="120" placeholder="Name"></label><label><span data-i18n="formEmail">Email address</span><input type="email" name="email" autocomplete="email" required maxlength="254" placeholder="you@example.com"></label><label><span data-i18n="formSubject">Subject</span><input name="subject" required maxlength="180" placeholder="How can we help?"></label><label><span data-i18n="formMessage">Your message</span><textarea name="message" required minlength="10" maxlength="10000" rows="4" placeholder="Tell us a little about your idea…"></textarea></label><label class="honeypot" aria-hidden="true">Website<input name="website" tabindex="-1" autocomplete="off"></label><button class="button" type="submit"><span data-i18n="sendMessage">Send message</span> <span>↗</span></button><p class="form-status" id="formStatus" role="status"></p></form>
+      <div class="contact-copy"><div class="section-kicker">05 — <span data-i18n="contactKicker">CONTACT</span></div><h2 data-i18n="contactTitle">Have a project<br><em>to discuss?</em></h2><p data-i18n="contactText">For questions, collaboration or product enquiries, send a message. We will review your enquiry and respond when possible.</p><a class="contact-email" href="mailto:nyilapps2026@gmail.com">nyilapps2026@gmail.com <span>↗</span></a></div>
+      <form class="contact-form" id="contactForm"><label><span data-i18n="formName">Your name</span><input name="name" autocomplete="name" required maxlength="120" placeholder="Name"></label><label><span data-i18n="formEmail">Email address</span><input type="email" name="email" autocomplete="email" required maxlength="254" placeholder="you@example.com"></label><label><span data-i18n="formSubject">Subject</span><input name="subject" required maxlength="180" placeholder="Subject"></label><label><span data-i18n="formMessage">Your message</span><textarea name="message" required minlength="10" maxlength="10000" rows="4" placeholder="Write your message…"></textarea></label><label class="honeypot" aria-hidden="true">Website<input name="website" tabindex="-1" autocomplete="off"></label><button class="button" type="submit"><span data-i18n="sendMessage">Send message</span> <span>↗</span></button><p class="form-status" id="formStatus" role="status" aria-live="polite"></p></form>
     </section>
   </main>
-  <footer class="site-footer"><div class="footer-top"><a class="brand" href="#home"><span class="brand-mark">N</span><span>NYIL<small>INVENTION LAB</small></span></a><p data-i18n="footerLine">Independent thinking. Useful technology. Better possibilities.</p><a class="back-top" href="#home" aria-label="Back to top">↑</a></div><div class="footer-bottom"><span>© <span id="year"></span> NYIL · Naseebullah Yaqini Invention Lab</span><div><a href="#contact" data-i18n="footerContact">Contact</a><a href="#about" data-i18n="footerAbout">About NYIL</a></div><span data-i18n="footerMade">Made with purpose.</span></div></footer>
+  <footer class="site-footer"><div class="footer-top"><a class="brand" href="#home"><span class="brand-mark">N</span><span class="brand-name">NYIL<small>INVENTION LAB</small></span></a><p data-i18n="footerLine">Naseebullah Yaqini Invention Lab · Independent technology initiative.</p><a class="back-top" href="#home" aria-label="Back to top">↑</a></div><div class="footer-bottom"><span>© <span id="year"></span> NYIL · Naseebullah Yaqini Invention Lab</span><div><a href="#contact" data-i18n="footerContact">Contact</a><a href="#about" data-i18n="footerAbout">About NYIL</a></div><span data-i18n="footerMade">Built with purpose.</span></div></footer>
 </body>
 </html>
