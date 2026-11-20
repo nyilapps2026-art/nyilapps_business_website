@@ -92,7 +92,12 @@ function applyLanguage(lang) {
   const nextLanguage = LANGS.includes(lang) ? lang : 'en';
   currentLanguage = nextLanguage;
   document.documentElement.setAttribute('lang', nextLanguage);
-  document.documentElement.setAttribute('dir', nextLanguage === 'ps' || nextLanguage === 'fa' ? 'rtl' : 'ltr');
+
+  // Keep the document root LTR: some mobile Chromium renderers fail to paint
+  // the page when dir=rtl is set on <html>. Apply RTL only to page sections.
+  const rtl = nextLanguage === 'ps' || nextLanguage === 'fa';
+  document.documentElement.setAttribute('dir', 'ltr');
+  document.documentElement.dataset.contentDirection = rtl ? 'rtl' : 'ltr';
 
   document.querySelectorAll('[data-i18n]').forEach(node => {
     const key = node.getAttribute('data-i18n');
