@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 240" role="img" aria-labelledby="title desc">
+<title id="title">NYIL — Naseebullah Yaqini Invention Lab</title><desc id="desc">NYIL silver lettering with gold light trails on a deep navy background.</desc>
+<defs>
+ <linearGradient id="bg" x2="0" y2="1"><stop stop-color="#102e60"/><stop offset="1" stop-color="#010e2e"/></linearGradient>
+ <linearGradient id="silver" x2="0" y2="1"><stop stop-color="#fff"/><stop offset=".48" stop-color="#c8c9d0"/><stop offset="1" stop-color="#f8f5e9"/></linearGradient>
+ <linearGradient id="gold" x2="0" y2="1"><stop stop-color="#fff0a5"/><stop offset=".5" stop-color="#d9b65d"/><stop offset="1" stop-color="#8c5b1b"/></linearGradient>
+ <filter id="glow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+<rect width="640" height="240" rx="18" fill="url(#bg)"/>
+<g fill="url(#silver)" stroke="#d9b65d" stroke-width="1.4" paint-order="stroke" font-family="Georgia,'Times New Roman',serif" font-size="154" letter-spacing="-12">
+<text x="72" y="165">NYIL</text></g>
+<g fill="none" stroke="url(#gold)" stroke-width="3.2" filter="url(#glow)">
+<path d="M50 155 C130 220 165 48 252 108 S392 201 490 92 S565 108 604 166"/>
+<path d="M95 180 C182 82 212 198 310 150 S438 45 548 145"/>
+</g>
+<g fill="#ffe9a0" filter="url(#glow)"><path d="M520 28l5 15 15 5-15 5-5 15-5-15-15-5 15-5z"/><circle cx="92" cy="72" r="2.4"/><circle cx="560" cy="202" r="2.5"/><circle cx="420" cy="35" r="2"/></g>
+</svg>
