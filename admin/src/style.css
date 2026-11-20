@@ -3,3 +3,13 @@
 .content-toolbar{display:flex;align-items:end;gap:20px;flex-wrap:wrap;margin:18px 0}.content-toolbar label{display:grid;gap:7px;color:#c7d7ce;font-size:11px}.content-toolbar select{min-width:220px;border:1px solid #35574a;background:#071d18;color:#edf4ef;padding:11px;border-radius:8px}.content-toolbar .publish-toggle{display:flex;align-items:center;gap:9px;padding:10px 0}.publish-toggle input{accent-color:var(--gold)}.json-label{display:grid;gap:8px;color:#c7d7ce;font-size:11px}.content-json{width:100%;min-height:360px;resize:vertical;border:1px solid #35574a;background:#061812;color:#d9e7de;padding:15px;border-radius:9px;font:12px/1.65 ui-monospace,SFMono-Regular,Consolas,monospace;tab-size:2}.content-help{color:#829b8e;font-size:10px;line-height:1.6;margin-top:10px}.content-existing{display:grid;gap:6px;margin-top:24px}.content-existing>b{font-size:11px;color:var(--gold);margin-bottom:5px}.content-existing button{display:flex;justify-content:space-between;align-items:center;text-align:left;border:1px solid #29483c;background:#081f19;color:#dce8e0;border-radius:8px;padding:10px 12px;font-size:11px}.content-existing button.selected{border-color:var(--gold)}.content-existing button span{color:#81998e;font-size:10px}
 
 .admin-gallery{display:flex;flex-wrap:wrap;gap:12px;margin:12px 0}.admin-gallery .image-preview{width:150px;display:grid;gap:6px}.admin-gallery .image-preview img{width:150px;height:105px;object-fit:cover;border:1px solid var(--line);border-radius:8px}
+
+
+/* Distinct NYIL Admin application identity */
+.admin-brand-lockup{display:grid;gap:7px;padding:2px 7px 18px;border-bottom:1px solid #234338}
+.admin-brand-lockup .brand{display:block;width:100%;height:auto;max-height:82px;object-fit:contain;object-position:left center}
+.admin-brand-lockup>span{padding-left:5px;color:#d9b65d;font-size:9px;font-weight:800;letter-spacing:2.6px}
+.topbar-heading{display:flex;align-items:center;gap:15px;min-width:0}
+.topbar-logo{display:block;width:112px;height:52px;object-fit:contain;object-position:left center;border:1px solid #315347;border-radius:10px;background:#09251d;padding:3px}
+.topbar-heading>div{min-width:0}
+@media(max-width:760px){.admin-brand-lockup{padding-bottom:13px}.topbar-logo{width:78px;height:40px}.topbar-heading{gap:9px}.topbar h1{font-size:21px}}
