@@ -64,19 +64,19 @@ body{background:var(--bg);color:var(--cream);transition:background .25s,color .2
 :root[data-theme="light"] .contact-form label{color:var(--cream)}
 :root[data-theme="light"] .loading-card,:root[data-theme="light"] .empty-card{border-color:var(--line);color:var(--muted)}
 :root[data-theme="light"] .product-card{box-shadow:0 10px 35px rgba(26,47,32,.05)}
-:root[dir="rtl"] body{font-family:"DM Sans",Tahoma,Arial,sans-serif}
-:root[dir="rtl"] .site-header nav{margin-left:0;margin-right:5vw}
-:root[dir="rtl"] .hero-copy,:root[dir="rtl"] .intro-grid,:root[dir="rtl"] .section-heading,:root[dir="rtl"] .technology-copy,:root[dir="rtl"] .contact-copy,:root[dir="rtl"] .contact-form{text-align:right}
-:root[dir="rtl"] .hero-actions,:root[dir="rtl"] .hero-proof{flex-direction:row-reverse;justify-content:flex-end}
-:root[dir="rtl"] .hero-bottom{direction:rtl}
-:root[dir="rtl"] .art-tag{direction:rtl}
-:root[dir="rtl"] .language-options button{text-align:right}
-:root[dir="rtl"] .language-english{grid-column:1}
-:root[dir="rtl"] .language-check{grid-column:2}
-:root[dir="rtl"] .dialog-head{direction:rtl}
-:root[dir="rtl"] .dialog-description{text-align:right}
-:root[dir="rtl"] .contact-form .button{justify-self:start}
-:root[dir="rtl"] .footer-bottom,:root[dir="rtl"] .footer-top{direction:rtl}
+:root[data-content-direction="rtl"] body{font-family:"DM Sans",Tahoma,Arial,sans-serif}
+:root[data-content-direction="rtl"] .site-header nav{margin-left:0;margin-right:5vw}
+:root[data-content-direction="rtl"] .hero-copy,:root[data-content-direction="rtl"] .intro-grid,:root[data-content-direction="rtl"] .section-heading,:root[data-content-direction="rtl"] .technology-copy,:root[data-content-direction="rtl"] .contact-copy,:root[data-content-direction="rtl"] .contact-form{text-align:right}
+:root[data-content-direction="rtl"] .hero-actions,:root[data-content-direction="rtl"] .hero-proof{flex-direction:row-reverse;justify-content:flex-end}
+:root[data-content-direction="rtl"] .hero-bottom{direction:rtl}
+:root[data-content-direction="rtl"] .art-tag{direction:rtl}
+:root[data-content-direction="rtl"] .language-options button{text-align:right}
+:root[data-content-direction="rtl"] .language-english{grid-column:1}
+:root[data-content-direction="rtl"] .language-check{grid-column:2}
+:root[data-content-direction="rtl"] .dialog-head{direction:rtl}
+:root[data-content-direction="rtl"] .dialog-description{text-align:right}
+:root[data-content-direction="rtl"] .contact-form .button{justify-self:start}
+:root[data-content-direction="rtl"] .footer-bottom,:root[data-content-direction="rtl"] .footer-top{direction:rtl}
 :focus-visible{outline:2px solid var(--gold);outline-offset:3px}
 button:disabled{opacity:.6;cursor:not-allowed}
 @media(max-width:900px){
@@ -123,6 +123,13 @@ button:disabled{opacity:.6;cursor:not-allowed}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
 
 /* Reliable Arabic-script rendering for Pashto and Dari */
-:root[dir="rtl"] body{font-family:"Noto Sans Arabic","Tahoma",Arial,sans-serif}
-:root[dir="rtl"] .hero h1,:root[dir="rtl"] h2,:root[dir="rtl"] h3{letter-spacing:0;line-height:1.55}
-:root[dir="rtl"] .hero-lead,:root[dir="rtl"] .intro-grid p,:root[dir="rtl"] .section-heading>p,:root[dir="rtl"] .technology-copy>p,:root[dir="rtl"] .contact-copy>p{line-height:2}
+:root[data-content-direction="rtl"] .announcement,
+:root[data-content-direction="rtl"] .site-header,
+:root[data-content-direction="rtl"] main,
+:root[data-content-direction="rtl"] .site-footer,
+:root[data-content-direction="rtl"] .language-dialog-panel{
+  direction:rtl;
+  font-family:"Noto Sans Arabic","Tahoma",Arial,sans-serif;
+}
+:root[data-content-direction="rtl"] .hero h1,:root[data-content-direction="rtl"] h2,:root[data-content-direction="rtl"] h3{letter-spacing:0;line-height:1.55}
+:root[data-content-direction="rtl"] .hero-lead,:root[data-content-direction="rtl"] .intro-grid p,:root[data-content-direction="rtl"] .section-heading>p,:root[data-content-direction="rtl"] .technology-copy>p,:root[data-content-direction="rtl"] .contact-copy>p{line-height:2}
