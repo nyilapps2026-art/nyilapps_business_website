@@ -1,6 +1,11 @@
 name: Deploy NYIL Business Website
 on:
   workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths:
+      - "website/**"
+      - ".github/workflows/deploy-website.yml"
   push:
     branches: [main]
     paths:
@@ -8,16 +13,29 @@ on:
       - ".github/workflows/deploy-website.yml"
 
 jobs:
-  deploy:
+  validate:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source
         uses: actions/checkout@v5
-      - name: Verify website files
+      - name: Set up Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Validate website source
         run: |
           test -s website/index.html
           test -s website/styles.css
           test -s website/app.js
+          node --check website/app.js
+
+  deploy:
+    if: github.event_name != 'pull_request'
+    needs: validate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v5
       - name: Deploy public website to Cloudflare Pages
         run: npx wrangler@latest pages deploy website --project-name=nyil-business-website --branch=main
         env:
