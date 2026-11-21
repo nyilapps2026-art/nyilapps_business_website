@@ -166,6 +166,12 @@ function applyCmsOverrides() {
       setText('[data-company-field="mission-body"]', copy.missionBody);
       setText('[data-company-field="approach-title"]', copy.approachTitle);
       setText('[data-company-field="approach-body"]', copy.approachBody);
+      setText('[data-i18n="valueOneTitle"]', copy.valueOneTitle);
+      setText('[data-i18n="valueOneText"]', copy.valueOneText);
+      setText('[data-i18n="valueTwoTitle"]', copy.valueTwoTitle);
+      setText('[data-i18n="valueTwoText"]', copy.valueTwoText);
+      setText('[data-i18n="valueThreeTitle"]', copy.valueThreeTitle);
+      setText('[data-i18n="valueThreeText"]', copy.valueThreeText);
     }
   });
 }
