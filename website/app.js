@@ -136,17 +136,26 @@ async function getJson(path) {
 }
 function applyCmsOverrides() {
   const sections = {home:['heroTitle','heroText'],about:['aboutTitle','aboutText'],solutions:['solutionsTitle','solutionsText'],technology:['technologyTitle','technologyText'],footer:['footerLine']};
+  const setText = (selector, value) => {
+    if (typeof value !== 'string' || !value.trim()) return;
+    const node = document.querySelector(selector);
+    if (node) node.textContent = value;
+  };
   Object.entries(sections).forEach(([key, fields]) => {
     const copy = cmsOverrides[key]?.[currentLanguage] || cmsOverrides[key]?.en;
     if (!copy || typeof copy !== 'object') return;
     const [titleKey, textKey] = fields;
-    if (titleKey && typeof copy.title === 'string' && copy.title.trim()) {
-      const node = document.querySelector('[data-i18n="' + titleKey + '"]');
-      if (node) node.textContent = copy.title;
-    }
-    if (textKey && typeof copy.body === 'string' && copy.body.trim()) {
-      const node = document.querySelector('[data-i18n="' + textKey + '"]');
-      if (node) node.textContent = copy.body;
+    if (titleKey) setText('[data-i18n="' + titleKey + '"]', copy.title);
+    if (textKey) setText('[data-i18n="' + textKey + '"]', copy.body);
+    if (key === 'about') {
+      setText('[data-company-field="history-title"]', copy.historyTitle);
+      setText('[data-company-field="history-body"]', copy.historyBody);
+      setText('[data-company-field="vision-title"]', copy.visionTitle);
+      setText('[data-company-field="vision-body"]', copy.visionBody);
+      setText('[data-company-field="mission-title"]', copy.missionTitle);
+      setText('[data-company-field="mission-body"]', copy.missionBody);
+      setText('[data-company-field="approach-title"]', copy.approachTitle);
+      setText('[data-company-field="approach-body"]', copy.approachBody);
     }
   });
 }
