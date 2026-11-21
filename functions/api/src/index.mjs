@@ -63,7 +63,7 @@ export default {
       }
       const collectionMatch = url.pathname.match(/^\/collections\/([a-z-]{2,40})$/)
       if (request.method === 'GET' && collectionMatch) {
-        const allowedCollections = ['services','projects','news','team','partners','achievements','testimonials','documents','faqs','careers']
+        const allowedCollections = ['services','projects','work','plans','work-method','news','team','partners','achievements','testimonials','documents','faqs','careers']
         const key = collectionMatch[1]
         if (!allowedCollections.includes(key)) return response({error:'Unknown collection'},404,origin)
         const rows = await sql`SELECT id, collection_key, slug, title, summary, body, category, media_urls, metadata, sort_order, published_at, updated_at FROM public.site_entries WHERE collection_key=${key} AND status='published' ORDER BY sort_order ASC, published_at DESC NULLS LAST, updated_at DESC`
@@ -211,7 +211,7 @@ export default {
           if (!endpoint) throw new Error('Object storage endpoint is not configured.')
           return response({key,url:`${endpoint}/${MEDIA_BUCKET}/${key}`},201,origin)
         }
-        const allowedCollections = ['services','projects','news','team','partners','achievements','testimonials','documents','faqs','careers']
+        const allowedCollections = ['services','projects','work','plans','work-method','news','team','partners','achievements','testimonials','documents','faqs','careers']
         if (request.method === 'GET' && url.pathname === '/admin/entries') {
           const key = safeText(url.searchParams.get('collection'),40)
           if (!allowedCollections.includes(key)) return response({error:'Unknown collection'},400,origin)
