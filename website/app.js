@@ -82,6 +82,7 @@ TEXT.fa = {
 
 let currentLanguage = 'en';
 let cmsOverrides = {};
+let corporateEntriesCache = {};
 const t = key => TEXT[currentLanguage]?.[key] || TEXT.en[key] || key;
 const localized = (value, lang=currentLanguage) => {
   if (typeof value === 'string') return value;
@@ -123,6 +124,7 @@ function applyLanguage(lang) {
   catch (error) { console.warn('NYIL CMS language override skipped:', error); }
   try { renderProducts(Array.isArray(window.__nyilProducts) ? window.__nyilProducts : []); }
   catch (error) { console.error('NYIL product language render failed:', error); }
+  try { renderCorporateSections(); } catch (error) { console.warn('NYIL corporate language render skipped:', error); }
 }
 async function getJson(path) {
   const response = await fetch(API_BASE + path, {headers:{Accept:'application/json'}});
@@ -241,29 +243,37 @@ const CORPORATE_COLLECTIONS = [
   ['faqs','Frequently asked questions','عامې پوښتنې','پرسش‌های متداول'],['careers','Careers','د کار فرصتونه','فرصت‌های شغلی']
 ];
 function corporateText(value){return localized(value)||''}
+function safeHttpUrl(value){try{const url=new URL(String(value||''),window.location.origin);return ['http:','https:'].includes(url.protocol)?url.href:''}catch{return ''}}
 function renderCorporateEntry(entry,key){
   const title=corporateText(entry.title)||entry.slug||'',summary=corporateText(entry.summary),body=corporateText(entry.body);
-  const media=Array.isArray(entry.media_urls)?entry.media_urls:[];
+  const media=(Array.isArray(entry.media_urls)?entry.media_urls:[]).map(safeHttpUrl).filter(Boolean);
   const image=media.find(url=>/\.(png|jpe?g|webp|avif)(\?|$)/i.test(url));
   const video=media.find(url=>/\.(mp4|webm|mov)(\?|$)/i.test(url));
   const meta=entry.metadata&&typeof entry.metadata==='object'?entry.metadata:{};
+  const externalUrl=safeHttpUrl(meta.url);
   if(key==='faqs')return '<details class="corporate-faq"><summary>'+escapeHtml(title)+'</summary><p>'+escapeHtml(body||summary)+'</p></details>';
-  return '<article class="corporate-card">'+(image?'<img class="corporate-media" loading="lazy" src="'+escapeHtml(image)+'" alt="'+escapeHtml(title)+'">':'')+(video?'<video class="corporate-media" controls preload="metadata" src="'+escapeHtml(video)+'"></video>':'')+'<div class="corporate-card-copy">'+(entry.category?'<span class="corporate-category">'+escapeHtml(entry.category)+'</span>':'')+'<h3>'+escapeHtml(title)+'</h3>'+(summary?'<p class="corporate-summary">'+escapeHtml(summary)+'</p>':'')+(body?'<div class="corporate-body">'+escapeHtml(body).replace(/\n/g,'<br>')+'</div>':'')+(meta.role?'<small>'+escapeHtml(String(meta.role))+'</small>':'')+(meta.date?'<small>'+escapeHtml(String(meta.date))+'</small>':'')+(meta.url?'<a class="text-link" href="'+escapeHtml(String(meta.url))+'" target="_blank" rel="noopener noreferrer">'+escapeHtml(String(meta.link_label||'Learn more'))+' ↗</a>':'')+'</div></article>';
+  return '<article class="corporate-card">'+(image?'<img class="corporate-media" loading="lazy" src="'+escapeHtml(image)+'" alt="'+escapeHtml(title)+'">':'')+(video?'<video class="corporate-media" controls preload="metadata" src="'+escapeHtml(video)+'"></video>':'')+'<div class="corporate-card-copy">'+(entry.category?'<span class="corporate-category">'+escapeHtml(entry.category)+'</span>':'')+'<h3>'+escapeHtml(title)+'</h3>'+(summary?'<p class="corporate-summary">'+escapeHtml(summary)+'</p>':'')+(body?'<div class="corporate-body">'+escapeHtml(body).replace(/\n/g,'<br>')+'</div>':'')+(meta.role?'<small>'+escapeHtml(String(meta.role))+'</small>':'')+(meta.date?'<small>'+escapeHtml(String(meta.date))+'</small>':'')+(externalUrl?'<a class="text-link" href="'+escapeHtml(externalUrl)+'" target="_blank" rel="noopener noreferrer">'+escapeHtml(String(meta.link_label||'Learn more'))+' ↗</a>':'')+'</div></article>';
 }
-async function loadCorporateSections(){
+function renderCorporateSections(){
   const host=document.getElementById('corporateSections');if(!host)return;
   const nav=document.getElementById('mainNav');
+  host.innerHTML='';
+  if(nav)nav.querySelectorAll('[data-corporate-nav]').forEach(link=>link.remove());
   for(const [key,en,ps,fa] of CORPORATE_COLLECTIONS){
-    try{
-      const result=await getJson('/collections/'+key),entries=Array.isArray(result.entries)?result.entries:[];
-      if(!entries.length)continue;
-      const label=currentLanguage==='ps'?ps:currentLanguage==='fa'?fa:en;
-      const section=document.createElement('section');section.className='corporate-section section-wrap';section.id=key;
-      section.innerHTML='<div class="section-kicker">'+escapeHtml(label)+'</div><div class="section-heading"><h2>'+escapeHtml(label)+'</h2></div><div class="corporate-grid">'+entries.map(entry=>renderCorporateEntry(entry,key)).join('')+'</div>';
-      host.appendChild(section);
-      if(nav&&!nav.querySelector('a[href="#'+key+'"]')){const link=document.createElement('a');link.href='#'+key;link.textContent=label;nav.insertBefore(link,nav.querySelector('a[href="#contact"]')||null);}
-    }catch(error){console.warn('NYIL corporate section unavailable:',key,error)}
+    const entries=Array.isArray(corporateEntriesCache[key])?corporateEntriesCache[key]:[];
+    if(!entries.length)continue;
+    const label=currentLanguage==='ps'?ps:currentLanguage==='fa'?fa:en;
+    const section=document.createElement('section');section.className='corporate-section section-wrap';section.id=key;
+    section.innerHTML='<div class="section-kicker">'+escapeHtml(label)+'</div><div class="section-heading"><h2>'+escapeHtml(label)+'</h2></div><div class="corporate-grid">'+entries.map(entry=>renderCorporateEntry(entry,key)).join('')+'</div>';
+    host.appendChild(section);
+    if(nav){const link=document.createElement('a');link.href='#'+key;link.textContent=label;link.dataset.corporateNav='true';nav.insertBefore(link,nav.querySelector('a[href="#contact"]')||null);}
   }
+}
+async function loadCorporateSections(){
+  const cache={};
+  await Promise.all(CORPORATE_COLLECTIONS.map(async([key])=>{try{const result=await getJson('/collections/'+key);cache[key]=Array.isArray(result.entries)?result.entries:[]}catch(error){console.warn('NYIL corporate section unavailable:',key,error);cache[key]=[]}}));
+  corporateEntriesCache=cache;
+  renderCorporateSections();
 }
 
 document.addEventListener('DOMContentLoaded', () => {
