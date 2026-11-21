@@ -99,15 +99,20 @@ export default {
           const imageTypes = new Set(['image/jpeg','image/png','image/webp','image/avif'])
           const videoTypes = new Set(['video/mp4','video/webm','video/quicktime'])
           const isVideo = videoTypes.has(contentType)
-          if (!imageTypes.has(contentType) && !isVideo) return response({error:'Upload a supported image or video file.'},415,origin)
-          const maxBytes = isVideo ? MAX_VIDEO_BYTES : MAX_IMAGE_BYTES
-          const label = isVideo ? 'Video' : 'Image'
+          const isDocument = contentType === 'application/pdf'
+          if (!imageTypes.has(contentType) && !isVideo && !isDocument) return response({error:'Upload a supported image, video or PDF document.'},415,origin)
+          const maxBytes = isVideo ? MAX_VIDEO_BYTES : isDocument ? MAX_DOCUMENT_BYTES : MAX_IMAGE_BYTES
+          const label = isVideo ? 'Video' : isDocument ? 'PDF document' : 'Image'
           const declaredLength = Number(request.headers.get('content-length') || 0)
           if (declaredLength > maxBytes) return response({error:`${label} must be ${isVideo?'100 MB':'8 MB'} or smaller.`},413,origin)
           const bytes = new Uint8Array(await request.arrayBuffer())
           if (!bytes.length || bytes.length > maxBytes) return response({error:`${label} file size is invalid or exceeds the limit.`},413,origin)
           let extension
-          if (isVideo) {
+          if (isDocument) {
+            const isPdf = bytes.length > 5 && String.fromCharCode(...bytes.slice(0,5)) === '%PDF-'
+            if (!isPdf) return response({error:'The uploaded file content does not match PDF format.'},415,origin)
+            extension = 'pdf'
+          } else if (isVideo) {
             const isMp4 = contentType === 'video/mp4' && bytes.length > 12 && String.fromCharCode(...bytes.slice(4,8)) === 'ftyp'
             const isWebm = contentType === 'video/webm' && bytes[0] === 0x1a && bytes[1] === 0x45 && bytes[2] === 0xdf && bytes[3] === 0xa3
             const isMov = contentType === 'video/quicktime' && bytes.length > 12 && String.fromCharCode(...bytes.slice(4,8)) === 'ftyp'
@@ -121,7 +126,8 @@ export default {
             if (!(contentType === 'image/jpeg' && isJpeg) && !(contentType === 'image/png' && isPng) && !(contentType === 'image/webp' && isWebp) && !(contentType === 'image/avif' && isAvif)) return response({error:'The uploaded file content does not match its image type.'},415,origin)
             extension = ({'image/jpeg':'jpg','image/png':'png','image/webp':'webp','image/avif':'avif'})[contentType]
           }
-          const key = `products/${new Date().toISOString().slice(0,10)}/${crypto.randomUUID()}.${extension}`
+          const scope = url.searchParams.get('scope') === 'corporate' ? 'corporate' : 'products'
+          const key = `${scope}/${new Date().toISOString().slice(0,10)}/${crypto.randomUUID()}.${extension}`
           await storage.send(new PutObjectCommand({Bucket:MEDIA_BUCKET,Key:key,Body:bytes,ContentType:contentType,CacheControl:'public, max-age=31536000, immutable'}))
           const endpoint = (process.env.AWS_ENDPOINT_URL_S3 || '').replace(/\/$/,'')
           if (!endpoint) throw new Error('Object storage endpoint is not configured.')
