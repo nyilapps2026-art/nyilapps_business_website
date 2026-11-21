@@ -46,6 +46,14 @@ export default {
         const [row] = await sql`SELECT page_key, content, updated_at FROM public.site_content WHERE page_key=${contentMatch[1]} AND published=true`
         return response({content:row || null}, 200, origin)
       }
+      const collectionMatch = url.pathname.match(/^\/collections\/([a-z-]{2,40})$/)
+      if (request.method === 'GET' && collectionMatch) {
+        const allowedCollections = ['services','projects','news','team','partners','achievements','testimonials','documents','faqs','careers']
+        const key = collectionMatch[1]
+        if (!allowedCollections.includes(key)) return response({error:'Unknown collection'},404,origin)
+        const rows = await sql`SELECT id, collection_key, slug, title, summary, body, category, media_urls, metadata, sort_order, published_at, updated_at FROM public.site_entries WHERE collection_key=${key} AND status='published' ORDER BY sort_order ASC, published_at DESC NULLS LAST, updated_at DESC`
+        return response({entries:rows},200,origin)
+      }
       if (request.method === 'GET' && url.pathname === '/products') {
         const rows = await sql`SELECT id, slug, name, category, summary, description, image_url, image_urls, video_urls, external_url, status, sort_order, updated_at FROM public.products WHERE status = 'published' ORDER BY sort_order ASC, updated_at DESC`
         return response({products:rows}, 200, origin)
@@ -115,6 +123,51 @@ export default {
           const endpoint = (process.env.AWS_ENDPOINT_URL_S3 || '').replace(/\/$/,'')
           if (!endpoint) throw new Error('Object storage endpoint is not configured.')
           return response({key,url:`${endpoint}/${MEDIA_BUCKET}/${key}`},201,origin)
+        }
+        const allowedCollections = ['services','projects','news','team','partners','achievements','testimonials','documents','faqs','careers']
+        if (request.method === 'GET' && url.pathname === '/admin/entries') {
+          const key = safeText(url.searchParams.get('collection'),40)
+          if (!allowedCollections.includes(key)) return response({error:'Unknown collection'},400,origin)
+          const rows = await sql`SELECT * FROM public.site_entries WHERE collection_key=${key} ORDER BY sort_order ASC, updated_at DESC`
+          return response({entries:rows},200,origin)
+        }
+        if (request.method === 'POST' && url.pathname === '/admin/entries') {
+          const body = await request.json()
+          const key = safeText(body.collection_key,40)
+          const slug = safeText(body.slug,90)
+          if (!allowedCollections.includes(key) || !validSlug(slug)) return response({error:'Choose a valid content section and URL slug.'},400,origin)
+          const status = ['draft','published'].includes(body.status) ? body.status : 'draft'
+          const [row] = await sql`INSERT INTO public.site_entries (collection_key,slug,title,summary,body,category,media_urls,metadata,status,sort_order,published_at) VALUES (${key},${slug},${JSON.stringify(jsonObject(body.title))}::jsonb,${JSON.stringify(jsonObject(body.summary))}::jsonb,${JSON.stringify(jsonObject(body.body))}::jsonb,${safeText(body.category,100)},${JSON.stringify(Array.isArray(body.media_urls)?body.media_urls.filter(v=>typeof v==='string'&&/^https?:\/\//.test(v)).slice(0,20):[])}::jsonb,${JSON.stringify(jsonObject(body.metadata))}::jsonb,${status},${Number.isFinite(Number(body.sort_order))?Math.trunc(Number(body.sort_order)):0},CASE WHEN ${status}='published' THEN now() ELSE NULL END) RETURNING *`
+          await sql`INSERT INTO public.admin_audit_log (admin_email,action,details) VALUES (${email},'site_entry.create',${JSON.stringify({collection:key,slug})}::jsonb)`
+          return response({entry:row},201,origin)
+        }
+        const entryMatch = url.pathname.match(/^\/admin\/entries\/([0-9a-f-]{36})$/i)
+        if (entryMatch) {
+          const id = entryMatch[1]
+          if (request.method === 'PUT') {
+            const body = await request.json()
+            const key = safeText(body.collection_key,40), slug = safeText(body.slug,90)
+            if (!allowedCollections.includes(key) || !validSlug(slug)) return response({error:'Choose a valid content section and URL slug.'},400,origin)
+            const status = ['draft','published'].includes(body.status) ? body.status : 'draft'
+            const media = Array.isArray(body.media_urls)?body.media_urls.filter(v=>typeof v==='string'&&/^https?:\/\//.test(v)).slice(0,20):[]
+            const [row] = await sql`UPDATE public.site_entries SET collection_key=${key},slug=${slug},title=${JSON.stringify(jsonObject(body.title))}::jsonb,summary=${JSON.stringify(jsonObject(body.summary))}::jsonb,body=${JSON.stringify(jsonObject(body.body))}::jsonb,category=${safeText(body.category,100)},media_urls=${JSON.stringify(media)}::jsonb,metadata=${JSON.stringify(jsonObject(body.metadata))}::jsonb,status=${status},sort_order=${Number.isFinite(Number(body.sort_order))?Math.trunc(Number(body.sort_order)):0},published_at=CASE WHEN ${status}='published' THEN COALESCE(published_at,now()) ELSE NULL END,updated_at=now() WHERE id=${id} RETURNING *`
+            if (!row) return response({error:'Content entry not found'},404,origin)
+            await sql`INSERT INTO public.admin_audit_log (admin_email,action,details) VALUES (${email},'site_entry.update',${JSON.stringify({id,collection:key,slug})}::jsonb)`
+            return response({entry:row},200,origin)
+          }
+          if (request.method === 'PATCH') {
+            const body = await request.json()
+            if (!['draft','published'].includes(body.status)) return response({error:'Invalid status'},400,origin)
+            const [row] = await sql`UPDATE public.site_entries SET status=${body.status},published_at=CASE WHEN ${body.status}='published' THEN COALESCE(published_at,now()) ELSE NULL END,updated_at=now() WHERE id=${id} RETURNING *`
+            if (!row) return response({error:'Content entry not found'},404,origin)
+            return response({entry:row},200,origin)
+          }
+          if (request.method === 'DELETE') {
+            const [row] = await sql`DELETE FROM public.site_entries WHERE id=${id} RETURNING id`
+            if (!row) return response({error:'Content entry not found'},404,origin)
+            await sql`INSERT INTO public.admin_audit_log (admin_email,action,details) VALUES (${email},'site_entry.delete',${JSON.stringify({id})}::jsonb)`
+            return response({deleted:true},200,origin)
+          }
         }
         if (request.method === 'GET' && url.pathname === '/admin/products') {
           const rows = await sql`SELECT * FROM public.products ORDER BY sort_order ASC, updated_at DESC`
