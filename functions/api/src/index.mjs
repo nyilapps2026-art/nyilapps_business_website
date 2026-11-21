@@ -1,6 +1,6 @@
 import { neon } from '@neondatabase/serverless'
 import { createRemoteJWKSet, jwtVerify } from 'jose'
-import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3'
+import { S3Client, PutObjectCommand, ListObjectsV2Command, DeleteObjectCommand } from '@aws-sdk/client-s3'
 
 const ADMIN_USER_ID = '128df7a2-7990-4ed2-91a0-2adb61621b65'
 const ADMIN_EMAIL = 'nyilapps2026@gmail.com'
@@ -171,6 +171,40 @@ export default {
           const [row] = await sql`INSERT INTO public.site_content (page_key, content, published, updated_at) VALUES (${pageKey}, ${JSON.stringify(content)}::jsonb, ${published}, now()) ON CONFLICT (page_key) DO UPDATE SET content=EXCLUDED.content, published=EXCLUDED.published, updated_at=now() RETURNING page_key, content, published, updated_at`
           await sql`INSERT INTO public.admin_audit_log (admin_email, action, details) VALUES (${email}, 'site_content.update', ${JSON.stringify({page_key:pageKey,published})}::jsonb)`
           return response({page:row},200,origin)
+        }
+        if (request.method === 'GET' && url.pathname === '/admin/media') {
+          const endpoint = (process.env.AWS_ENDPOINT_URL_S3 || '').replace(/\\/$/,'')
+          if (!endpoint) throw new Error('Object storage endpoint is not configured.')
+          const assets = []
+          for (const scope of ['corporate','products']) {
+            let continuationToken
+            do {
+              const page = await storage.send(new ListObjectsV2Command({Bucket:MEDIA_BUCKET,Prefix:scope+'/',ContinuationToken:continuationToken,MaxKeys:1000}))
+              for (const object of page.Contents || []) {
+                if (!object.Key || !object.Size) continue
+                const extension = object.Key.split('.').pop().toLowerCase()
+                const kind = ['jpg','jpeg','png','webp','avif'].includes(extension) ? 'image' : ['mp4','webm','mov'].includes(extension) ? 'video' : extension === 'pdf' ? 'pdf' : 'file'
+                assets.push({key:object.Key,name:object.Key.split('/').pop(),url:endpoint+'/'+MEDIA_BUCKET+'/'+object.Key,kind,size:object.Size,sizeLabel:object.Size >= 1048576 ? (object.Size/1048576).toFixed(1)+' MB' : Math.max(1,Math.round(object.Size/1024))+' KB',updatedAt:object.LastModified?.toISOString?.() || null})
+              }
+              continuationToken = page.IsTruncated ? page.NextContinuationToken : undefined
+            } while (continuationToken && assets.length < 5000)
+          }
+          assets.sort((a,b)=>String(b.updatedAt||'').localeCompare(String(a.updatedAt||'')))
+          return response({assets},200,origin)
+        }
+        if (request.method === 'DELETE' && url.pathname === '/admin/media') {
+          const body = await request.json().catch(()=>({}))
+          const key = safeText(body.key,500)
+          if (!/^(corporate|products)\\/\\d{4}-\\d{2}-\\d{2}\\/[0-9a-f-]{36}\\.(jpg|png|webp|avif|mp4|webm|mov|pdf)$/i.test(key)) return response({error:'Invalid media file key.'},400,origin)
+          const endpoint = (process.env.AWS_ENDPOINT_URL_S3 || '').replace(/\\/$/,'')
+          if (!endpoint) throw new Error('Object storage endpoint is not configured.')
+          const assetUrl = endpoint+'/'+MEDIA_BUCKET+'/'+key
+          const [productRef] = await sql`SELECT id FROM public.products WHERE image_url=${assetUrl} OR COALESCE(image_urls,'[]'::jsonb) @> ${JSON.stringify([assetUrl])}::jsonb OR COALESCE(video_urls,'[]'::jsonb) @> ${JSON.stringify([assetUrl])}::jsonb LIMIT 1`
+          const [entryRef] = await sql`SELECT id FROM public.site_entries WHERE COALESCE(media_urls,'[]'::jsonb) @> ${JSON.stringify([assetUrl])}::jsonb LIMIT 1`
+          if (productRef || entryRef) return response({error:'This file is still attached to saved content. Remove it from that content first.'},409,origin)
+          await storage.send(new DeleteObjectCommand({Bucket:MEDIA_BUCKET,Key:key}))
+          await sql`INSERT INTO public.admin_audit_log (admin_email,action,details) VALUES (${email},'media.delete',${JSON.stringify({key})}::jsonb)`
+          return response({deleted:true},200,origin)
         }
         if (request.method === 'POST' && url.pathname === '/admin/uploads') {
           const contentType = (request.headers.get('content-type') || '').toLowerCase().split(';')[0].trim()
