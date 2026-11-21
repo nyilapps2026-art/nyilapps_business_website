@@ -356,3 +356,14 @@ button:disabled{opacity:.6;cursor:not-allowed}
 .corporate-person-responsibility{margin-top:16px;padding-top:13px;border-top:1px solid var(--line)}
 .corporate-person-responsibility b{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold)}
 .corporate-person-responsibility p{margin:6px 0 0;color:var(--muted);font-size:12px;line-height:1.8}
+
+
+/* Organization chart hierarchy */
+.corporate-org-chart{display:grid;gap:42px;margin-top:34px}
+.corporate-org-level{position:relative;padding-top:18px;border-top:1px solid var(--line)}
+.corporate-org-level>h3{display:flex;align-items:center;gap:12px;margin:0 0 20px;color:var(--gold);font:600 19px/1.35 var(--serif)}
+.corporate-org-level>h3::before{content:"";width:24px;height:2px;background:var(--gold)}
+.corporate-org-level .corporate-grid{margin-top:0}
+.corporate-reports-to{margin-top:12px;padding:8px 10px;border-inline-start:2px solid var(--gold);background:var(--surface2);color:var(--muted);font-size:11px;line-height:1.6}
+.corporate-reports-to span{color:var(--gold);font-weight:700}
+.corporate-org-level .corporate-team-card{max-width:100%}
