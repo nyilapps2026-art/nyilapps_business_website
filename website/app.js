@@ -323,15 +323,29 @@ document.addEventListener('DOMContentLoaded', () => {
   applyLanguage(saved);
   const languageSelect = document.getElementById('languageSelect');
   if (languageSelect) languageSelect.addEventListener('change', event => applyLanguage(event.target.value));
-  const closeDetail=()=>{document.getElementById('productDetailModal').hidden=true;document.body.classList.remove('modal-open')};document.getElementById('detailClose').addEventListener('click',closeDetail);document.getElementById('productDetailModal').addEventListener('click',e=>{if(e.target.id==='productDetailModal')closeDetail()});document.getElementById('lightboxClose').addEventListener('click',closeLightbox);document.getElementById('imageLightbox').addEventListener('click',e=>{if(e.target.id==='imageLightbox')closeLightbox()});document.getElementById('lightboxPrev').addEventListener('click',()=>{setDetailImage((activeImageIndex+activeProductImages.length-1)%activeProductImages.length);document.getElementById('lightboxImage').src=activeProductImages[activeImageIndex]});document.getElementById('lightboxNext').addEventListener('click',()=>{setDetailImage((activeImageIndex+1)%activeProductImages.length);document.getElementById('lightboxImage').src=activeProductImages[activeImageIndex]});document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeLightbox();closeDetail()}});
+  const closeDetail=()=>{document.getElementById('productDetailModal').hidden=true;document.body.classList.remove('modal-open')};document.getElementById('detailClose').addEventListener('click',closeDetail);document.getElementById('productDetailModal').addEventListener('click',e=>{if(e.target.id==='productDetailModal')closeDetail()});document.getElementById('lightboxClose').addEventListener('click',closeLightbox);document.getElementById('imageLightbox').addEventListener('click',e=>{if(e.target.id==='imageLightbox')closeLightbox()});document.getElementById('lightboxPrev').addEventListener('click',()=>{setDetailImage((activeImageIndex+activeProductImages.length-1)%activeProductImages.length);document.getElementById('lightboxImage').src=activeProductImages[activeImageIndex]});document.getElementById('lightboxNext').addEventListener('click',()=>{setDetailImage((activeImageIndex+1)%activeProductImages.length);document.getElementById('lightboxImage').src=activeProductImages[activeImageIndex]});document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeLightbox();closeDetail();if(nav.classList.contains('open')){closeMobileNav();toggle.focus()}}});
   const toggle = document.getElementById('menuToggle');
   const nav = document.getElementById('mainNav');
+  const closeMobileNav = () => {
+    nav.classList.remove('open');
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.setAttribute('aria-label', 'Open navigation');
+  };
   toggle.addEventListener('click', () => {
     const open = nav.classList.toggle('open');
     toggle.setAttribute('aria-expanded', String(open));
-    
+    toggle.setAttribute('aria-label', open ? 'Close navigation' : 'Open navigation');
   });
-  nav.addEventListener('click', event => { const link = event.target.closest('a'); if (!link || !nav.contains(link)) return; nav.classList.remove('open'); toggle.setAttribute('aria-expanded','false'); });
+  nav.addEventListener('click', event => {
+    const link = event.target.closest('a');
+    if (!link || !nav.contains(link)) return;
+    closeMobileNav();
+  });
+  document.addEventListener('click', event => {
+    if (!nav.classList.contains('open')) return;
+    if (nav.contains(event.target) || toggle.contains(event.target)) return;
+    closeMobileNav();
+  });
   void loadProducts();
   void loadCmsContent();
   void loadCorporateSections();
