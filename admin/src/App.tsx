@@ -7,7 +7,7 @@ type Inquiry = { id:number; name:string; email:string; subject:string; message:s
 type Status = Product['status']
 type SitePage = {page_key:string;content:Record<string,unknown>;published:boolean;updated_at:string}
 const SITE_PAGES = [{key:'home',label:'Home'},{key:'about',label:'About'},{key:'solutions',label:'Solutions'},{key:'technology',label:'Technology'},{key:'payment',label:'Payment'},{key:'footer',label:'Footer'},{key:'privacy',label:'Privacy Policy'},{key:'terms',label:'Terms'}]
-const LANGUAGES = [{code:'en',label:'English'},{code:'de',label:'Deutsch'},{code:'fr',label:'Français'},{code:'es',label:'Español'},{code:'it',label:'Italiano'},{code:'pt',label:'Português'},{code:'nl',label:'Nederlands'},{code:'sv',label:'Svenska'},{code:'no',label:'Norsk'},{code:'da',label:'Dansk'}]
+const LANGUAGES = [{code:'en',label:'English'},{code:'ps',label:'Pashto'},{code:'fa',label:'Dari'},{code:'de',label:'Deutsch'},{code:'fr',label:'Français'},{code:'es',label:'Español'},{code:'it',label:'Italiano'},{code:'pt',label:'Português'},{code:'nl',label:'Nederlands'},{code:'sv',label:'Svenska'},{code:'no',label:'Norsk'},{code:'da',label:'Dansk'}]
 type Localized = Record<string,string>
 const EMPTY = () => Object.fromEntries(LANGUAGES.map(l=>[l.code,''])) as Localized
 const AUTH_URL = (import.meta.env.VITE_NEON_AUTH_URL || 'https://ep-red-fog-bdya5bxr.neonauth.c-8.us-east-2.aws.neon.tech/nyil_website/auth').trim()
