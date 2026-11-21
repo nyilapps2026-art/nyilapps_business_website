@@ -23,7 +23,7 @@
 
 /* NYIL Admin theme system: deliberate light and dark palettes */
 :root{color-scheme:dark;--text:#edf4ef;--surface:#0b2821;--surface-2:#081f19;--surface-3:#071d18;--border:#29483c;--subtle:#91a79c;--accent:#d9b65d;--accent-contrast:#14241c;--focus:#e7c66f}
-:root[data-theme="light"]{color-scheme:light;--bg:#f2f6f3;--panel:#ffffff;--line:#d8e3dc;--muted:#64776d;--gold:#99701b;--green:#e4efe8;--text:#17271f;--surface:#ffffff;--surface-2:#f7faf8;--surface-3:#edf3ef;--border:#d8e3dc;--subtle:#64776d;--accent:#99701b;--accent-contrast:#ffffff;--focus:#9a741e}
+:root[data-theme="light"]{color:#17271f;color-scheme:light;--bg:#f2f6f3;--panel:#ffffff;--line:#d8e3dc;--muted:#64776d;--gold:#99701b;--green:#e4efe8;--text:#17271f;--surface:#ffffff;--surface-2:#f7faf8;--surface-3:#edf3ef;--border:#d8e3dc;--subtle:#64776d;--accent:#99701b;--accent-contrast:#ffffff;--focus:#9a741e}
 :root[data-theme="light"] body{background:radial-gradient(ellipse at 75% -18%,#dcebe2 0,transparent 42%),var(--bg);color:var(--text)}
 :root[data-theme="light"] .sidebar{background:#fff;border-color:var(--border)}
 :root[data-theme="light"] .admin-brand-lockup{border-color:var(--border)}
@@ -50,6 +50,7 @@
 :root[data-theme="light"] .search,:root[data-theme="light"] .login-card input,:root[data-theme="light"] .editor-modal input,:root[data-theme="light"] .editor-modal textarea,:root[data-theme="light"] .editor-modal select,:root[data-theme="light"] .content-toolbar select,:root[data-theme="light"] .content-json,:root[data-theme="light"] .team-invite input,:root[data-theme="light"] .team-invite select{background:#fff;color:#1c3025;border-color:#cbd9d0}
 :root[data-theme="light"] .content-json{background:#f7faf8;color:#263b2f}
 :root[data-theme="light"] .login-card,:root[data-theme="light"] .editor-modal{background:#fff;border-color:var(--border);box-shadow:0 25px 80px #193b291c}
+:root[data-theme="light"] .loading-screen{color:#314b3b}
 :root[data-theme="light"] .login-card label,:root[data-theme="light"] .editor-modal label,:root[data-theme="light"] .content-toolbar label,:root[data-theme="light"] .json-label{color:#41564a}
 :root[data-theme="light"] .login-card small,:root[data-theme="light"] .content-help,:root[data-theme="light"] .field-head span,:root[data-theme="light"] .upload-box small{color:#708278}
 :root[data-theme="light"] .language-editor,:root[data-theme="light"] .upload-box,:root[data-theme="light"] .entry-editor .language-editor{background:#f8fbf9;border-color:var(--border)}
