@@ -1180,3 +1180,95 @@ html[data-content-direction="rtl"] .detail-main-image span{right:auto;left:12px}
   html[data-content-direction="rtl"] .underlined-link span,
   html[data-content-direction="rtl"] .text-link span{transform:none}
 }
+
+
+/* Design pass 09 — product detail, gallery and inquiry usability */
+.product-detail-modal{
+  overscroll-behavior:contain;
+  scrollbar-gutter:stable;
+}
+.detail-panel{
+  overscroll-behavior:contain;
+  scrollbar-width:thin;
+  scrollbar-color:var(--gold) transparent;
+}
+.detail-gallery,.detail-copy{min-width:0}
+.detail-main-image{
+  width:100%;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  cursor:zoom-in;
+}
+.detail-main-image img{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  object-position:center;
+}
+.detail-thumbs{
+  display:flex;
+  gap:9px;
+  max-width:100%;
+  overflow-x:auto;
+  padding:5px 2px 9px;
+  overscroll-behavior-inline:contain;
+  scrollbar-width:thin;
+  scrollbar-color:var(--gold) transparent;
+}
+.detail-thumbs button{flex:0 0 88px;overflow:hidden}
+.detail-thumbs button.active{
+  border-color:var(--gold);
+  box-shadow:0 0 0 1px color-mix(in srgb,var(--gold) 35%,transparent);
+}
+.detail-copy{overflow-wrap:anywhere}
+.detail-description{line-height:1.9;white-space:pre-line}
+.product-inquiry-form input:focus-visible,
+.product-inquiry-form textarea:focus-visible{
+  outline:2px solid var(--gold);
+  outline-offset:2px;
+  border-color:var(--gold);
+}
+.product-inquiry-form .button:disabled{opacity:.58;cursor:wait}
+.image-lightbox{
+  overscroll-behavior:contain;
+  padding-top:max(58px,env(safe-area-inset-top));
+  padding-bottom:max(18px,env(safe-area-inset-bottom));
+}
+.image-lightbox button:focus-visible,
+.detail-close:focus-visible,
+.detail-thumbs button:focus-visible{
+  outline:2px solid var(--gold);
+  outline-offset:3px;
+}
+:root[data-theme="light"] .detail-thumbs button.active{
+  box-shadow:0 0 0 1px rgba(150,115,38,.22);
+}
+html[data-content-direction="rtl"] .detail-thumbs{direction:rtl}
+@media(max-width:700px){
+  .product-detail-modal{padding:0}
+  .detail-panel{
+    overscroll-behavior-y:contain;
+    -webkit-overflow-scrolling:touch;
+    padding-bottom:env(safe-area-inset-bottom);
+  }
+  .detail-main-image{min-height:clamp(190px,34vh,340px)}
+  .detail-main-image img{max-height:42vh}
+  .detail-thumbs button{flex-basis:76px;width:76px;height:68px}
+  .detail-copy{overflow-wrap:anywhere}
+  .image-lightbox{
+    grid-template-columns:36px minmax(0,1fr) 36px;
+    gap:4px;
+    padding-left:max(8px,env(safe-area-inset-left));
+    padding-right:max(8px,env(safe-area-inset-right));
+  }
+  .image-lightbox img,#lightboxImage{
+    max-width:calc(100vw - 104px);
+    max-height:calc(100dvh - 105px);
+  }
+  .image-lightbox button{width:34px;height:38px}
+}
+@media(prefers-reduced-motion:reduce){
+  .detail-thumbs button,.detail-close,.image-lightbox button{scroll-behavior:auto}
+}
