@@ -231,6 +231,41 @@ async function sendInquiry(event) {
     button.querySelector('[data-i18n]').textContent = t('sendMessage');
   }
 }
+
+const CORPORATE_COLLECTIONS = [
+  ['services','Services','خدمات','خدمات'],['projects','Projects','پروژې','پروژه‌ها'],
+  ['news','News & announcements','خبرونه او اعلانونه','خبرها و اطلاعیه‌ها'],
+  ['team','Leadership & team','مدیریت او ټیم','مدیریت و تیم'],['partners','Partners','همکاران','شرکای ما'],
+  ['achievements','Achievements','لاسته راوړنې','دستاوردها'],['testimonials','Testimonials','د خلکو نظرونه','دیدگاه‌ها'],
+  ['documents','Documents & downloads','اسناد او ډاونلوډونه','اسناد و دانلودها'],
+  ['faqs','Frequently asked questions','عامې پوښتنې','پرسش‌های متداول'],['careers','Careers','د کار فرصتونه','فرصت‌های شغلی']
+];
+function corporateText(value){return localized(value)||''}
+function renderCorporateEntry(entry,key){
+  const title=corporateText(entry.title)||entry.slug||'',summary=corporateText(entry.summary),body=corporateText(entry.body);
+  const media=Array.isArray(entry.media_urls)?entry.media_urls:[];
+  const image=media.find(url=>/\.(png|jpe?g|webp|avif)(\?|$)/i.test(url));
+  const video=media.find(url=>/\.(mp4|webm|mov)(\?|$)/i.test(url));
+  const meta=entry.metadata&&typeof entry.metadata==='object'?entry.metadata:{};
+  if(key==='faqs')return '<details class="corporate-faq"><summary>'+escapeHtml(title)+'</summary><p>'+escapeHtml(body||summary)+'</p></details>';
+  return '<article class="corporate-card">'+(image?'<img class="corporate-media" loading="lazy" src="'+escapeHtml(image)+'" alt="'+escapeHtml(title)+'">':'')+(video?'<video class="corporate-media" controls preload="metadata" src="'+escapeHtml(video)+'"></video>':'')+'<div class="corporate-card-copy">'+(entry.category?'<span class="corporate-category">'+escapeHtml(entry.category)+'</span>':'')+'<h3>'+escapeHtml(title)+'</h3>'+(summary?'<p class="corporate-summary">'+escapeHtml(summary)+'</p>':'')+(body?'<div class="corporate-body">'+escapeHtml(body).replace(/\n/g,'<br>')+'</div>':'')+(meta.role?'<small>'+escapeHtml(String(meta.role))+'</small>':'')+(meta.date?'<small>'+escapeHtml(String(meta.date))+'</small>':'')+(meta.url?'<a class="text-link" href="'+escapeHtml(String(meta.url))+'" target="_blank" rel="noopener noreferrer">'+escapeHtml(String(meta.link_label||'Learn more'))+' ↗</a>':'')+'</div></article>';
+}
+async function loadCorporateSections(){
+  const host=document.getElementById('corporateSections');if(!host)return;
+  const nav=document.getElementById('mainNav');
+  for(const [key,en,ps,fa] of CORPORATE_COLLECTIONS){
+    try{
+      const result=await getJson('/collections/'+key),entries=Array.isArray(result.entries)?result.entries:[];
+      if(!entries.length)continue;
+      const label=currentLanguage==='ps'?ps:currentLanguage==='fa'?fa:en;
+      const section=document.createElement('section');section.className='corporate-section section-wrap';section.id=key;
+      section.innerHTML='<div class="section-kicker">'+escapeHtml(label)+'</div><div class="section-heading"><h2>'+escapeHtml(label)+'</h2></div><div class="corporate-grid">'+entries.map(entry=>renderCorporateEntry(entry,key)).join('')+'</div>';
+      host.appendChild(section);
+      if(nav&&!nav.querySelector('a[href="#'+key+'"]')){const link=document.createElement('a');link.href='#'+key;link.textContent=label;nav.insertBefore(link,nav.querySelector('a[href="#contact"]')||null);}
+    }catch(error){console.warn('NYIL corporate section unavailable:',key,error)}
+  }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('year').textContent = new Date().getFullYear();
   setupAppearance();
@@ -253,6 +288,7 @@ document.addEventListener('DOMContentLoaded', () => {
   nav.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {nav.classList.remove('open');toggle.setAttribute('aria-expanded','false');}));
   void loadProducts();
   void loadCmsContent();
+  void loadCorporateSections();
 });
 function setupLanguageDialog() {
   const dialog = document.getElementById('languageDialog');
