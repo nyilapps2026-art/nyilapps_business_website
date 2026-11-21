@@ -166,9 +166,9 @@ function renderProducts(products){
   const tiles=visible.map((item,i)=>'<span class="product-gallery-tile">'+(item.type==='image'?'<img loading="lazy" src="'+escapeHtml(item.url)+'" alt="'+escapeHtml(name)+' image '+(i+1)+'" decoding="async">':'<video muted playsinline preload="metadata" tabindex="-1" aria-hidden="true" src="'+escapeHtml(item.url)+'"></video><span class="gallery-video-mark">▶</span>')+(i===3&&media.length>4?'<span class="gallery-more">+'+(media.length-4)+'</span>':'')+'</span>').join('');
   const preview=visible.length?'<span class="product-gallery-grid '+(visible.length===1?'single':'')+'">'+tiles+'</span>':'<span class="product-placeholder">NYIL</span>';
   const count=media.length>1?'<span class="gallery-count">▧ '+media.length+' '+productText('media','رسنۍ','رسانه')+'</span>':'';
-  return '<article class="product-card"><button type="button" class="product-image product-open" data-product-index="'+index+'" aria-label="'+escapeHtml(name)+'">'+preview+count+'</button><div class="product-info"><span class="product-category">'+escapeHtml(product.category||'NYIL')+'</span><h3>'+escapeHtml(name)+'</h3><p>'+escapeHtml(summary)+'</p><button type="button" class="product-link product-open" data-product-index="'+index+'">'+productText('Learn more','نور معلومات','بیشتر بدانید')+' ↗</button></div></article>'
+  return '<article class="product-card reveal-item"><button type="button" class="product-image product-open" data-product-index="'+index+'" aria-label="'+escapeHtml(name)+'">'+preview+count+'</button><div class="product-info"><span class="product-category">'+escapeHtml(product.category||'NYIL')+'</span><h3>'+escapeHtml(name)+'</h3><p>'+escapeHtml(summary)+'</p><button type="button" class="product-link product-open" data-product-index="'+index+'">'+productText('Learn more','نور معلومات','بیشتر بدانید')+' ↗</button></div></article>'
  }).join('');
- grid.querySelectorAll('.product-open').forEach(button=>button.addEventListener('click',()=>openProductDetail(products[Number(button.dataset.productIndex)])))
+ grid.querySelectorAll('.product-open').forEach(button=>button.addEventListener('click',()=>openProductDetail(products[Number(button.dataset.productIndex)])));observeRevealItems(grid)
 }
 let activeProductImages=[],activeImageIndex=0;
 function openProductDetail(product){const modal=document.getElementById('productDetailModal'),content=document.getElementById('productDetailContent');if(!modal||!content)return;const name=localized(product.name)||product.slug,summary=localized(product.summary),description=localized(product.description)||summary,images=productImages(product),videos=productVideos(product);activeProductImages=images;activeImageIndex=0;const gallery=images.length?'<div class="detail-gallery"><button class="detail-main-image" type="button" id="detailMainImage"><img id="detailHeroImage" src="'+escapeHtml(images[0])+'" alt="'+escapeHtml(name)+'"><span>⛶ '+productText('View full screen','بشپړ سکرین','نمایش تمام صفحه')+'</span></button>'+(images.length>1?'<div class="detail-thumbs">'+images.map((url,i)=>'<button type="button" data-image-index="'+i+'" class="'+(i===0?'active':'')+'"><img src="'+escapeHtml(url)+'" alt="'+escapeHtml(name)+' image '+(i+1)+'"></button>').join('')+'</div>':'')+'</div>':'';const videoGallery=videos.length?'<section class="detail-videos"><h3>'+productText('Product videos','د محصول ویډیوګانې','ویدیوهای محصول')+'</h3><div class="detail-video-grid">'+videos.map((url,i)=>'<div class="detail-video-item"><video controls playsinline preload="metadata" src="'+escapeHtml(url)+'" aria-label="'+escapeHtml(name)+' video '+(i+1)+'"></video><span class="media-index">'+(i+1)+'</span></div>').join('')+'</div></section>':'';content.innerHTML=gallery+videoGallery+'<div class="detail-copy"><span class="product-category">'+escapeHtml(product.category||'NYIL')+'</span><h2 id="detailTitle">'+escapeHtml(name)+'</h2><p class="detail-summary">'+escapeHtml(summary)+'</p><div class="detail-description">'+escapeHtml(description).replace(/\\n/g,'<br>')+'</div><form class="product-inquiry-form" id="productInquiryForm"><h3>'+productText('Ask about this product','د دې محصول په اړه پوښتنه','درباره این محصول بپرسید')+'</h3><label>'+productText('Your name','ستاسو نوم','نام شما')+'<input name="name" required maxlength="120" autocomplete="name"></label><label>'+productText('Email address','برېښنالیک','ایمیل')+'<input type="email" name="email" required maxlength="254" autocomplete="email"></label><label>'+productText('Message / application','نظر یا غوښتنلیک','نظر یا درخواست')+'<textarea name="message" required minlength="10" maxlength="10000" rows="4"></textarea></label><label class="honeypot" aria-hidden="true">Website<input name="website" tabindex="-1" autocomplete="off"></label><button class="button" type="submit">'+productText('Send enquiry','غوښتنه واستوئ','ارسال درخواست')+' ↗</button><p class="form-status" id="productInquiryStatus" role="status" aria-live="polite"></p></form></div>';content.querySelectorAll('[data-image-index]').forEach(button=>button.addEventListener('click',()=>setDetailImage(Number(button.dataset.imageIndex))));document.getElementById('detailMainImage')?.addEventListener('click',openLightbox);document.getElementById('productInquiryForm').addEventListener('submit',event=>sendProductInquiry(event,product));modal.hidden=false;document.body.classList.add('modal-open');modal.querySelector('.detail-close').focus()}
@@ -256,12 +256,20 @@ async function sendInquiry(event) {
 
 const CORPORATE_COLLECTIONS = [
   ['services','Services','خدمات','خدمات'],['projects','Projects','پروژې','پروژه‌ها'],
+  ['work','Our work & case studies','زموږ کارونه او بېلګې','کارها و نمونه‌های ما'],
+  ['plans','Plans & roadmap','پلانونه او راتلونکی مسیر','برنامه‌ها و نقشه راه'],
+  ['work-method','How we work','زموږ د کار طریقه','روش کار ما'],
   ['news','News & announcements','خبرونه او اعلانونه','خبرها و اطلاعیه‌ها'],
   ['team','Leadership & team','مدیریت او ټیم','مدیریت و تیم'],['partners','Partners','همکاران','شرکای ما'],
   ['achievements','Achievements','لاسته راوړنې','دستاوردها'],['testimonials','Testimonials','د خلکو نظرونه','دیدگاه‌ها'],
   ['documents','Documents & downloads','اسناد او ډاونلوډونه','اسناد و دانلودها'],
   ['faqs','Frequently asked questions','عامې پوښتنې','پرسش‌های متداول'],['careers','Careers','د کار فرصتونه','فرصت‌های شغلی']
 ];
+const CORPORATE_INTROS = {
+ work:{en:'Explore selected work, real outcomes and the ideas behind our projects.',ps:'زموږ ټاکل شوي کارونه، پایلې او د پروژو تر شا مفکورې وګورئ.',fa:'نمونه‌کارها، نتایج و ایده‌های پشت پروژه‌های ما را ببینید.'},
+ plans:{en:'See the priorities and upcoming directions we choose to share with our community.',ps:'هغه لومړیتوبونه او راتلونکي پلانونه وګورئ چې له خلکو سره یې شریکوو.',fa:'اولویت‌ها و مسیرهای آینده‌ای را ببینید که با جامعه خود شریک می‌سازیم.'},
+ 'work-method':{en:'Understand how we move from a need or idea to a useful, dependable result.',ps:'وګورئ چې موږ څنګه یوه اړتیا یا مفکوره په ګټورې او باوري پایلې بدلوو.',fa:'ببینید چگونه یک نیاز یا ایده را به نتیجه‌ای مفید و قابل اعتماد تبدیل می‌کنیم.'}
+};
 function corporateText(value){return localized(value)||''}
 function safeHttpUrl(value){try{const url=new URL(String(value||''),window.location.origin);return ['http:','https:'].includes(url.protocol)?url.href:''}catch{return ''}}
 function renderCorporateEntry(entry,key){
@@ -272,7 +280,7 @@ function renderCorporateEntry(entry,key){
   const meta=entry.metadata&&typeof entry.metadata==='object'?entry.metadata:{};
   const externalUrl=safeHttpUrl(meta.url);
   const documentUrl=media.find(url=>/\.pdf(\?|$)/i.test(url));
-  if(key==='documents')return '<article class="corporate-card"><div class="corporate-card-copy"><h3>'+escapeHtml(title)+'</h3>'+(summary?'<p>'+escapeHtml(summary)+'</p>':'')+(body?'<div class="corporate-body">'+escapeHtml(body).replace(/\n/g,'<br>')+'</div>':'')+((documentUrl||externalUrl)?'<a class="text-link" href="'+escapeHtml(documentUrl||externalUrl)+'" target="_blank" rel="noopener noreferrer">'+escapeHtml(String(meta.link_label||'View or download document'))+' ↗</a>':'')+'</div></article>';
+  if(key==='documents')return '<article class="corporate-card reveal-item"><div class="corporate-card-copy"><h3>'+escapeHtml(title)+'</h3>'+(summary?'<p>'+escapeHtml(summary)+'</p>':'')+(body?'<div class="corporate-body">'+escapeHtml(body).replace(/\n/g,'<br>')+'</div>':'')+((documentUrl||externalUrl)?'<a class="text-link" href="'+escapeHtml(documentUrl||externalUrl)+'" target="_blank" rel="noopener noreferrer">'+escapeHtml(String(meta.link_label||'View or download document'))+' ↗</a>':'')+'</div></article>';
   if(key==='faqs')return '<details class="corporate-faq"><summary>'+escapeHtml(title)+'</summary><p>'+escapeHtml(body||summary)+'</p></details>';
   return '<article class="corporate-card">'+(image?'<img class="corporate-media" loading="lazy" src="'+escapeHtml(image)+'" alt="'+escapeHtml(title)+'">':'')+(video?'<video class="corporate-media" controls preload="metadata" src="'+escapeHtml(video)+'"></video>':'')+'<div class="corporate-card-copy">'+(entry.category?'<span class="corporate-category">'+escapeHtml(entry.category)+'</span>':'')+'<h3>'+escapeHtml(title)+'</h3>'+(summary?'<p class="corporate-summary">'+escapeHtml(summary)+'</p>':'')+(body?'<div class="corporate-body">'+escapeHtml(body).replace(/\n/g,'<br>')+'</div>':'')+(meta.role?'<small>'+escapeHtml(String(meta.role))+'</small>':'')+(meta.date?'<small>'+escapeHtml(String(meta.date))+'</small>':'')+(externalUrl?'<a class="text-link" href="'+escapeHtml(externalUrl)+'" target="_blank" rel="noopener noreferrer">'+escapeHtml(String(meta.link_label||'Learn more'))+' ↗</a>':'')+'</div></article>';
 }
@@ -286,8 +294,8 @@ function renderCorporateSections(){
     if(!entries.length)continue;
     const label=currentLanguage==='ps'?ps:currentLanguage==='fa'?fa:en;
     const section=document.createElement('section');section.className='corporate-section section-wrap';section.id=key;
-    section.innerHTML='<div class="section-kicker">'+escapeHtml(label)+'</div><div class="section-heading"><h2>'+escapeHtml(label)+'</h2></div><div class="corporate-grid">'+entries.map(entry=>renderCorporateEntry(entry,key)).join('')+'</div>';
-    host.appendChild(section);
+    const intro=CORPORATE_INTROS[key]?.[currentLanguage]||CORPORATE_INTROS[key]?.en||'';section.innerHTML='<div class="section-kicker">'+escapeHtml(label)+'</div><div class="section-heading corporate-section-heading"><h2>'+escapeHtml(label)+'</h2>'+(intro?'<p class="corporate-intro">'+escapeHtml(intro)+'</p>':'')+'</div><div class="corporate-grid">'+entries.map(entry=>renderCorporateEntry(entry,key)).join('')+'</div>';
+    host.appendChild(section);observeRevealItems(section);
     if(nav){const link=document.createElement('a');link.href='#'+key;link.textContent=label;link.dataset.corporateNav='true';nav.insertBefore(link,nav.querySelector('a[href="#contact"]')||null);}
   }
 }
@@ -365,6 +373,15 @@ function setupLanguageDialog() {
       catch (error) { console.error('NYIL language switch failed:', selectedLanguage, error); }
     });
   });
+}
+function observeRevealItems(root=document){
+  if(!('IntersectionObserver' in window))return;
+  const items=root.querySelectorAll('.reveal-item:not([data-reveal-observed])');
+  if(!items.length)return;
+  const observer=new IntersectionObserver((records,instance)=>records.forEach(record=>{
+    if(record.isIntersecting){record.target.classList.add('is-visible');instance.unobserve(record.target)}
+  }),{threshold:.12,rootMargin:'0px 0px -36px 0px'});
+  items.forEach((item,index)=>{item.dataset.revealObserved='true';item.style.setProperty('--reveal-delay',Math.min(index%4,3)*75+'ms');observer.observe(item)});
 }
 function setupAppearance() {
   let theme = 'dark';
