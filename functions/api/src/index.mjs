@@ -51,6 +51,11 @@ export default {
     if (request.method === 'OPTIONS') return response({}, 204, origin)
     if (origin && !ALLOWED_ORIGINS.has(origin)) return response({error:'Origin not allowed'}, 403, origin)
     try {
+      if (request.method === 'GET' && url.pathname === '/public-settings') {
+        const rows = await sql`SELECT setting_key,setting_value FROM public.site_settings WHERE setting_key IN ('company_profile','contact_channels','social_links','seo_defaults','appearance')`
+        const settings = Object.fromEntries(rows.map(row => [row.setting_key,row.setting_value]))
+        return response({settings},200,origin)
+      }
       const contentMatch = url.pathname.match(/^\/content\/([a-z0-9-]{1,60})$/)
       if (request.method === 'GET' && contentMatch) {
         const [row] = await sql`SELECT page_key, content, updated_at FROM public.site_content WHERE page_key=${contentMatch[1]} AND published=true`
