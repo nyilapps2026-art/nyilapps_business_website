@@ -80,3 +80,7 @@
 button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid var(--focus);outline-offset:3px}
 @media(max-width:760px){.theme-toggle{min-width:0;padding:9px 11px}.top-actions{flex-wrap:wrap}.top-actions a{order:0}.top-actions .theme-toggle{order:1}.top-actions .btn:not(.theme-toggle){order:2}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+
+
+.entry-editor .language-editor label,.entry-editor .upload-box label{min-width:0}
+.entry-editor input:focus-visible,.entry-editor textarea:focus-visible,.entry-editor select:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
