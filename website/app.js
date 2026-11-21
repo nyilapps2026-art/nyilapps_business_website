@@ -271,6 +271,12 @@ function renderCorporateSections(){
     if(nav){const link=document.createElement('a');link.href='#'+key;link.textContent=label;link.dataset.corporateNav='true';nav.insertBefore(link,nav.querySelector('a[href="#contact"]')||null);}
   }
 }
+function trackPageView(){
+  const width=window.innerWidth||0;
+  const deviceType=width<640?'mobile':width<1024?'tablet':'desktop';
+  const path=window.location.pathname.replace(/[^a-zA-Z0-9/_-]/g,'').slice(0,180)||'/';
+  fetch(API_BASE+'/analytics/pageview',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({path,language:currentLanguage,device_type:deviceType}),keepalive:true}).catch(()=>{});
+}
 async function loadCorporateSections(){
   const cache={};
   await Promise.all(CORPORATE_COLLECTIONS.map(async([key])=>{try{const result=await getJson('/collections/'+key);cache[key]=Array.isArray(result.entries)?result.entries:[]}catch(error){console.warn('NYIL corporate section unavailable:',key,error);cache[key]=[]}}));
@@ -301,6 +307,7 @@ document.addEventListener('DOMContentLoaded', () => {
   void loadProducts();
   void loadCmsContent();
   void loadCorporateSections();
+  trackPageView();
 });
 function setupLanguageDialog() {
   const dialog = document.getElementById('languageDialog');
