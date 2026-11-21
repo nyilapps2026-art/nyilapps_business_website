@@ -87,6 +87,15 @@ let currentLanguage = 'en';
 let cmsOverrides = {};
 let corporateEntriesCache = {};
 const t = key => TEXT[currentLanguage]?.[key] || TEXT.en[key] || key;
+const COMPANY_PROFILE_LABELS = {
+  en:{historyTitle:'Our history',historyBody:'Our story and the milestones that shaped NYIL will be shared here.',visionTitle:'Our vision',visionBody:'Our long-term vision will be shared here.',missionTitle:'Our mission',missionBody:'Our mission and the value we aim to create will be shared here.',approachTitle:'How we work',approachBody:'Our working principles and process will be shared here.'},
+  ps:{historyTitle:'زموږ تاریخچه',historyBody:'د NYIL کیسه او مهم پړاوونه به دلته شریک شي.',visionTitle:'زموږ لیدلوری',visionBody:'زموږ اوږدمهاله لیدلوری به دلته وړاندې شي.',missionTitle:'زموږ ماموریت',missionBody:'زموږ ماموریت او هغه ارزښت چې رامنځته کول یې غواړو، دلته وړاندې کېږي.',approachTitle:'زموږ د کار طریقه',approachBody:'زموږ کاري اصول او بهیر به دلته تشریح شي.'},
+  fa:{historyTitle:'تاریخچهٔ ما',historyBody:'داستان NYIL و مراحل مهم شکل‌گیری آن در اینجا نشر خواهد شد.',visionTitle:'چشم‌انداز ما',visionBody:'چشم‌انداز درازمدت ما در اینجا ارائه خواهد شد.',missionTitle:'ماموریت ما',missionBody:'ماموریت ما و ارزشی که می‌خواهیم ایجاد کنیم، در اینجا ارائه می‌شود.',approachTitle:'روش کار ما',approachBody:'اصول و روند کاری ما در اینجا توضیح داده خواهد شد.'}
+};
+function applyCompanyProfileLabels(lang=currentLanguage) {
+  const labels=COMPANY_PROFILE_LABELS[lang]||COMPANY_PROFILE_LABELS.en;
+  Object.entries(labels).forEach(([key,value])=>{const node=document.querySelector('[data-company-field="'+key.replace(/Title$/,'-title').replace(/Body$/,'-body')+'"]');if(node&&!node.dataset.cmsValue)node.textContent=value;});
+}
 const localized = (value, lang=currentLanguage) => {
   if (typeof value === 'string') return value;
   if (!value || typeof value !== 'object') return '';
@@ -123,6 +132,7 @@ function applyLanguage(lang) {
   try { localStorage.setItem('nyil-language', nextLanguage); }
   catch (error) { console.warn('NYIL could not save language preference:', error); }
 
+  try { applyCompanyProfileLabels(nextLanguage); } catch (error) { console.warn('NYIL company profile labels skipped:', error); }
   try { applyCmsOverrides(); }
   catch (error) { console.warn('NYIL CMS language override skipped:', error); }
   try { renderProducts(Array.isArray(window.__nyilProducts) ? window.__nyilProducts : []); }
@@ -139,7 +149,7 @@ function applyCmsOverrides() {
   const setText = (selector, value) => {
     if (typeof value !== 'string' || !value.trim()) return;
     const node = document.querySelector(selector);
-    if (node) node.textContent = value;
+    if (node) { node.textContent = value; if (node.hasAttribute('data-company-field')) node.dataset.cmsValue = 'true'; }
   };
   Object.entries(sections).forEach(([key, fields]) => {
     const copy = cmsOverrides[key]?.[currentLanguage] || cmsOverrides[key]?.en;
