@@ -27,7 +27,7 @@
     <nav id="mainNav" aria-label="Main navigation"><a href="#about" data-i18n="navAbout">About</a><a href="#products" data-i18n="navProducts">Products</a><a href="#contact" data-i18n="navContact">Contact</a></nav>
     <div class="header-actions">
       <button class="utility-button" id="languageButton" type="button" aria-haspopup="dialog" aria-controls="languageDialog"><span class="utility-icon">文</span><span id="languageButtonLabel">English</span><span class="chevron">⌄</span></button>
-      <button class="utility-button theme-button" id="themeToggle" type="button" aria-label="Switch to light mode"><span id="themeIcon">☼</span></button>
+      <button class="utility-button theme-button" id="themeToggle" type="button" aria-label="Switch to light mode" aria-pressed="false" title="Switch to light mode"><span id="themeIcon">☼</span></button>
       
     </div>
   </header>
@@ -37,18 +37,9 @@
     <div class="dialog-head"><div><span class="dialog-kicker" data-i18n="languageKicker">YOUR EXPERIENCE</span><h2 id="languageTitle" data-i18n="languageTitle">Choose your language</h2></div><button class="dialog-close" id="closeLanguageDialog" type="button" aria-label="Close">×</button></div>
     <p class="dialog-description" data-i18n="languageDescription">Select the language you want to browse NYIL in.</p>
     <div class="language-options" id="languageOptions">
-      <button type="button" data-language="en"><span class="language-native">English</span><span class="language-english">English</span><span class="language-check">✓</span></button>
-      <button type="button" data-language="ps"><span class="language-native" lang="ps">پښتو</span><span class="language-english">Pashto</span><span class="language-check">✓</span></button>
-      <button type="button" data-language="fa"><span class="language-native" lang="fa">دری</span><span class="language-english">Dari</span><span class="language-check">✓</span></button>
-      <button type="button" data-language="de"><span class="language-native">Deutsch</span><span class="language-english">German</span><span class="language-check">✓</span></button>
-      <button type="button" data-language="fr"><span class="language-native">Français</span><span class="language-english">French</span><span class="language-check">✓</span></button>
-      <button type="button" data-language="es"><span class="language-native">Español</span><span class="language-english">Spanish</span><span class="language-check">✓</span></button>
-      <button type="button" data-language="it"><span class="language-native">Italiano</span><span class="language-english">Italian</span><span class="language-check">✓</span></button>
-      <button type="button" data-language="pt"><span class="language-native">Português</span><span class="language-english">Portuguese</span><span class="language-check">✓</span></button>
-      <button type="button" data-language="nl"><span class="language-native">Nederlands</span><span class="language-english">Dutch</span><span class="language-check">✓</span></button>
-      <button type="button" data-language="sv"><span class="language-native">Svenska</span><span class="language-english">Swedish</span><span class="language-check">✓</span></button>
-      <button type="button" data-language="no"><span class="language-native">Norsk</span><span class="language-english">Norwegian</span><span class="language-check">✓</span></button>
-      <button type="button" data-language="da"><span class="language-native">Dansk</span><span class="language-english">Danish</span><span class="language-check">✓</span></button>
+      <button type="button" data-language="en" aria-pressed="true"><span class="language-native">English</span><span class="language-english">English</span><span class="language-check">✓</span></button>
+      <button type="button" data-language="ps" aria-pressed="false"><span class="language-native" lang="ps">پښتو</span><span class="language-english">Pashto</span><span class="language-check">✓</span></button>
+      <button type="button" data-language="fa" aria-pressed="false"><span class="language-native" lang="fa">دری</span><span class="language-english">Dari</span><span class="language-check">✓</span></button>
     </div>
     <div class="dialog-foot"><span data-i18n="languageNote">Your choice is saved on this device.</span></div>
       </div>
