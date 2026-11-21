@@ -173,7 +173,7 @@ export default {
           return response({page:row},200,origin)
         }
         if (request.method === 'GET' && url.pathname === '/admin/media') {
-          const endpoint = (process.env.AWS_ENDPOINT_URL_S3 || '').replace(/\\/$/,'')
+          const endpoint = (process.env.AWS_ENDPOINT_URL_S3 || '').replace(/\/$/,'')
           if (!endpoint) throw new Error('Object storage endpoint is not configured.')
           const assets = []
           for (const scope of ['corporate','products']) {
@@ -195,8 +195,8 @@ export default {
         if (request.method === 'DELETE' && url.pathname === '/admin/media') {
           const body = await request.json().catch(()=>({}))
           const key = safeText(body.key,500)
-          if (!/^(corporate|products)\\/\\d{4}-\\d{2}-\\d{2}\\/[0-9a-f-]{36}\\.(jpg|png|webp|avif|mp4|webm|mov|pdf)$/i.test(key)) return response({error:'Invalid media file key.'},400,origin)
-          const endpoint = (process.env.AWS_ENDPOINT_URL_S3 || '').replace(/\\/$/,'')
+          if (!/^(corporate|products)\/\\d{4}-\\d{2}-\\d{2}\/[0-9a-f-]{36}\\.(jpg|png|webp|avif|mp4|webm|mov|pdf)$/i.test(key)) return response({error:'Invalid media file key.'},400,origin)
+          const endpoint = (process.env.AWS_ENDPOINT_URL_S3 || '').replace(/\/$/,'')
           if (!endpoint) throw new Error('Object storage endpoint is not configured.')
           const assetUrl = endpoint+'/'+MEDIA_BUCKET+'/'+key
           const [productRef] = await sql`SELECT id FROM public.products WHERE image_url=${assetUrl} OR COALESCE(image_urls,'[]'::jsonb) @> ${JSON.stringify([assetUrl])}::jsonb OR COALESCE(video_urls,'[]'::jsonb) @> ${JSON.stringify([assetUrl])}::jsonb LIMIT 1`
