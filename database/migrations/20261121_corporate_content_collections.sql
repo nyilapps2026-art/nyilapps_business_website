@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS public.site_entries (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  collection_key text NOT NULL CHECK (collection_key IN ('services','projects','news','team','partners','achievements','testimonials','documents','faqs','careers')),
+  collection_key text NOT NULL CHECK (collection_key IN ('services','projects','work','plans','work-method','news','team','partners','achievements','testimonials','documents','faqs','careers')),
   slug text NOT NULL,
   title jsonb NOT NULL DEFAULT '{}'::jsonb,
   summary jsonb NOT NULL DEFAULT '{}'::jsonb,
