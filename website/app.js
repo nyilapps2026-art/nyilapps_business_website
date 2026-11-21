@@ -190,6 +190,24 @@ function applyPublicSettings(settings){
   const whatsapp=typeof contact.whatsapp==='string'?contact.whatsapp.replace(/[^0-9]/g,''):'';
   const whatsappLink=document.querySelector('.whatsapp-channel');
   if(whatsappLink&&whatsapp.length>=8){whatsappLink.href='https://wa.me/'+whatsapp;const small=whatsappLink.querySelector('small');if(small)small.textContent=contact.phone||whatsapp;}
+  const phoneLink=document.querySelector('.phone-channel');
+  const phone=typeof contact.phone==='string'?contact.phone.trim():'';
+  const phoneDigits=phone.replace(/[^0-9]/g,'');
+  if(phoneLink&&phoneDigits.length>=7&&phoneDigits.length<=15){phoneLink.href='tel:'+phone.replace(/[^0-9+]/g,'');phoneLink.hidden=false;const small=phoneLink.querySelector('small');if(small)small.textContent=phone;}
+  const socialHost=document.getElementById('footerSocial');
+  if(socialHost){
+    const social=settings?.social_links&&typeof settings.social_links==='object'?settings.social_links:{};
+    const platforms=[['facebook','Facebook'],['instagram','Instagram'],['linkedin','LinkedIn'],['youtube','YouTube'],['x','X'],['github','GitHub'],['tiktok','TikTok'],['telegram','Telegram']];
+    socialHost.replaceChildren();
+    platforms.forEach(([key,label])=>{
+      const raw=social[key]??social[key+'_url'];
+      const value=typeof raw==='string'?raw:raw&&typeof raw==='object'?raw.url:'';
+      const href=safeHttpUrl(value);
+      if(!href)return;
+      const link=document.createElement('a');link.href=href;link.textContent=label;link.target='_blank';link.rel='noopener noreferrer';link.setAttribute('aria-label','NYIL on '+label);socialHost.appendChild(link);
+    });
+    socialHost.hidden=!socialHost.childElementCount;
+  }
   const companyDescription=typeof profile.description==='string'?profile.description.trim():'';
   if(companyDescription){const node=document.querySelector('[data-i18n="aboutText"]');if(node)node.textContent=companyDescription;}
 }
