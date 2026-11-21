@@ -347,3 +347,12 @@ button:disabled{opacity:.6;cursor:not-allowed}
 .corporate-highlight strong{font:600 23px/1.2 var(--serif);color:var(--gold)}
 .corporate-highlight span{font-size:11px;line-height:1.6;color:var(--muted)}
 :root[data-content-direction="rtl"] .corporate-highlight{border-radius:9px 0 0 9px}
+
+
+/* Leadership and team profiles */
+.corporate-team-card{display:flex;flex-direction:column}
+.corporate-team-photo{width:100%;aspect-ratio:4/3;max-height:360px;object-fit:cover;object-position:center 28%;background:var(--surface2)}
+.corporate-person-role{color:var(--gold)!important;font-size:12px!important;font-weight:700;letter-spacing:.035em}
+.corporate-person-responsibility{margin-top:16px;padding-top:13px;border-top:1px solid var(--line)}
+.corporate-person-responsibility b{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold)}
+.corporate-person-responsibility p{margin:6px 0 0;color:var(--muted);font-size:12px;line-height:1.8}
