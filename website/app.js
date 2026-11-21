@@ -1,7 +1,10 @@
 const API_BASE = 'https://br-icy-breeze-bdbz7vs8-nyilcms.compute.c-8.us-east-2.aws.neon.tech';
-const LANGS = ['en','ps','fa','de','fr','es','it','pt','nl','sv','no','da'];
+const LANGS = ['en','ps','fa'];
 const TEXT = {
  en:{announcement:'Building practical technology for a connected world',navHome:'Home',navAbout:'About',navSolutions:'Solutions',navProducts:'Products',navTechnology:'Technology',navContact:"Let's talk",heroEyebrow:'INDEPENDENT TECHNOLOGY COMPANY',heroTitle:'Ideas into impact. Technology into progress.',heroText:'We create thoughtful digital products and dependable technology that help people and businesses move forward.',exploreSolutions:'Explore our solutions',discoverNYIL:'Discover NYIL',heroProof:'Built with purpose. Designed for people.',heroBottom:'A BETTER WAY FORWARD',aboutKicker:'WHO WE ARE',aboutTitle:'We turn ambitious ideas into useful technology.',aboutText:'NYIL is an independent invention lab focused on building digital experiences, software products and connected business systems. We bring clear thinking and practical engineering together to solve meaningful problems.',workTogether:'Work with us',valueOneTitle:'Purpose first',valueOneText:'We start with real needs and measurable value.',valueTwoTitle:'Built to last',valueTwoText:'We value security, reliability and thoughtful design.',valueThreeTitle:'Always evolving',valueThreeText:'We keep learning, improving and looking ahead.',solutionsKicker:'WHAT WE DO',solutionsTitle:'Technology that works in the real world.',solutionsText:'From the first idea to the systems that support it, we build with clarity and care.',solutionOneTitle:'Digital products',solutionOneText:'Purpose-built web and mobile applications shaped around people and their workflows.',solutionTwoTitle:'Business platforms',solutionTwoText:'Connected tools for operations, commerce, administration and better decisions.',solutionThreeTitle:'Emerging technology',solutionThreeText:'Practical exploration of automation, intelligent services and new possibilities.',productsKicker:'OUR WORK',productsTitle:'Products with a reason to exist.',productsText:'Explore the products and initiatives we are bringing to life.',loadingProducts:'Loading published products…',emptyProducts:'Our product catalogue is being prepared. Please check back soon.',productsError:'Products are temporarily unavailable. Please try again later.',technologyKicker:'HOW WE BUILD',technologyTitle:'Good technology should feel effortless.',technologyText:'Behind every simple experience is a system designed with care. We focus on secure foundations, clear architecture, performance and room to grow.',techOne:'Security-minded foundations',techTwo:'Reliable, scalable systems',techThree:'Human-centred experiences',contactKicker:'START A CONVERSATION',contactTitle:'Have a meaningful idea in mind?',contactText:'Tell us what you are working on. We would be glad to hear from you.',formName:'Your name',formEmail:'Email address',formSubject:'Subject',formMessage:'Your message',sendMessage:'Send message',sending:'Sending…',sent:'Thank you. Your message has been received.',sendError:'We could not send your message. Please try again or email us directly.',footerLine:'Independent thinking. Useful technology. Better possibilities.',footerContact:'Contact',footerAbout:'About NYIL',footerMade:'Made with purpose.'},
+
+ ps:{announcement:'د یوې نښلول شوې نړۍ لپاره عملي ټکنالوژي جوړوو',navHome:'کور',navAbout:'زموږ په اړه',navSolutions:'حللارې',navProducts:'محصولات',navTechnology:'ټکنالوژي',navContact:'اړیکه ونیسئ',heroEyebrow:'خپلواک ټکنالوژیک شرکت',heroTitle:'نظرونه په اغېز او ټکنالوژي په پرمختګ بدلوو.',heroText:'موږ داسې ډیجیټلي محصولات او باوري ټکنالوژي جوړوو چې له خلکو او سوداګریو سره د پرمختګ په برخه کې مرسته کوي.',exploreSolutions:'زموږ حللارې وګورئ',discoverNYIL:'NYIL وپېژنئ',heroProof:'په موخه جوړ شوي، د خلکو لپاره طرحه شوي.',heroBottom:'د پرمختګ لپاره غوره لاره',aboutKicker:'موږ څوک یو',aboutTitle:'لوی نظرونه په ګټوره ټکنالوژۍ بدلوو.',aboutText:'NYIL یو خپلواک نوښتګر لابراتوار دی چې پر ډیجیټلي تجربو، سافټویر محصولاتو او نښلول شوو سوداګریزو سیسټمونو تمرکز کوي. موږ روښانه فکر او عملي انجینري سره یوځای کوو، څو مهمې ستونزې حل کړو.',workTogether:'له موږ سره کار وکړئ',valueOneTitle:'موخه تر هر څه مخکې',valueOneText:'موږ له واقعي اړتیاوو او د اندازه کېدونکي ارزښت څخه پیل کوو.',valueTwoTitle:'د اوږدې مودې لپاره جوړ شوي',valueTwoText:'امنیت، باور وړتیا او سنجول شوې طرحه راته ارزښت لري.',valueThreeTitle:'تل د پرمختګ په حال کې',valueThreeText:'موږ تل زده کړه کوو، ښه والی راولو او راتلونکي ته ګورو.',solutionsKicker:'زموږ کارونه',solutionsTitle:'هغه ټکنالوژي چې په واقعي نړۍ کې کار کوي.',solutionsText:'له لومړني نظر څخه تر ملاتړ کوونکو سیسټمونو پورې، هر څه په روښانه فکر او پاملرنې جوړوو.',solutionOneTitle:'ډیجیټلي محصولات',solutionOneText:'د خلکو او د هغوی د کاري بهیرونو لپاره ځانګړي وېب او موبایل اپلېکېشنونه.',solutionTwoTitle:'سوداګریز پلېټفارمونه',solutionTwoText:'د چارو، سوداګرۍ، ادارې او غوره پرېکړو لپاره سره نښلول شوې وسیلې.',solutionThreeTitle:'نوې راټوکېدونکې ټکنالوژي',solutionThreeText:'د اتومات، هوښیارو خدمتونو او نوو امکاناتو عملي څېړنه.',productsKicker:'زموږ محصولات',productsTitle:'هغه محصولات چې د جوړېدو موخه لري.',productsText:'زموږ روان محصولات او نوښتونه وګورئ.',loadingProducts:'خپرېدونکي محصولات بارېږي…',emptyProducts:'زموږ د محصولاتو لېست د چمتو کېدو په حال کې دی. مهرباني وکړئ وروسته بیا مراجعه وکړئ.',productsError:'محصولات اوس مهال نه ښکاري. مهرباني وکړئ وروسته بیا هڅه وکړئ.',technologyKicker:'موږ څنګه جوړوو',technologyTitle:'ښه ټکنالوژي باید اسانه او طبیعي احساس شي.',technologyText:'د هرې ساده تجربې تر شا په پاملرنې طرحه شوی سیسټم وي. موږ پر خوندي بنسټونو، روښانه جوړښت، چټکتیا او پراختیا تمرکز کوو.',techOne:'امنیت ته پام لرونکي بنسټونه',techTwo:'باوري او پراخېدونکي سیسټمونه',techThree:'د انسان پر اړتیاوو ولاړې تجربې',contactKicker:'خبرې پیل کړئ',contactTitle:'کومه مهمه مفکوره لرئ؟',contactText:'موږ ته ووایاست چې پر څه کار کوئ. ستاسو د پیغام اورېدو ته خوښ یو.',formName:'ستاسو نوم',formEmail:'برېښنالیک پته',formSubject:'موضوع',formMessage:'ستاسو پیغام',sendMessage:'پیغام واستوئ',sending:'لېږل کېږي…',sent:'مننه. ستاسو پیغام ترلاسه شو.',sendError:'ستاسو پیغام ونه لېږل شو. بیا هڅه وکړئ یا موږ ته مستقیم برېښنالیک واستوئ.',footerLine:'خپلواک فکر، ګټوره ټکنالوژي او غوره امکانات.',footerContact:'اړیکه',footerAbout:'د NYIL په اړه',footerMade:'په موخه جوړ شوی.'},
+ fa:{announcement:'ساخت فناوری کاربردی برای جهانی متصل',navHome:'خانه',navAbout:'درباره ما',navSolutions:'راهکارها',navProducts:'محصولات',navTechnology:'فناوری',navContact:'تماس با ما',heroEyebrow:'شرکت مستقل فناوری',heroTitle:'ایده‌ها را به اثرگذاری و فناوری را به پیشرفت تبدیل می‌کنیم.',heroText:'ما محصولات دیجیتال سنجیده و فناوری قابل اعتماد می‌سازیم تا به افراد و کسب‌وکارها در پیشرفت کمک کنیم.',exploreSolutions:'مشاهده راهکارها',discoverNYIL:'آشنایی با NYIL',heroProof:'با هدف ساخته شده؛ برای انسان‌ها طراحی شده.',heroBottom:'راهی بهتر برای پیشرفت',aboutKicker:'ما که هستیم',aboutTitle:'ایده‌های بلندپروازانه را به فناوری مفید تبدیل می‌کنیم.',aboutText:'NYIL یک آزمایشگاه مستقل نوآوری است که بر تجربه‌های دیجیتال، محصولات نرم‌افزاری و سیستم‌های متصل کسب‌وکار تمرکز دارد. ما تفکر روشن و مهندسی عملی را برای حل مشکلات مهم در کنار هم قرار می‌دهیم.',workTogether:'با ما همکاری کنید',valueOneTitle:'هدف در اولویت',valueOneText:'کار را با نیازهای واقعی و ارزش قابل اندازه‌گیری آغاز می‌کنیم.',valueTwoTitle:'ساخته‌شده برای ماندگاری',valueTwoText:'امنیت، قابلیت اطمینان و طراحی سنجیده برای ما مهم است.',valueThreeTitle:'همیشه در حال تحول',valueThreeText:'همواره یاد می‌گیریم، بهتر می‌شویم و به آینده نگاه می‌کنیم.',solutionsKicker:'فعالیت‌های ما',solutionsTitle:'فناوری که در دنیای واقعی کار می‌کند.',solutionsText:'از نخستین ایده تا سیستم‌هایی که از آن پشتیبانی می‌کنند، با شفافیت و دقت می‌سازیم.',solutionOneTitle:'محصولات دیجیتال',solutionOneText:'برنامه‌های وب و موبایل متناسب با افراد و روندهای کاری آنان.',solutionTwoTitle:'پلتفرم‌های کسب‌وکار',solutionTwoText:'ابزارهای متصل برای عملیات، تجارت، مدیریت و تصمیم‌گیری بهتر.',solutionThreeTitle:'فناوری‌های نوظهور',solutionThreeText:'بررسی عملی خودکارسازی، خدمات هوشمند و فرصت‌های تازه.',productsKicker:'دستاوردهای ما',productsTitle:'محصولاتی با هدفی روشن.',productsText:'محصولات و ابتکارهایی را که در حال توسعه آن‌ها هستیم ببینید.',loadingProducts:'محصولات منتشرشده بارگذاری می‌شوند…',emptyProducts:'فهرست محصولات ما در حال آماده‌سازی است. لطفاً بعداً مراجعه کنید.',productsError:'محصولات موقتاً در دسترس نیستند. لطفاً بعداً دوباره تلاش کنید.',technologyKicker:'روش ساخت ما',technologyTitle:'فناوری خوب باید ساده و روان باشد.',technologyText:'پشت هر تجربه ساده، سیستمی با دقت طراحی‌شده قرار دارد. ما بر پایه‌های امن، معماری روشن، کارایی و امکان توسعه تمرکز می‌کنیم.',techOne:'پایه‌های متمرکز بر امنیت',techTwo:'سیستم‌های قابل اعتماد و مقیاس‌پذیر',techThree:'تجربه‌های انسان‌محور',contactKicker:'گفتگو را آغاز کنیم',contactTitle:'ایده مهمی در ذهن دارید؟',contactText:'درباره کاری که انجام می‌دهید برای ما بنویسید. خوشحال می‌شویم از شما بشنویم.',formName:'نام شما',formEmail:'نشانی ایمیل',formSubject:'موضوع',formMessage:'پیام شما',sendMessage:'ارسال پیام',sending:'در حال ارسال…',sent:'سپاس. پیام شما دریافت شد.',sendError:'ارسال پیام انجام نشد. دوباره تلاش کنید یا مستقیم به ما ایمیل بفرستید.',footerLine:'تفکر مستقل، فناوری مفید و فرصت‌های بهتر.',footerContact:'تماس',footerAbout:'درباره NYIL',footerMade:'با هدف ساخته شده است.'},
  de:{announcement:'Wir entwickeln praktische Technologie für eine vernetzte Welt',navHome:'Start',navAbout:'Über uns',navSolutions:'Lösungen',navProducts:'Produkte',navTechnology:'Technologie',navContact:'Kontakt',heroEyebrow:'UNABHÄNGIGES TECHNOLOGIEUNTERNEHMEN',heroTitle:'Ideen schaffen Wirkung. Technologie bringt Fortschritt.',heroText:'Wir entwickeln durchdachte digitale Produkte und zuverlässige Technologie, die Menschen und Unternehmen voranbringen.',exploreSolutions:'Unsere Lösungen',discoverNYIL:'NYIL entdecken',heroProof:'Mit Sinn entwickelt. Für Menschen gestaltet.',heroBottom:'EIN BESSERER WEG NACH VORN',aboutKicker:'WER WIR SIND',aboutTitle:'Wir verwandeln ambitionierte Ideen in nützliche Technologie.',aboutText:'NYIL ist ein unabhängiges Innovationslabor für digitale Erlebnisse, Softwareprodukte und vernetzte Geschäftssysteme. Wir verbinden klares Denken mit praktischer Entwicklung, um relevante Probleme zu lösen.',workTogether:'Mit uns arbeiten',valueOneTitle:'Der Zweck zuerst',valueOneText:'Wir beginnen mit echten Bedürfnissen und messbarem Nutzen.',valueTwoTitle:'Für die Zukunft gebaut',valueTwoText:'Sicherheit, Zuverlässigkeit und durchdachtes Design sind uns wichtig.',valueThreeTitle:'Ständige Entwicklung',valueThreeText:'Wir lernen weiter, verbessern uns und blicken nach vorn.',solutionsKicker:'WAS WIR TUN',solutionsTitle:'Technologie, die im echten Leben funktioniert.',solutionsText:'Von der ersten Idee bis zu den unterstützenden Systemen entwickeln wir klar und sorgfältig.',solutionOneTitle:'Digitale Produkte',solutionOneText:'Web- und Mobilanwendungen, die auf Menschen und ihre Arbeitsabläufe zugeschnitten sind.',solutionTwoTitle:'Geschäftsplattformen',solutionTwoText:'Vernetzte Werkzeuge für Betrieb, Handel, Verwaltung und bessere Entscheidungen.',solutionThreeTitle:'Neue Technologien',solutionThreeText:'Praktische Erforschung von Automatisierung, intelligenten Diensten und neuen Möglichkeiten.',productsKicker:'UNSERE ARBEIT',productsTitle:'Produkte mit einem echten Zweck.',productsText:'Entdecken Sie unsere Produkte und Initiativen.',loadingProducts:'Veröffentlichte Produkte werden geladen…',emptyProducts:'Unser Produktkatalog wird vorbereitet. Bitte schauen Sie bald wieder vorbei.',productsError:'Produkte sind vorübergehend nicht verfügbar.',technologyKicker:'WIE WIR ENTWICKELN',technologyTitle:'Gute Technologie sollte mühelos wirken.',technologyText:'Hinter jedem einfachen Erlebnis steht ein sorgfältig gestaltetes System. Wir konzentrieren uns auf Sicherheit, klare Architektur, Leistung und Wachstum.',techOne:'Sicherheitsorientierte Grundlagen',techTwo:'Zuverlässige, skalierbare Systeme',techThree:'Menschenorientierte Erlebnisse',contactKicker:'INS GESPRÄCH KOMMEN',contactTitle:'Haben Sie eine Idee mit Bedeutung?',contactText:'Erzählen Sie uns, woran Sie arbeiten. Wir freuen uns auf Ihre Nachricht.',formName:'Ihr Name',formEmail:'E-Mail-Adresse',formSubject:'Betreff',formMessage:'Ihre Nachricht',sendMessage:'Nachricht senden',sending:'Wird gesendet…',sent:'Vielen Dank. Ihre Nachricht ist eingegangen.',sendError:'Ihre Nachricht konnte nicht gesendet werden. Bitte versuchen Sie es erneut.',footerLine:'Unabhängiges Denken. Nützliche Technologie. Bessere Möglichkeiten.',footerContact:'Kontakt',footerAbout:'Über NYIL',footerMade:'Mit Sinn entwickelt.'},
  fr:{announcement:'Créer des technologies utiles pour un monde connecté',navHome:'Accueil',navAbout:'À propos',navSolutions:'Solutions',navProducts:'Produits',navTechnology:'Technologie',navContact:'Contact',heroEyebrow:'ENTREPRISE TECHNOLOGIQUE INDÉPENDANTE',heroTitle:'Des idées qui agissent. La technologie qui fait avancer.',heroText:'Nous créons des produits numériques réfléchis et des technologies fiables qui font progresser les personnes et les entreprises.',exploreSolutions:'Découvrir nos solutions',discoverNYIL:'Découvrir NYIL',heroProof:'Conçu avec intention. Pensé pour les personnes.',heroBottom:'UN MEILLEUR CHEMIN À SUIVRE',aboutKicker:'QUI NOUS SOMMES',aboutTitle:'Nous transformons les idées ambitieuses en technologies utiles.',aboutText:'NYIL est un laboratoire d’innovation indépendant dédié aux expériences numériques, aux logiciels et aux systèmes d’entreprise connectés. Nous associons réflexion claire et ingénierie pratique pour résoudre des problèmes concrets.',workTogether:'Collaborer avec nous',valueOneTitle:'Le sens avant tout',valueOneText:'Nous partons de besoins réels et d’une valeur mesurable.',valueTwoTitle:'Conçu pour durer',valueTwoText:'Nous privilégions la sécurité, la fiabilité et un design réfléchi.',valueThreeTitle:'En constante évolution',valueThreeText:'Nous apprenons, progressons et regardons vers l’avenir.',solutionsKicker:'NOS ACTIVITÉS',solutionsTitle:'Une technologie utile dans le monde réel.',solutionsText:'De la première idée aux systèmes qui la soutiennent, nous construisons avec clarté et soin.',solutionOneTitle:'Produits numériques',solutionOneText:'Des applications web et mobiles conçues autour des personnes et de leurs usages.',solutionTwoTitle:'Plateformes métier',solutionTwoText:'Des outils connectés pour les opérations, le commerce, l’administration et la décision.',solutionThreeTitle:'Technologies émergentes',solutionThreeText:'Une exploration pratique de l’automatisation, des services intelligents et des possibles.',productsKicker:'NOS RÉALISATIONS',productsTitle:'Des produits qui ont une raison d’être.',productsText:'Découvrez les produits et initiatives que nous développons.',loadingProducts:'Chargement des produits publiés…',emptyProducts:'Notre catalogue est en préparation. Revenez bientôt.',productsError:'Les produits sont temporairement indisponibles.',technologyKicker:'NOTRE MÉTHODE',technologyTitle:'La bonne technologie doit sembler naturelle.',technologyText:'Derrière chaque expérience simple se trouve un système conçu avec soin. Nous privilégions des bases sûres, une architecture claire, la performance et l’évolutivité.',techOne:'Fondations axées sur la sécurité',techTwo:'Systèmes fiables et évolutifs',techThree:'Expériences centrées sur l’humain',contactKicker:'PRENONS CONTACT',contactTitle:'Vous avez une idée qui compte ?',contactText:'Parlez-nous de votre projet. Nous serons ravis de vous lire.',formName:'Votre nom',formEmail:'Adresse e-mail',formSubject:'Objet',formMessage:'Votre message',sendMessage:'Envoyer le message',sending:'Envoi…',sent:'Merci. Votre message a bien été reçu.',sendError:'Impossible d’envoyer votre message. Veuillez réessayer.',footerLine:'Pensée indépendante. Technologie utile. Meilleures possibilités.',footerContact:'Contact',footerAbout:'À propos de NYIL',footerMade:'Créé avec intention.'},
  es:{announcement:'Tecnología práctica para un mundo conectado',navHome:'Inicio',navAbout:'Nosotros',navSolutions:'Soluciones',navProducts:'Productos',navTechnology:'Tecnología',navContact:'Contacto',heroEyebrow:'EMPRESA TECNOLÓGICA INDEPENDIENTE',heroTitle:'Ideas que generan impacto. Tecnología que impulsa el progreso.',heroText:'Creamos productos digitales bien pensados y tecnología fiable que ayuda a avanzar a personas y empresas.',exploreSolutions:'Explorar soluciones',discoverNYIL:'Descubrir NYIL',heroProof:'Creado con propósito. Diseñado para las personas.',heroBottom:'UN CAMINO MEJOR HACIA ADELANTE',aboutKicker:'QUIÉNES SOMOS',aboutTitle:'Convertimos ideas ambiciosas en tecnología útil.',aboutText:'NYIL es un laboratorio de innovación independiente centrado en experiencias digitales, productos de software y sistemas empresariales conectados. Unimos pensamiento claro e ingeniería práctica para resolver problemas importantes.',workTogether:'Trabaja con nosotros',valueOneTitle:'Primero el propósito',valueOneText:'Partimos de necesidades reales y valor medible.',valueTwoTitle:'Hecho para durar',valueTwoText:'Valoramos la seguridad, la fiabilidad y el diseño cuidadoso.',valueThreeTitle:'En evolución constante',valueThreeText:'Seguimos aprendiendo, mejorando y mirando al futuro.',solutionsKicker:'QUÉ HACEMOS',solutionsTitle:'Tecnología que funciona en el mundo real.',solutionsText:'Desde la primera idea hasta los sistemas que la respaldan, construimos con claridad y cuidado.',solutionOneTitle:'Productos digitales',solutionOneText:'Aplicaciones web y móviles diseñadas para las personas y sus procesos.',solutionTwoTitle:'Plataformas empresariales',solutionTwoText:'Herramientas conectadas para operaciones, comercio, administración y decisiones.',solutionThreeTitle:'Tecnología emergente',solutionThreeText:'Exploración práctica de automatización, servicios inteligentes y nuevas posibilidades.',productsKicker:'NUESTRO TRABAJO',productsTitle:'Productos con una razón de ser.',productsText:'Explora los productos e iniciativas que estamos creando.',loadingProducts:'Cargando productos publicados…',emptyProducts:'Nuestro catálogo se está preparando. Vuelve pronto.',productsError:'Los productos no están disponibles temporalmente.',technologyKicker:'CÓMO CONSTRUIMOS',technologyTitle:'La buena tecnología debe sentirse sencilla.',technologyText:'Detrás de cada experiencia sencilla hay un sistema diseñado con cuidado. Nos centramos en bases seguras, arquitectura clara, rendimiento y crecimiento.',techOne:'Fundamentos centrados en la seguridad',techTwo:'Sistemas fiables y escalables',techThree:'Experiencias centradas en las personas',contactKicker:'INICIEMOS UNA CONVERSACIÓN',contactTitle:'¿Tienes una idea importante?',contactText:'Cuéntanos en qué estás trabajando. Nos encantará escucharte.',formName:'Tu nombre',formEmail:'Correo electrónico',formSubject:'Asunto',formMessage:'Tu mensaje',sendMessage:'Enviar mensaje',sending:'Enviando…',sent:'Gracias. Hemos recibido tu mensaje.',sendError:'No se pudo enviar el mensaje. Inténtalo de nuevo.',footerLine:'Pensamiento independiente. Tecnología útil. Mejores posibilidades.',footerContact:'Contacto',footerAbout:'Sobre NYIL',footerMade:'Hecho con propósito.'},
@@ -82,7 +85,17 @@ TEXT.fa = {
 
 let currentLanguage = 'en';
 let cmsOverrides = {};
+let corporateEntriesCache = {};
 const t = key => TEXT[currentLanguage]?.[key] || TEXT.en[key] || key;
+const COMPANY_PROFILE_LABELS = {
+  en:{historyTitle:'Our history',historyBody:'Our story and the milestones that shaped NYIL will be shared here.',visionTitle:'Our vision',visionBody:'Our long-term vision will be shared here.',missionTitle:'Our mission',missionBody:'Our mission and the value we aim to create will be shared here.',approachTitle:'How we work',approachBody:'Our working principles and process will be shared here.'},
+  ps:{historyTitle:'زموږ تاریخچه',historyBody:'د NYIL کیسه او مهم پړاوونه به دلته شریک شي.',visionTitle:'زموږ لیدلوری',visionBody:'زموږ اوږدمهاله لیدلوری به دلته وړاندې شي.',missionTitle:'زموږ ماموریت',missionBody:'زموږ ماموریت او هغه ارزښت چې رامنځته کول یې غواړو، دلته وړاندې کېږي.',approachTitle:'زموږ د کار طریقه',approachBody:'زموږ کاري اصول او بهیر به دلته تشریح شي.'},
+  fa:{historyTitle:'تاریخچهٔ ما',historyBody:'داستان NYIL و مراحل مهم شکل‌گیری آن در اینجا نشر خواهد شد.',visionTitle:'چشم‌انداز ما',visionBody:'چشم‌انداز درازمدت ما در اینجا ارائه خواهد شد.',missionTitle:'ماموریت ما',missionBody:'ماموریت ما و ارزشی که می‌خواهیم ایجاد کنیم، در اینجا ارائه می‌شود.',approachTitle:'روش کار ما',approachBody:'اصول و روند کاری ما در اینجا توضیح داده خواهد شد.'}
+};
+function applyCompanyProfileLabels(lang=currentLanguage) {
+  const labels=COMPANY_PROFILE_LABELS[lang]||COMPANY_PROFILE_LABELS.en;
+  Object.entries(labels).forEach(([key,value])=>{const node=document.querySelector('[data-company-field="'+key.replace(/Title$/,'-title').replace(/Body$/,'-body')+'"]');if(node)node.textContent=value;});
+}
 const localized = (value, lang=currentLanguage) => {
   if (typeof value === 'string') return value;
   if (!value || typeof value !== 'object') return '';
@@ -109,7 +122,7 @@ function applyLanguage(lang) {
     }
   });
 
-  const labels = {en:'English',ps:'پښتو',fa:'دری',de:'Deutsch',fr:'Français',es:'Español',it:'Italiano',pt:'Português',nl:'Nederlands',sv:'Svenska',no:'Norsk',da:'Dansk'};
+  const labels = {en:'English',ps:'پښتو',fa:'دری'};
   const langLabel = document.getElementById('languageButtonLabel');
   if (langLabel) langLabel.textContent = labels[nextLanguage] || 'English';
   const select = document.getElementById('languageSelect');
@@ -119,10 +132,12 @@ function applyLanguage(lang) {
   try { localStorage.setItem('nyil-language', nextLanguage); }
   catch (error) { console.warn('NYIL could not save language preference:', error); }
 
+  try { applyCompanyProfileLabels(nextLanguage); } catch (error) { console.warn('NYIL company profile labels skipped:', error); }
   try { applyCmsOverrides(); }
   catch (error) { console.warn('NYIL CMS language override skipped:', error); }
   try { renderProducts(Array.isArray(window.__nyilProducts) ? window.__nyilProducts : []); }
   catch (error) { console.error('NYIL product language render failed:', error); }
+  try { renderCorporateSections(); } catch (error) { console.warn('NYIL corporate language render skipped:', error); }
 }
 async function getJson(path) {
   const response = await fetch(API_BASE + path, {headers:{Accept:'application/json'}});
@@ -131,17 +146,32 @@ async function getJson(path) {
 }
 function applyCmsOverrides() {
   const sections = {home:['heroTitle','heroText'],about:['aboutTitle','aboutText'],solutions:['solutionsTitle','solutionsText'],technology:['technologyTitle','technologyText'],footer:['footerLine']};
+  const setText = (selector, value) => {
+    if (typeof value !== 'string' || !value.trim()) return;
+    const node = document.querySelector(selector);
+    if (node) { node.textContent = value; if (node.hasAttribute('data-company-field')) node.dataset.cmsValue = 'true'; }
+  };
   Object.entries(sections).forEach(([key, fields]) => {
     const copy = cmsOverrides[key]?.[currentLanguage] || cmsOverrides[key]?.en;
     if (!copy || typeof copy !== 'object') return;
     const [titleKey, textKey] = fields;
-    if (titleKey && typeof copy.title === 'string' && copy.title.trim()) {
-      const node = document.querySelector('[data-i18n="' + titleKey + '"]');
-      if (node) node.textContent = copy.title;
-    }
-    if (textKey && typeof copy.body === 'string' && copy.body.trim()) {
-      const node = document.querySelector('[data-i18n="' + textKey + '"]');
-      if (node) node.textContent = copy.body;
+    if (titleKey) setText('[data-i18n="' + titleKey + '"]', copy.title);
+    if (textKey) setText('[data-i18n="' + textKey + '"]', copy.body);
+    if (key === 'about') {
+      setText('[data-company-field="history-title"]', copy.historyTitle);
+      setText('[data-company-field="history-body"]', copy.historyBody);
+      setText('[data-company-field="vision-title"]', copy.visionTitle);
+      setText('[data-company-field="vision-body"]', copy.visionBody);
+      setText('[data-company-field="mission-title"]', copy.missionTitle);
+      setText('[data-company-field="mission-body"]', copy.missionBody);
+      setText('[data-company-field="approach-title"]', copy.approachTitle);
+      setText('[data-company-field="approach-body"]', copy.approachBody);
+      setText('[data-i18n="valueOneTitle"]', copy.valueOneTitle);
+      setText('[data-i18n="valueOneText"]', copy.valueOneText);
+      setText('[data-i18n="valueTwoTitle"]', copy.valueTwoTitle);
+      setText('[data-i18n="valueTwoText"]', copy.valueTwoText);
+      setText('[data-i18n="valueThreeTitle"]', copy.valueThreeTitle);
+      setText('[data-i18n="valueThreeText"]', copy.valueThreeText);
     }
   });
 }
@@ -161,9 +191,9 @@ function renderProducts(products){
   const tiles=visible.map((item,i)=>'<span class="product-gallery-tile">'+(item.type==='image'?'<img loading="lazy" src="'+escapeHtml(item.url)+'" alt="'+escapeHtml(name)+' image '+(i+1)+'" decoding="async">':'<video muted playsinline preload="metadata" tabindex="-1" aria-hidden="true" src="'+escapeHtml(item.url)+'"></video><span class="gallery-video-mark">▶</span>')+(i===3&&media.length>4?'<span class="gallery-more">+'+(media.length-4)+'</span>':'')+'</span>').join('');
   const preview=visible.length?'<span class="product-gallery-grid '+(visible.length===1?'single':'')+'">'+tiles+'</span>':'<span class="product-placeholder">NYIL</span>';
   const count=media.length>1?'<span class="gallery-count">▧ '+media.length+' '+productText('media','رسنۍ','رسانه')+'</span>':'';
-  return '<article class="product-card"><button type="button" class="product-image product-open" data-product-index="'+index+'" aria-label="'+escapeHtml(name)+'">'+preview+count+'</button><div class="product-info"><span class="product-category">'+escapeHtml(product.category||'NYIL')+'</span><h3>'+escapeHtml(name)+'</h3><p>'+escapeHtml(summary)+'</p><button type="button" class="product-link product-open" data-product-index="'+index+'">'+productText('Learn more','نور معلومات','بیشتر بدانید')+' ↗</button></div></article>'
+  return '<article class="product-card reveal-item"><button type="button" class="product-image product-open" data-product-index="'+index+'" aria-label="'+escapeHtml(name)+'">'+preview+count+'</button><div class="product-info"><span class="product-category">'+escapeHtml(product.category||'NYIL')+'</span><h3>'+escapeHtml(name)+'</h3><p>'+escapeHtml(summary)+'</p><button type="button" class="product-link product-open" data-product-index="'+index+'">'+productText('Learn more','نور معلومات','بیشتر بدانید')+' ↗</button></div></article>'
  }).join('');
- grid.querySelectorAll('.product-open').forEach(button=>button.addEventListener('click',()=>openProductDetail(products[Number(button.dataset.productIndex)])))
+ grid.querySelectorAll('.product-open').forEach(button=>button.addEventListener('click',()=>openProductDetail(products[Number(button.dataset.productIndex)])));observeRevealItems(grid)
 }
 let activeProductImages=[],activeImageIndex=0;
 function openProductDetail(product){const modal=document.getElementById('productDetailModal'),content=document.getElementById('productDetailContent');if(!modal||!content)return;const name=localized(product.name)||product.slug,summary=localized(product.summary),description=localized(product.description)||summary,images=productImages(product),videos=productVideos(product);activeProductImages=images;activeImageIndex=0;const gallery=images.length?'<div class="detail-gallery"><button class="detail-main-image" type="button" id="detailMainImage"><img id="detailHeroImage" src="'+escapeHtml(images[0])+'" alt="'+escapeHtml(name)+'"><span>⛶ '+productText('View full screen','بشپړ سکرین','نمایش تمام صفحه')+'</span></button>'+(images.length>1?'<div class="detail-thumbs">'+images.map((url,i)=>'<button type="button" data-image-index="'+i+'" class="'+(i===0?'active':'')+'"><img src="'+escapeHtml(url)+'" alt="'+escapeHtml(name)+' image '+(i+1)+'"></button>').join('')+'</div>':'')+'</div>':'';const videoGallery=videos.length?'<section class="detail-videos"><h3>'+productText('Product videos','د محصول ویډیوګانې','ویدیوهای محصول')+'</h3><div class="detail-video-grid">'+videos.map((url,i)=>'<div class="detail-video-item"><video controls playsinline preload="metadata" src="'+escapeHtml(url)+'" aria-label="'+escapeHtml(name)+' video '+(i+1)+'"></video><span class="media-index">'+(i+1)+'</span></div>').join('')+'</div></section>':'';content.innerHTML=gallery+videoGallery+'<div class="detail-copy"><span class="product-category">'+escapeHtml(product.category||'NYIL')+'</span><h2 id="detailTitle">'+escapeHtml(name)+'</h2><p class="detail-summary">'+escapeHtml(summary)+'</p><div class="detail-description">'+escapeHtml(description).replace(/\\n/g,'<br>')+'</div><form class="product-inquiry-form" id="productInquiryForm"><h3>'+productText('Ask about this product','د دې محصول په اړه پوښتنه','درباره این محصول بپرسید')+'</h3><label>'+productText('Your name','ستاسو نوم','نام شما')+'<input name="name" required maxlength="120" autocomplete="name"></label><label>'+productText('Email address','برېښنالیک','ایمیل')+'<input type="email" name="email" required maxlength="254" autocomplete="email"></label><label>'+productText('Message / application','نظر یا غوښتنلیک','نظر یا درخواست')+'<textarea name="message" required minlength="10" maxlength="10000" rows="4"></textarea></label><label class="honeypot" aria-hidden="true">Website<input name="website" tabindex="-1" autocomplete="off"></label><button class="button" type="submit">'+productText('Send enquiry','غوښتنه واستوئ','ارسال درخواست')+' ↗</button><p class="form-status" id="productInquiryStatus" role="status" aria-live="polite"></p></form></div>';content.querySelectorAll('[data-image-index]').forEach(button=>button.addEventListener('click',()=>setDetailImage(Number(button.dataset.imageIndex))));document.getElementById('detailMainImage')?.addEventListener('click',openLightbox);document.getElementById('productInquiryForm').addEventListener('submit',event=>sendProductInquiry(event,product));modal.hidden=false;document.body.classList.add('modal-open');modal.querySelector('.detail-close').focus()}
@@ -174,6 +204,41 @@ function closeLightbox(){document.getElementById('imageLightbox').hidden=true}
 async function sendProductInquiry(event,product){event.preventDefault();const form=event.currentTarget,button=form.querySelector('button[type="submit"]'),status=document.getElementById('productInquiryStatus'),data=Object.fromEntries(new FormData(form).entries());button.disabled=true;status.textContent='';try{const name=localized(product.name)||product.slug,response=await fetch(API_BASE+'/inquiries',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({name:data.name,email:data.email,subject:'Product enquiry: '+name,message:'Product: '+name+' ('+product.slug+')\\n\\n'+data.message,website:data.website})}),result=await response.json().catch(()=>({}));if(!response.ok||!result.received)throw new Error(result.error||'Unable to send');form.reset();status.textContent=productText('Your enquiry has been sent.','ستاسو غوښتنه واستول شوه.','درخواست شما ارسال شد.')}catch(error){status.textContent=productText('Could not send. Please try again.','لېږل ترسره نه شول، بیا هڅه وکړئ.','ارسال انجام نشد؛ دوباره هڅه وکړئ.');console.error(error)}finally{button.disabled=false}}
 function escapeHtml(value) {
   return String(value ?? '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+}
+function applyPublicSettings(settings){
+  const profile=settings?.company_profile||{},contact=settings?.contact_channels||{},seo=settings?.seo_defaults||{};
+  if(typeof seo.title==='string'&&seo.title.trim())document.title=seo.title.trim().slice(0,160);
+  if(typeof seo.description==='string'&&seo.description.trim()){const meta=document.querySelector('meta[name="description"]');if(meta)meta.content=seo.description.trim().slice(0,300);}
+  const email=typeof contact.email==='string'?contact.email.trim():'';
+  const emailLink=document.querySelector('.email-channel');
+  if(emailLink&&email&&/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email)){emailLink.href='mailto:'+email;const small=emailLink.querySelector('small');if(small)small.textContent=email;}
+  const whatsapp=typeof contact.whatsapp==='string'?contact.whatsapp.replace(/[^0-9]/g,''):'';
+  const whatsappLink=document.querySelector('.whatsapp-channel');
+  if(whatsappLink&&whatsapp.length>=8){whatsappLink.href='https://wa.me/'+whatsapp;const small=whatsappLink.querySelector('small');if(small)small.textContent=contact.phone||whatsapp;}
+  const phoneLink=document.querySelector('.phone-channel');
+  const phone=typeof contact.phone==='string'?contact.phone.trim():'';
+  const phoneDigits=phone.replace(/[^0-9]/g,'');
+  if(phoneLink&&phoneDigits.length>=7&&phoneDigits.length<=15){phoneLink.href='tel:'+phone.replace(/[^0-9+]/g,'');phoneLink.hidden=false;const small=phoneLink.querySelector('small');if(small)small.textContent=phone;}
+  const socialHost=document.getElementById('footerSocial');
+  if(socialHost){
+    const social=settings?.social_links&&typeof settings.social_links==='object'?settings.social_links:{};
+    const platforms=[['facebook','Facebook'],['instagram','Instagram'],['linkedin','LinkedIn'],['youtube','YouTube'],['x','X'],['github','GitHub'],['tiktok','TikTok'],['telegram','Telegram']];
+    socialHost.replaceChildren();
+    platforms.forEach(([key,label])=>{
+      const raw=social[key]??social[key+'_url'];
+      const value=typeof raw==='string'?raw:raw&&typeof raw==='object'?raw.url:'';
+      const href=safeHttpUrl(value);
+      if(!href)return;
+      const link=document.createElement('a');link.href=href;link.textContent=label;link.target='_blank';link.rel='noopener noreferrer';link.setAttribute('aria-label','NYIL on '+label);socialHost.appendChild(link);
+    });
+    socialHost.hidden=!socialHost.childElementCount;
+  }
+  const companyDescription=typeof profile.description==='string'?profile.description.trim():'';
+  if(companyDescription){const node=document.querySelector('[data-i18n="aboutText"]');if(node)node.textContent=companyDescription;}
+}
+async function loadPublicSettings(){
+  try{const result=await getJson('/public-settings');applyPublicSettings(result.settings||{});}
+  catch(error){console.warn('NYIL public settings unavailable:',error);}
 }
 async function loadProducts() {
   const grid = document.getElementById('productGrid');
@@ -231,6 +296,75 @@ async function sendInquiry(event) {
     button.querySelector('[data-i18n]').textContent = t('sendMessage');
   }
 }
+
+const CORPORATE_COLLECTIONS = [
+  ['services','Services','خدمات','خدمات'],['projects','Projects','پروژې','پروژه‌ها'],
+  ['work','Our work & case studies','زموږ کارونه او بېلګې','کارها و نمونه‌های ما'],
+  ['plans','Plans & roadmap','پلانونه او راتلونکی مسیر','برنامه‌ها و نقشه راه'],
+  ['work-method','How we work','زموږ د کار طریقه','روش کار ما'],
+  ['news','News & announcements','خبرونه او اعلانونه','خبرها و اطلاعیه‌ها'],
+  ['team','Leadership & team','مدیریت او ټیم','مدیریت و تیم'],['partners','Partners','همکاران','شرکای ما'],
+  ['achievements','Achievements','لاسته راوړنې','دستاوردها'],['testimonials','Testimonials','د خلکو نظرونه','دیدگاه‌ها'],
+  ['documents','Documents & downloads','اسناد او ډاونلوډونه','اسناد و دانلودها'],
+  ['faqs','Frequently asked questions','عامې پوښتنې','پرسش‌های متداول'],['careers','Careers','د کار فرصتونه','فرصت‌های شغلی']
+];
+const CORPORATE_INTROS = {
+ work:{en:'Explore selected work, real outcomes and the ideas behind our projects.',ps:'زموږ ټاکل شوي کارونه، پایلې او د پروژو تر شا مفکورې وګورئ.',fa:'نمونه‌کارها، نتایج و ایده‌های پشت پروژه‌های ما را ببینید.'},
+ plans:{en:'See the priorities and upcoming directions we choose to share with our community.',ps:'هغه لومړیتوبونه او راتلونکي پلانونه وګورئ چې له خلکو سره یې شریکوو.',fa:'اولویت‌ها و مسیرهای آینده‌ای را ببینید که با جامعه خود شریک می‌سازیم.'},
+ 'work-method':{en:'Understand how we move from a need or idea to a useful, dependable result.',ps:'وګورئ چې موږ څنګه یوه اړتیا یا مفکوره په ګټورې او باوري پایلې بدلوو.',fa:'ببینید چگونه یک نیاز یا ایده را به نتیجه‌ای مفید و قابل اعتماد تبدیل می‌کنیم.'}
+};
+function corporateText(value){return localized(value)||''}
+function safeHttpUrl(value){try{const url=new URL(String(value||''),window.location.origin);return ['http:','https:'].includes(url.protocol)?url.href:''}catch{return ''}}
+function renderCorporateEntry(entry,key){
+  const title=corporateText(entry.title)||entry.slug||'',summary=corporateText(entry.summary),body=corporateText(entry.body);
+  const media=(Array.isArray(entry.media_urls)?entry.media_urls:[]).map(safeHttpUrl).filter(Boolean);
+  const image=media.find(url=>/\.(png|jpe?g|webp|avif)(\?|$)/i.test(url));
+  const video=media.find(url=>/\.(mp4|webm|mov)(\?|$)/i.test(url));
+  const meta=entry.metadata&&typeof entry.metadata==='object'?entry.metadata:{};
+  const externalUrl=safeHttpUrl(meta.url);
+  const documentUrl=media.find(url=>/\.pdf(\?|$)/i.test(url));
+  if(key==='documents')return '<article class="corporate-card reveal-item"><div class="corporate-card-copy"><h3>'+escapeHtml(title)+'</h3>'+(summary?'<p>'+escapeHtml(summary)+'</p>':'')+(body?'<div class="corporate-body">'+escapeHtml(body).replace(/\n/g,'<br>')+'</div>':'')+((documentUrl||externalUrl)?'<a class="text-link" href="'+escapeHtml(documentUrl||externalUrl)+'" target="_blank" rel="noopener noreferrer">'+escapeHtml(String(meta.link_label||'View or download document'))+' ↗</a>':'')+'</div></article>';
+  if(key==='faqs')return '<details class="corporate-faq reveal-item"><summary>'+escapeHtml(title)+'</summary><p>'+escapeHtml(body||summary)+'</p></details>';
+  const teamProfile=key==='team';
+  const profileUrl=safeHttpUrl(meta.linkedin_url);
+  return '<article class="corporate-card reveal-item'+(teamProfile?' corporate-team-card':'')+'">'+(image?'<img class="corporate-media'+(teamProfile?' corporate-team-photo':'')+'" loading="lazy" src="'+escapeHtml(image)+'" alt="'+escapeHtml(title)+'">':'')+(video?'<video class="corporate-media" controls preload="metadata" src="'+escapeHtml(video)+'"></video>':'')+'<div class="corporate-card-copy">'+(entry.category?'<span class="corporate-category">'+escapeHtml(entry.category)+'</span>':'')+'<h3>'+escapeHtml(title)+'</h3>'+(meta.role?'<small class="corporate-person-role">'+escapeHtml(String(meta.role))+'</small>':'')+(meta.department?'<small class="corporate-meta-tag">'+escapeHtml(String(meta.department))+'</small>':'')+(summary?'<p class="corporate-summary">'+escapeHtml(summary)+'</p>':'')+(body?'<div class="corporate-body">'+escapeHtml(body).replace(/\n/g,'<br>')+'</div>':'')+(teamProfile&&meta.responsibility?'<div class="corporate-person-responsibility"><b>'+(currentLanguage==='ps'?'مسؤلیتونه':currentLanguage==='fa'?'مسئولیت‌ها':'Responsibilities')+'</b><p>'+escapeHtml(corporateText(meta.responsibility))+'</p></div>':'')+(teamProfile&&meta.reports_to?'<div class="corporate-reports-to"><span>'+(currentLanguage==='ps'?'راپور ورکوي:':currentLanguage==='fa'?'گزارش به:':'Reports to:')+'</span> '+escapeHtml(corporateText(meta.reports_to))+'</div>':'')+(meta.partner_type?'<small class="corporate-meta-tag">'+escapeHtml(String(meta.partner_type))+'</small>':'')+(meta.date?'<small>'+escapeHtml(String(meta.date))+'</small>':'')+(meta.highlight?'<div class="corporate-highlight"><strong>'+escapeHtml(String(meta.highlight))+'</strong>'+(meta.highlight_label?'<span>'+escapeHtml(String(meta.highlight_label))+'</span>':'')+'</div>':'')+(profileUrl?'<a class="text-link" href="'+escapeHtml(profileUrl)+'" target="_blank" rel="noopener noreferrer">'+(teamProfile?'Professional profile ↗':escapeHtml(String(meta.link_label||'Learn more'))+' ↗')+'</a>':'')+(externalUrl?'<a class="text-link" href="'+escapeHtml(externalUrl)+'" target="_blank" rel="noopener noreferrer">'+escapeHtml(String(meta.link_label||'Learn more'))+' ↗</a>':'')+'</div></article>';
+}
+function renderCorporateSections(){
+  const host=document.getElementById('corporateSections');if(!host)return;
+  const nav=document.getElementById('mainNav');
+  host.innerHTML='';
+  if(nav)nav.querySelectorAll('[data-corporate-nav]').forEach(link=>link.remove());
+  for(const [key,en,ps,fa] of CORPORATE_COLLECTIONS){
+    const entries=Array.isArray(corporateEntriesCache[key])?corporateEntriesCache[key]:[];
+    if(!entries.length)continue;
+    const label=currentLanguage==='ps'?ps:currentLanguage==='fa'?fa:en;
+    const section=document.createElement('section');section.className='corporate-section section-wrap';section.id=key;
+    const intro=CORPORATE_INTROS[key]?.[currentLanguage]||CORPORATE_INTROS[key]?.en||'';
+    let content='';
+    if(key==='team'){
+      const levels=[['executive',currentLanguage==='ps'?'اجرائیوي مشرتابه':currentLanguage==='fa'?'رهبری اجرایی':'Executive leadership'],['department',currentLanguage==='ps'?'د څانګو مشران':currentLanguage==='fa'?'مسئولان بخش‌ها':'Department leads'],['team',currentLanguage==='ps'?'د ټیم غړي':currentLanguage==='fa'?'اعضای تیم':'Team members']];
+      const groups=levels.map(([level,levelLabel])=>{const members=entries.filter(entry=>(entry.metadata?.org_level||'team')===level);return members.length?'<section class="corporate-org-level"><h3>'+escapeHtml(levelLabel)+'</h3><div class="corporate-grid">'+members.map(entry=>renderCorporateEntry(entry,key)).join('')+'</div></section>':''}).join('');
+      const unassigned=entries.filter(entry=>!['executive','department','team'].includes(entry.metadata?.org_level));
+      content='<div class="corporate-org-chart">'+groups+(unassigned.length?'<div class="corporate-grid">'+unassigned.map(entry=>renderCorporateEntry(entry,key)).join('')+'</div>':'')+'</div>';
+    }else content='<div class="corporate-grid">'+entries.map(entry=>renderCorporateEntry(entry,key)).join('')+'</div>';
+    section.innerHTML='<div class="section-kicker">'+escapeHtml(label)+'</div><div class="section-heading corporate-section-heading"><h2>'+escapeHtml(label)+'</h2>'+(intro?'<p class="corporate-intro">'+escapeHtml(intro)+'</p>':'')+'</div>'+content;
+    host.appendChild(section);observeRevealItems(section);
+    if(nav){const link=document.createElement('a');link.href='#'+key;link.textContent=label;link.dataset.corporateNav='true';nav.insertBefore(link,nav.querySelector('a[href="#contact"]')||null);}
+  }
+}
+function trackPageView(){
+  const width=window.innerWidth||0;
+  const deviceType=width<640?'mobile':width<1024?'tablet':'desktop';
+  const path=window.location.pathname.replace(/[^a-zA-Z0-9/_-]/g,'').slice(0,180)||'/';
+  fetch(API_BASE+'/analytics/pageview',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({path,language:currentLanguage,device_type:deviceType}),keepalive:true}).catch(()=>{});
+}
+async function loadCorporateSections(){
+  const cache={};
+  await Promise.all(CORPORATE_COLLECTIONS.map(async([key])=>{try{const result=await getJson('/collections/'+key);cache[key]=Array.isArray(result.entries)?result.entries:[]}catch(error){console.warn('NYIL corporate section unavailable:',key,error);cache[key]=[]}}));
+  corporateEntriesCache=cache;
+  renderCorporateSections();
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('year').textContent = new Date().getFullYear();
   setupAppearance();
@@ -242,17 +376,34 @@ document.addEventListener('DOMContentLoaded', () => {
   applyLanguage(saved);
   const languageSelect = document.getElementById('languageSelect');
   if (languageSelect) languageSelect.addEventListener('change', event => applyLanguage(event.target.value));
-  const closeDetail=()=>{document.getElementById('productDetailModal').hidden=true;document.body.classList.remove('modal-open')};document.getElementById('detailClose').addEventListener('click',closeDetail);document.getElementById('productDetailModal').addEventListener('click',e=>{if(e.target.id==='productDetailModal')closeDetail()});document.getElementById('lightboxClose').addEventListener('click',closeLightbox);document.getElementById('imageLightbox').addEventListener('click',e=>{if(e.target.id==='imageLightbox')closeLightbox()});document.getElementById('lightboxPrev').addEventListener('click',()=>{setDetailImage((activeImageIndex+activeProductImages.length-1)%activeProductImages.length);document.getElementById('lightboxImage').src=activeProductImages[activeImageIndex]});document.getElementById('lightboxNext').addEventListener('click',()=>{setDetailImage((activeImageIndex+1)%activeProductImages.length);document.getElementById('lightboxImage').src=activeProductImages[activeImageIndex]});document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeLightbox();closeDetail()}});
+  const closeDetail=()=>{document.getElementById('productDetailModal').hidden=true;document.body.classList.remove('modal-open')};document.getElementById('detailClose').addEventListener('click',closeDetail);document.getElementById('productDetailModal').addEventListener('click',e=>{if(e.target.id==='productDetailModal')closeDetail()});document.getElementById('lightboxClose').addEventListener('click',closeLightbox);document.getElementById('imageLightbox').addEventListener('click',e=>{if(e.target.id==='imageLightbox')closeLightbox()});document.getElementById('lightboxPrev').addEventListener('click',()=>{setDetailImage((activeImageIndex+activeProductImages.length-1)%activeProductImages.length);document.getElementById('lightboxImage').src=activeProductImages[activeImageIndex]});document.getElementById('lightboxNext').addEventListener('click',()=>{setDetailImage((activeImageIndex+1)%activeProductImages.length);document.getElementById('lightboxImage').src=activeProductImages[activeImageIndex]});document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeLightbox();closeDetail();if(nav.classList.contains('open')){closeMobileNav();toggle.focus()}}});
   const toggle = document.getElementById('menuToggle');
   const nav = document.getElementById('mainNav');
+  const closeMobileNav = () => {
+    nav.classList.remove('open');
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.setAttribute('aria-label', 'Open navigation');
+  };
   toggle.addEventListener('click', () => {
     const open = nav.classList.toggle('open');
     toggle.setAttribute('aria-expanded', String(open));
-    
+    toggle.setAttribute('aria-label', open ? 'Close navigation' : 'Open navigation');
   });
-  nav.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {nav.classList.remove('open');toggle.setAttribute('aria-expanded','false');}));
+  nav.addEventListener('click', event => {
+    const link = event.target.closest('a');
+    if (!link || !nav.contains(link)) return;
+    closeMobileNav();
+  });
+  document.addEventListener('click', event => {
+    if (!nav.classList.contains('open')) return;
+    if (nav.contains(event.target) || toggle.contains(event.target)) return;
+    closeMobileNav();
+  });
   void loadProducts();
   void loadCmsContent();
+  void loadCorporateSections();
+  void loadPublicSettings();
+  trackPageView();
 });
 function setupLanguageDialog() {
   const dialog = document.getElementById('languageDialog');
@@ -290,6 +441,15 @@ function setupLanguageDialog() {
     });
   });
 }
+function observeRevealItems(root=document){
+  if(!('IntersectionObserver' in window))return;
+  const items=root.querySelectorAll('.reveal-item:not([data-reveal-observed])');
+  if(!items.length)return;
+  const observer=new IntersectionObserver((records,instance)=>records.forEach(record=>{
+    if(record.isIntersecting){record.target.classList.add('is-visible');instance.unobserve(record.target)}
+  }),{threshold:.12,rootMargin:'0px 0px -36px 0px'});
+  items.forEach((item,index)=>{item.dataset.revealObserved='true';item.style.setProperty('--reveal-delay',Math.min(index%4,3)*75+'ms');observer.observe(item)});
+}
 function setupAppearance() {
   let theme = 'dark';
   try {
@@ -307,7 +467,7 @@ function applyTheme(theme) {
   const button = document.getElementById('themeToggle');
   const icon = document.getElementById('themeIcon');
   if (icon) icon.textContent = next === 'dark' ? '☼' : '☾';
-  if (button) button.setAttribute('aria-label', next === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+  if (button) { button.setAttribute('aria-label', next === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'); button.setAttribute('aria-pressed', String(next === 'light')); button.setAttribute('title', next === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'); }
   const meta = document.querySelector('meta[name="theme-color"]');
   if (meta) meta.content = next === 'dark' ? '#071c16' : '#f5f7f3';
   try { localStorage.setItem('nyil-theme', next); } catch {}
