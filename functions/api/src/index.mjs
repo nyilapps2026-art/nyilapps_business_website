@@ -33,6 +33,9 @@ async function admin(request) {
   } catch { return null }
 }
 function jsonObject(value) { return value && typeof value === 'object' && !Array.isArray(value) ? value : {} }
+function safeHttpUrl(value) { try { const url = new URL(safeText(value, 2048)); return url.protocol === 'https:' || url.protocol === 'http:' ? url.toString() : '' } catch { return '' } }
+function safeMediaUrls(value) { return Array.isArray(value) ? value.map(safeHttpUrl).filter(Boolean).slice(0, 20) : [] }
+function safeMetadata(value) { const metadata = jsonObject(value); return { ...metadata, ...(Object.prototype.hasOwnProperty.call(metadata, 'url') ? { url: safeHttpUrl(metadata.url) } : {}) } }
 
 export default {
   async fetch(request) {
@@ -160,6 +163,7 @@ export default {
             if (!['draft','published'].includes(body.status)) return response({error:'Invalid status'},400,origin)
             const [row] = await sql`UPDATE public.site_entries SET status=${body.status},published_at=CASE WHEN ${body.status}='published' THEN COALESCE(published_at,now()) ELSE NULL END,updated_at=now() WHERE id=${id} RETURNING *`
             if (!row) return response({error:'Content entry not found'},404,origin)
+            await sql`INSERT INTO public.admin_audit_log (admin_email,action,details) VALUES (${email},'site_entry.status',${JSON.stringify({id,status:body.status})}::jsonb)`
             return response({entry:row},200,origin)
           }
           if (request.method === 'DELETE') {
