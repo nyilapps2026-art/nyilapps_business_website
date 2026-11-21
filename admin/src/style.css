@@ -84,3 +84,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
 
 .entry-editor .language-editor label,.entry-editor .upload-box label{min-width:0}
 .entry-editor input:focus-visible,.entry-editor textarea:focus-visible,.entry-editor select:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+
+
+.entry-editor .content-help.full{grid-column:1/-1;margin:0;padding:10px 12px;border-radius:8px;background:var(--surface-2);line-height:1.65}
+.entry-editor .language-editor textarea{min-height:76px;resize:vertical}
