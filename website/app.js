@@ -113,7 +113,7 @@ function applyLanguage(lang) {
     }
   });
 
-  const labels = {en:'English',ps:'پښتو',fa:'دری',de:'Deutsch',fr:'Français',es:'Español',it:'Italiano',pt:'Português',nl:'Nederlands',sv:'Svenska',no:'Norsk',da:'Dansk'};
+  const labels = {en:'English',ps:'پښتو',fa:'دری'};
   const langLabel = document.getElementById('languageButtonLabel');
   if (langLabel) langLabel.textContent = labels[nextLanguage] || 'English';
   const select = document.getElementById('languageSelect');
@@ -414,7 +414,7 @@ function applyTheme(theme) {
   const button = document.getElementById('themeToggle');
   const icon = document.getElementById('themeIcon');
   if (icon) icon.textContent = next === 'dark' ? '☼' : '☾';
-  if (button) button.setAttribute('aria-label', next === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+  if (button) { button.setAttribute('aria-label', next === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'); button.setAttribute('aria-pressed', String(next === 'light')); button.setAttribute('title', next === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'); }
   const meta = document.querySelector('meta[name="theme-color"]');
   if (meta) meta.content = next === 'dark' ? '#071c16' : '#f5f7f3';
   try { localStorage.setItem('nyil-theme', next); } catch {}
