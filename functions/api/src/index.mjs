@@ -11,6 +11,7 @@ const storage = new S3Client({ forcePathStyle: true })
 const MEDIA_BUCKET = 'nyil-public-product-media'
 const MAX_IMAGE_BYTES = 8 * 1024 * 1024
 const MAX_VIDEO_BYTES = 100 * 1024 * 1024
+const MAX_DOCUMENT_BYTES = 20 * 1024 * 1024
 
 function response(data, status = 200, origin = '') {
   return new Response(status === 204 ? null : JSON.stringify(data), { status, headers: {
@@ -29,9 +30,15 @@ async function admin(request) {
   try {
     const { payload } = await jwtVerify(header.slice(7), jwks, { issuer: new URL(process.env.NEON_AUTH_BASE_URL).origin })
     const subject = typeof payload.sub === 'string' ? payload.sub : ''
-    return subject === ADMIN_USER_ID ? ADMIN_EMAIL : null
+    const tokenEmail = safeText(payload.email, 254).toLowerCase()
+    const [member] = await sql`SELECT email, role, status FROM public.admin_members WHERE status='active' AND (auth_subject=${subject} OR lower(email)=${tokenEmail}) ORDER BY CASE WHEN auth_subject=${subject} THEN 0 ELSE 1 END LIMIT 1`
+    if (!member) return null
+    return { email: member.email, role: member.role, subject }
   } catch { return null }
 }
+function canManageContent(role) { return ['owner','admin','editor'].includes(role) }
+function canManageInquiries(role) { return ['owner','admin','support'].includes(role) }
+function canReadAnalytics(role) { return ['owner','admin','analyst'].includes(role) }
 function jsonObject(value) { return value && typeof value === 'object' && !Array.isArray(value) ? value : {} }
 function safeHttpUrl(value) { try { const url = new URL(safeText(value, 2048)); return url.protocol === 'https:' || url.protocol === 'http:' ? url.toString() : '' } catch { return '' } }
 function safeMediaUrls(value) { return Array.isArray(value) ? value.map(safeHttpUrl).filter(Boolean).slice(0, 20) : [] }
@@ -57,6 +64,15 @@ export default {
         const rows = await sql`SELECT id, collection_key, slug, title, summary, body, category, media_urls, metadata, sort_order, published_at, updated_at FROM public.site_entries WHERE collection_key=${key} AND status='published' ORDER BY sort_order ASC, published_at DESC NULLS LAST, updated_at DESC`
         return response({entries:rows},200,origin)
       }
+      if (request.method === 'POST' && url.pathname === '/analytics/pageview') {
+        const body = await request.json().catch(() => ({}))
+        const rawPath = safeText(body.path, 180)
+        const pagePath = /^\/[a-zA-Z0-9/_-]*$/.test(rawPath) && !rawPath.includes('//') ? rawPath : '/'
+        const language = ['en','ps','fa','de','fr','es','it','pt','nl','sv','no','da'].includes(body.language) ? body.language : 'en'
+        const deviceType = ['desktop','mobile','tablet'].includes(body.device_type) ? body.device_type : 'unknown'
+        await sql`INSERT INTO public.site_analytics_events (page_path, language, device_type) VALUES (${pagePath}, ${language}, ${deviceType})`
+        return response({tracked:true},202,origin)
+      }
       if (request.method === 'GET' && url.pathname === '/products') {
         const rows = await sql`SELECT id, slug, name, category, summary, description, image_url, image_urls, video_urls, external_url, status, sort_order, updated_at FROM public.products WHERE status = 'published' ORDER BY sort_order ASC, updated_at DESC`
         return response({products:rows}, 200, origin)
@@ -75,8 +91,65 @@ export default {
         return response({received:true}, 202, origin)
       }
       if (url.pathname.startsWith('/admin/')) {
-        const email = await admin(request)
-        if (!email) return response({error:'Unauthorized'}, 401, origin)
+        const identity = await admin(request)
+        if (!identity) return response({error:'Unauthorized'}, 401, origin)
+        const email = identity.email
+        const role = identity.role
+        if (/^\/admin\/users(\/|$)/.test(url.pathname) && role !== 'owner') return response({error:'Only the owner can manage administrator accounts.'},403,origin)
+        if (/^\/admin\/analytics/.test(url.pathname) && !canReadAnalytics(role)) return response({error:'Your role cannot view analytics.'},403,origin)
+        if (/^\/admin\/settings/.test(url.pathname) && !['owner','admin'].includes(role)) return response({error:'Your role cannot manage site settings.'},403,origin)
+        if (/^\/admin\/(content|entries|uploads|products)/.test(url.pathname) && !canManageContent(role)) return response({error:'Your role cannot manage website content.'},403,origin)
+        if (/^\/admin\/inquiries/.test(url.pathname) && !canManageInquiries(role)) return response({error:'Your role cannot manage enquiries.'},403,origin)
+        if (request.method === 'GET' && url.pathname === '/admin/me') return response({user:{email,role,subject:identity.subject}},200,origin)
+        if (request.method === 'GET' && url.pathname === '/admin/analytics') {
+          const days = Math.min(90,Math.max(1,Number(url.searchParams.get('days'))||30))
+          const [summary] = await sql`SELECT COUNT(*)::int AS page_views, COUNT(DISTINCT page_path)::int AS unique_pages, COUNT(*) FILTER (WHERE created_at >= now()-interval '1 day')::int AS today_views, COUNT(*) FILTER (WHERE created_at >= now()-interval '7 days')::int AS week_views FROM public.site_analytics_events WHERE created_at >= now()-(${days}::int * interval '1 day')`
+          const daily = await sql`SELECT to_char(date_trunc('day',created_at),'YYYY-MM-DD') AS day, COUNT(*)::int AS views FROM public.site_analytics_events WHERE created_at >= now()-(${days}::int * interval '1 day') GROUP BY 1 ORDER BY 1`
+          const pages = await sql`SELECT page_path, COUNT(*)::int AS views FROM public.site_analytics_events WHERE created_at >= now()-(${days}::int * interval '1 day') GROUP BY page_path ORDER BY views DESC LIMIT 10`
+          const languages = await sql`SELECT language, COUNT(*)::int AS views FROM public.site_analytics_events WHERE created_at >= now()-(${days}::int * interval '1 day') GROUP BY language ORDER BY views DESC`
+          return response({summary:summary||{page_views:0,unique_pages:0,today_views:0,week_views:0},daily,pages,languages,days},200,origin)
+        }
+        if (request.method === 'GET' && url.pathname === '/admin/settings') {
+          const rows = await sql`SELECT setting_key,setting_value,updated_at FROM public.site_settings ORDER BY setting_key`
+          return response({settings:rows},200,origin)
+        }
+        if (request.method === 'PUT' && url.pathname === '/admin/settings') {
+          const body = await request.json()
+          const key = safeText(body.key,60)
+          const allowedKeys = ['company_profile','contact_channels','social_links','seo_defaults','appearance']
+          if (!allowedKeys.includes(key)) return response({error:'Unsupported setting key.'},400,origin)
+          const value = jsonObject(body.value)
+          if (JSON.stringify(value).length > 30000) return response({error:'Settings payload is too large.'},413,origin)
+          const [row] = await sql`INSERT INTO public.site_settings (setting_key,setting_value,updated_at,updated_by) VALUES (${key},${JSON.stringify(value)}::jsonb,now(),${email}) ON CONFLICT (setting_key) DO UPDATE SET setting_value=EXCLUDED.setting_value,updated_at=now(),updated_by=EXCLUDED.updated_by RETURNING setting_key,setting_value,updated_at`
+          await sql`INSERT INTO public.admin_audit_log (admin_email,action,details) VALUES (${email},'site_settings.update',${JSON.stringify({key})}::jsonb)`
+          return response({setting:row},200,origin)
+        }
+        if (request.method === 'GET' && url.pathname === '/admin/users') {
+          const rows = await sql`SELECT email,role,status,created_at,updated_at FROM public.admin_members ORDER BY CASE role WHEN 'owner' THEN 0 WHEN 'admin' THEN 1 ELSE 2 END,email`
+          return response({users:rows},200,origin)
+        }
+        if (request.method === 'POST' && url.pathname === '/admin/users') {
+          const body = await request.json()
+          const userEmail = safeText(body.email,254).toLowerCase()
+          const userRole = ['admin','editor','support','analyst'].includes(body.role) ? body.role : 'editor'
+          if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userEmail) || userEmail === ADMIN_EMAIL) return response({error:'Enter a valid team email. The owner account cannot be replaced.'},400,origin)
+          const [row] = await sql`INSERT INTO public.admin_members (email,role,status) VALUES (${userEmail},${userRole},'active') ON CONFLICT (email) DO UPDATE SET role=EXCLUDED.role,status='active',updated_at=now() RETURNING email,role,status,created_at,updated_at`
+          await sql`INSERT INTO public.admin_audit_log (admin_email,action,details) VALUES (${email},'admin_member.grant',${JSON.stringify({email:userEmail,role:userRole})}::jsonb)`
+          return response({user:row},201,origin)
+        }
+        const memberMatch = url.pathname.match(/^\/admin\/users\/([^/]+)$/)
+        if (memberMatch && request.method === 'PATCH') {
+          const userEmail = decodeURIComponent(memberMatch[1]).toLowerCase()
+          if (userEmail === ADMIN_EMAIL) return response({error:'The owner account cannot be disabled or demoted.'},400,origin)
+          const body = await request.json()
+          const userRole = ['admin','editor','support','analyst'].includes(body.role) ? body.role : null
+          const status = ['active','disabled'].includes(body.status) ? body.status : null
+          if (!userRole && !status) return response({error:'Provide a valid role or status.'},400,origin)
+          const [row] = await sql`UPDATE public.admin_members SET role=COALESCE(${userRole},role),status=COALESCE(${status},status),updated_at=now() WHERE lower(email)=${userEmail} AND role<>'owner' RETURNING email,role,status,created_at,updated_at`
+          if (!row) return response({error:'Team member not found.'},404,origin)
+          await sql`INSERT INTO public.admin_audit_log (admin_email,action,details) VALUES (${email},'admin_member.update',${JSON.stringify({email:userEmail,role:row.role,status:row.status})}::jsonb)`
+          return response({user:row},200,origin)
+        }
         if (request.method === 'GET' && url.pathname === '/admin/content') {
           const rows = await sql`SELECT page_key, content, published, updated_at FROM public.site_content ORDER BY page_key ASC`
           return response({pages:rows}, 200, origin)
