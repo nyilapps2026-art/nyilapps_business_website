@@ -339,3 +339,11 @@ button:disabled{opacity:.6;cursor:not-allowed}
 @media(max-width:900px){.company-profile-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:520px){.company-profile-grid{grid-template-columns:1fr}.company-profile-card{padding:20px}}
 @media(prefers-reduced-motion:reduce){.company-profile-card{transition:none}.company-profile-card:hover{transform:none}}
+
+
+/* Corporate project, partner and achievement highlights */
+.corporate-meta-tag{display:inline-flex!important;width:max-content;max-width:100%;padding:5px 9px;border:1px solid var(--line);border-radius:999px;color:var(--gold)!important;background:var(--surface2)}
+.corporate-highlight{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin:18px 0 4px;padding:14px 16px;border-inline-start:3px solid var(--gold);border-radius:0 9px 9px 0;background:var(--surface2)}
+.corporate-highlight strong{font:600 23px/1.2 var(--serif);color:var(--gold)}
+.corporate-highlight span{font-size:11px;line-height:1.6;color:var(--muted)}
+:root[data-content-direction="rtl"] .corporate-highlight{border-radius:9px 0 0 9px}
