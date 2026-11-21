@@ -1,6 +1,11 @@
 name: Build Neon CMS API bundle
 on:
   workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'functions/api/**'
+      - '.github/workflows/build-neon-api.yml'
   push:
     paths:
       - 'functions/api/**'
