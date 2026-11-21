@@ -104,7 +104,7 @@ export default {
           const maxBytes = isVideo ? MAX_VIDEO_BYTES : isDocument ? MAX_DOCUMENT_BYTES : MAX_IMAGE_BYTES
           const label = isVideo ? 'Video' : isDocument ? 'PDF document' : 'Image'
           const declaredLength = Number(request.headers.get('content-length') || 0)
-          if (declaredLength > maxBytes) return response({error:`${label} must be ${isVideo?'100 MB':'8 MB'} or smaller.`},413,origin)
+          if (declaredLength > maxBytes) return response({error:`${label} must be ${isVideo?'100 MB':isDocument?'20 MB':'8 MB'} or smaller.`},413,origin)
           const bytes = new Uint8Array(await request.arrayBuffer())
           if (!bytes.length || bytes.length > maxBytes) return response({error:`${label} file size is invalid or exceeds the limit.`},413,origin)
           let extension
