@@ -826,3 +826,121 @@ main{isolation:isolate}
   .values-grid article,.product-card,.contact-form input,.contact-form textarea{transition:none!important}
   .values-grid article:hover{transform:none}
 }
+
+
+/* Design pass 06 — final responsive rhythm and interaction polish */
+:root{--focus-ring:rgba(217,182,93,.22);--motion-spring:cubic-bezier(.2,.75,.25,1)}
+html{scroll-padding-top:104px}
+body{min-width:320px}
+button,a,input,textarea,select{-webkit-tap-highlight-color:transparent}
+button{font:inherit}
+button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{
+  outline:2px solid var(--gold);outline-offset:3px
+}
+.site-header{transition:background .25s,border-color .25s,box-shadow .25s}
+.site-header nav a{position:relative;padding-block:10px}
+.site-header nav a::after{
+  content:"";position:absolute;left:0;right:0;bottom:2px;height:1px;
+  background:var(--gold);transform:scaleX(0);transform-origin:left;
+  transition:transform .28s var(--motion-spring)
+}
+.site-header nav a:hover::after,.site-header nav a[aria-current="page"]::after{transform:scaleX(1)}
+.button,.utility-button,.theme-button,.menu-toggle,.product-link,.back-top{
+  -webkit-user-select:none;user-select:none
+}
+.button{border-radius:7px;box-shadow:0 8px 22px rgba(217,182,93,.12)}
+.button:active,.utility-button:active,.menu-toggle:active{transform:translateY(1px) scale(.985)}
+.text-link,.underlined-link{transition:color .2s,border-color .2s}
+.text-link:hover,.underlined-link:hover{color:var(--gold)}
+.section-kicker{line-height:1.6}
+.section-heading{align-items:flex-end}
+.section-heading h1{line-height:1.08}
+.solution-card,.technology-section,.products-section,.intro,.contact-section{scroll-margin-top:100px}
+.solution-card{border-radius:12px;overflow:hidden}
+.solution-card .card-icon{border-radius:10px;background:color-mix(in srgb,var(--gold) 5%,transparent)}
+.solution-card>b{transition:transform .25s,color .25s}
+.solution-card:hover>b{transform:translate(3px,-3px);color:#f1d98e}
+.product-image{position:relative;isolation:isolate}
+.product-image::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(180deg,transparent 55%,rgba(0,0,0,.12));
+  opacity:.5;transition:opacity .3s
+}
+.product-card:hover .product-image::after{opacity:.12}
+.product-card:focus-within{border-color:var(--gold);box-shadow:0 0 0 2px var(--focus-ring)}
+.product-link{align-self:flex-start;min-height:34px}
+.contact-channel{transition:transform .25s var(--motion-spring),border-color .25s,background .25s}
+.contact-channel:hover{transform:translateY(-3px);border-color:var(--gold)}
+.contact-form .button{transition:transform .25s var(--motion-spring),box-shadow .25s,background .25s}
+.contact-form .button:hover{box-shadow:0 10px 28px rgba(217,182,93,.2)}
+.site-footer a{transition:color .2s}
+:root[data-theme="light"] .site-header{
+  background:rgba(247,250,245,.92);border-bottom-color:#dce5d9;
+  box-shadow:0 5px 22px rgba(28,50,32,.045)
+}
+:root[data-theme="light"] .site-header nav a{color:#536657}
+:root[data-theme="light"] .site-header nav a:hover{color:#17251d}
+:root[data-theme="light"] .announcement{background:#eaf1e7;color:#526557}
+:root[data-theme="light"] .solution-card{background:linear-gradient(145deg,#fff,#f1f6ef);border-color:#d7e2d4}
+:root[data-theme="light"] .solution-card p{color:#607266}
+:root[data-theme="light"] .solution-card>span{color:#63766a}
+:root[data-theme="light"] .technology-section{background:linear-gradient(120deg,#e7efe4,#f5f8f3 75%);border-color:#dce6d9}
+:root[data-theme="light"] .tech-points span{color:#354b3b}
+:root[data-theme="light"] .tech-points i{border-color:#ad9451;color:#8b6d27}
+:root[data-theme="light"] .hero-lead,:root[data-theme="light"] .intro-grid p{color:#5f7265}
+:root[data-theme="light"] .hero-bottom{color:#607568;border-color:#d8e2d6}
+:root[data-theme="light"] .art-tag{background:#fff;border-color:#d8e2d6;color:#526657;box-shadow:0 8px 24px rgba(35,57,39,.07)}
+:root[data-theme="light"] .art-core{background:radial-gradient(circle at 35% 30%,#e2eddf,#fff 72%);box-shadow:0 0 70px rgba(143,164,117,.2),inset 0 0 30px rgba(180,154,85,.1)}
+:root[data-theme="light"] .core-caption{color:#65786a}
+:root[data-theme="light"] .orbit{border-color:#b49a5544}
+:root[data-theme="light"] .orbit-three{border-color:#45634b22}
+:root[data-theme="light"] .hero-proof{color:#63776a}
+:root[data-theme="light"] .proof-avatars b{border-color:#f5f8f2}
+:root[data-theme="light"] .hero h1{color:#17291e}
+:root[data-theme="light"] .text-link{color:#304b39}
+html[dir="rtl"] .site-header nav a::after{transform-origin:right}
+html[dir="rtl"] .hero-actions,html[dir="rtl"] .hero-proof{direction:rtl}
+html[dir="rtl"] .text-link span{margin-left:0;margin-right:8px}
+html[dir="rtl"] .underlined-link span{margin-left:0;margin-right:15px}
+html[dir="rtl"] .product-info,html[dir="rtl"] .contact-form,html[dir="rtl"] .contact-copy{text-align:right}
+html[dir="rtl"] .product-link{align-self:flex-start}
+html[dir="rtl"] .hero-bottom{direction:rtl}
+@media(max-width:900px){
+  .section-heading{gap:24px}
+  .section-heading>p{max-width:270px}
+  .technology-grid{gap:7%}
+}
+@media(max-width:700px){
+  html{scroll-padding-top:78px}
+  .site-header{box-shadow:0 8px 24px rgba(0,0,0,.08)}
+  .site-header nav a::after{display:none}
+  .section-heading{display:grid;align-items:start;gap:15px;margin:26px 0 30px}
+  .section-heading>p{max-width:560px;margin:0}
+  .section-kicker{font-size:8px;letter-spacing:.15em}
+  .solutions-section,.technology-section{padding-block:70px}
+  .products-section{padding-block:70px}
+  .solution-grid{grid-template-columns:1fr;gap:12px}
+  .solution-card{min-height:0;padding:22px}
+  .solution-card .card-icon{margin-bottom:20px}
+  .solution-card>b{bottom:19px}
+  .technology-grid{grid-template-columns:1fr;gap:30px}
+  .technology-grid h2{margin-top:20px}
+  .tech-points{gap:12px}
+  .hero-bottom{font-size:7px;letter-spacing:.08em;gap:12px}
+  .hero-bottom span:last-child{text-align:end}
+  .button{min-height:44px}
+  .footer-bottom{align-items:flex-start;flex-direction:column}
+}
+@media(max-width:380px){
+  .hero-bottom{font-size:6px}
+  .hero-actions{gap:14px}
+  .section-wrap{padding-left:20px;padding-right:20px}
+}
+@media(hover:none){
+  .values-grid article:hover,.solution-card:hover,.product-card:hover,.contact-channel:hover,.back-top:hover{transform:none}
+}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .site-header,.site-header nav a::after,.button,.solution-card,.product-card,.contact-channel,.back-top{transition:none!important}
+  .solution-card:hover>b{transform:none}
+}
