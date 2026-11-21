@@ -94,7 +94,7 @@ const COMPANY_PROFILE_LABELS = {
 };
 function applyCompanyProfileLabels(lang=currentLanguage) {
   const labels=COMPANY_PROFILE_LABELS[lang]||COMPANY_PROFILE_LABELS.en;
-  Object.entries(labels).forEach(([key,value])=>{const node=document.querySelector('[data-company-field="'+key.replace(/Title$/,'-title').replace(/Body$/,'-body')+'"]');if(node&&!node.dataset.cmsValue)node.textContent=value;});
+  Object.entries(labels).forEach(([key,value])=>{const node=document.querySelector('[data-company-field="'+key.replace(/Title$/,'-title').replace(/Body$/,'-body')+'"]');if(node)node.textContent=value;});
 }
 const localized = (value, lang=currentLanguage) => {
   if (typeof value === 'string') return value;
