@@ -331,7 +331,7 @@ document.addEventListener('DOMContentLoaded', () => {
     toggle.setAttribute('aria-expanded', String(open));
     
   });
-  nav.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {nav.classList.remove('open');toggle.setAttribute('aria-expanded','false');}));
+  nav.addEventListener('click', event => { const link = event.target.closest('a'); if (!link || !nav.contains(link)) return; nav.classList.remove('open'); toggle.setAttribute('aria-expanded','false'); });
   void loadProducts();
   void loadCmsContent();
   void loadCorporateSections();
