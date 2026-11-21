@@ -1074,3 +1074,109 @@ html[data-content-direction="rtl"] .product-category{flex-direction:row-reverse}
   .brand-logo,.brand-mark,.values-grid article::after,.back-top{transition:none!important}
   .brand:hover .brand-logo,.brand:hover .brand-mark,.back-top:hover{transform:none}
 }
+
+
+/* Design pass 08 — complete Pashto and Dari RTL layout polish */
+html[data-content-direction="rtl"] body{ text-align:right }
+html[data-content-direction="rtl"] .site-header,
+html[data-content-direction="rtl"] .header-actions,
+html[data-content-direction="rtl"] .site-header nav,
+html[data-content-direction="rtl"] .hero-actions,
+html[data-content-direction="rtl"] .hero-proof,
+html[data-content-direction="rtl"] .hero-bottom,
+html[data-content-direction="rtl"] .footer-top,
+html[data-content-direction="rtl"] .footer-bottom,
+html[data-content-direction="rtl"] .footer-bottom>div{
+  direction:rtl;
+}
+html[data-content-direction="rtl"] .site-header nav{
+  margin-left:0;
+  margin-right:7vw;
+}
+html[data-content-direction="rtl"] .brand{direction:ltr}
+html[data-content-direction="rtl"] .hero,
+html[data-content-direction="rtl"] .intro-grid,
+html[data-content-direction="rtl"] .technology-grid,
+html[data-content-direction="rtl"] .contact-section{
+  direction:rtl;
+}
+html[data-content-direction="rtl"] .hero-copy,
+html[data-content-direction="rtl"] .intro-grid>div,
+html[data-content-direction="rtl"] .section-heading,
+html[data-content-direction="rtl"] .technology-copy,
+html[data-content-direction="rtl"] .contact-copy,
+html[data-content-direction="rtl"] .contact-form,
+html[data-content-direction="rtl"] .values-grid article,
+html[data-content-direction="rtl"] .solution-card,
+html[data-content-direction="rtl"] .product-info,
+html[data-content-direction="rtl"] .detail-copy,
+html[data-content-direction="rtl"] .product-inquiry-form{
+  text-align:right;
+}
+html[data-content-direction="rtl"] .eyebrow,
+html[data-content-direction="rtl"] .section-kicker,
+html[data-content-direction="rtl"] .tech-points span,
+html[data-content-direction="rtl"] .contact-channel{
+  flex-direction:row-reverse;
+}
+html[data-content-direction="rtl"] .eyebrow span:first-child{order:2}
+html[data-content-direction="rtl"] .hero-actions{justify-content:flex-start}
+html[data-content-direction="rtl"] .hero-proof{justify-content:flex-start}
+html[data-content-direction="rtl"] .proof-avatars{direction:ltr}
+html[data-content-direction="rtl"] .hero-bottom{flex-direction:row-reverse}
+html[data-content-direction="rtl"] .values-grid article{position:relative}
+html[data-content-direction="rtl"] .values-grid article::after{transform-origin:right}
+html[data-content-direction="rtl"] .underlined-link span,
+html[data-content-direction="rtl"] .text-link span{display:inline-block;transform:scaleX(-1)}
+html[data-content-direction="rtl"] .contact-form .button,
+html[data-content-direction="rtl"] .product-inquiry-form .button{justify-self:start}
+html[data-content-direction="rtl"] .contact-form input,
+html[data-content-direction="rtl"] .contact-form textarea,
+html[data-content-direction="rtl"] .product-inquiry-form input,
+html[data-content-direction="rtl"] .product-inquiry-form textarea{
+  text-align:right;
+  direction:rtl;
+}
+html[data-content-direction="rtl"] .contact-channel small[dir="ltr"],
+html[data-content-direction="rtl"] .contact-channel a[href^="mailto:"]{
+  direction:ltr;
+  text-align:left;
+}
+html[data-content-direction="rtl"] .footer-bottom>div{flex-direction:row-reverse}
+html[data-content-direction="rtl"] .language-dialog-panel,
+html[data-content-direction="rtl"] .language-options button{
+  direction:rtl;
+  text-align:right;
+}
+html[data-content-direction="rtl"] .language-options button{grid-template-columns:auto 1fr}
+html[data-content-direction="rtl"] .language-check{justify-self:start}
+html[data-content-direction="rtl"] .detail-panel{direction:rtl}
+html[data-content-direction="rtl"] .detail-gallery{border-right:0;border-left:1px solid var(--line)}
+html[data-content-direction="rtl"] .detail-close{right:auto;left:10px}
+html[data-content-direction="rtl"] .detail-main-image span{right:auto;left:12px}
+@media(max-width:900px){
+  html[data-content-direction="rtl"] .site-header nav{margin-right:0}
+}
+@media(max-width:700px){
+  html[data-content-direction="rtl"] .site-header nav{
+    direction:rtl;
+    align-items:stretch;
+    text-align:right;
+  }
+  html[data-content-direction="rtl"] .hero,
+  html[data-content-direction="rtl"] .intro-grid,
+  html[data-content-direction="rtl"] .technology-grid,
+  html[data-content-direction="rtl"] .contact-section{
+    direction:rtl;
+  }
+  html[data-content-direction="rtl"] .hero-actions{align-items:stretch}
+  html[data-content-direction="rtl"] .hero-bottom{direction:rtl}
+  html[data-content-direction="rtl"] .detail-gallery{border-left:0}
+  html[data-content-direction="rtl"] .detail-close{left:10px;right:auto}
+  html[data-content-direction="rtl"] .footer-top,
+  html[data-content-direction="rtl"] .footer-bottom{align-items:flex-start}
+}
+@media(prefers-reduced-motion:reduce){
+  html[data-content-direction="rtl"] .underlined-link span,
+  html[data-content-direction="rtl"] .text-link span{transform:none}
+}
