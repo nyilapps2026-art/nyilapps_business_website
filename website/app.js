@@ -177,6 +177,23 @@ async function sendProductInquiry(event,product){event.preventDefault();const fo
 function escapeHtml(value) {
   return String(value ?? '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 }
+function applyPublicSettings(settings){
+  const profile=settings?.company_profile||{},contact=settings?.contact_channels||{},seo=settings?.seo_defaults||{};
+  if(typeof seo.title==='string'&&seo.title.trim())document.title=seo.title.trim().slice(0,160);
+  if(typeof seo.description==='string'&&seo.description.trim()){const meta=document.querySelector('meta[name="description"]');if(meta)meta.content=seo.description.trim().slice(0,300);}
+  const email=typeof contact.email==='string'?contact.email.trim():'';
+  const emailLink=document.querySelector('.email-channel');
+  if(emailLink&&email&&/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email)){emailLink.href='mailto:'+email;const small=emailLink.querySelector('small');if(small)small.textContent=email;}
+  const whatsapp=typeof contact.whatsapp==='string'?contact.whatsapp.replace(/[^0-9]/g,''):'';
+  const whatsappLink=document.querySelector('.whatsapp-channel');
+  if(whatsappLink&&whatsapp.length>=8){whatsappLink.href='https://wa.me/'+whatsapp;const small=whatsappLink.querySelector('small');if(small)small.textContent=contact.phone||whatsapp;}
+  const companyDescription=typeof profile.description==='string'?profile.description.trim():'';
+  if(companyDescription){const node=document.querySelector('[data-i18n="aboutText"]');if(node)node.textContent=companyDescription;}
+}
+async function loadPublicSettings(){
+  try{const result=await getJson('/public-settings');applyPublicSettings(result.settings||{});}
+  catch(error){console.warn('NYIL public settings unavailable:',error);}
+}
 async function loadProducts() {
   const grid = document.getElementById('productGrid');
   try {
@@ -307,6 +324,7 @@ document.addEventListener('DOMContentLoaded', () => {
   void loadProducts();
   void loadCmsContent();
   void loadCorporateSections();
+  void loadPublicSettings();
   trackPageView();
 });
 function setupLanguageDialog() {
